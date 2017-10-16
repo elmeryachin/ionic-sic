@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MdlArticulo} from "../../pages/model/mdl-articulo";
 import {ResponseGetArticulo} from "../../pages/response/response-get-articulo";
 import {AlertController} from "ionic-angular";
+import {ResponseList} from "../../pages/response/responseList";
 
 /*
   Generated class for the SicServiceProvider provider.
@@ -23,9 +24,7 @@ export class SicServiceProvider {
   }
 
   listArticulos() {
-    this.http.get(this.url + '/articulo/list').subscribe(data => {
-      console.log(data);
-    });
+    return this.http.get<ResponseList>(this.url + '/articulo/list');
   }
 
   getArticulo(codigoArticulo: string) {

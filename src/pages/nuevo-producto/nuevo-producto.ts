@@ -34,8 +34,6 @@ export class NuevoProductoPage implements OnInit {
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController) {
-
-
   }
 
   ngOnInit() {
@@ -162,6 +160,45 @@ export class NuevoProductoPage implements OnInit {
     this.precioVenta = 0;
     this.mensaje = '';
     this.montoGasto = 0;
+  }
+  public listarProductos(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+
+    loading.present();
+
+
+
+    this.sicService.listArticulos().subscribe(
+      data => {
+        loading.dismiss();
+        let alert = this.alertCtrl.create();
+        alert.setTitle('Seleccione un Item');
+
+
+        for (let lista of data.lista){
+          alert.addInput({
+            type: 'radio',
+            name: 'codigo',
+            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            value: lista.codigo
+          });
+        }
+
+        alert.addButton('Cancelar');
+        alert.addButton({
+          text: 'Aceptar',
+          handler: (data: any) => {
+            console.log('Datos Enviados:', data);
+            this.codigoArticulo = data;
+            this.buscaProducto();
+          }
+        });
+
+        alert.present();
+        return data;
+      });
   }
 
 }
