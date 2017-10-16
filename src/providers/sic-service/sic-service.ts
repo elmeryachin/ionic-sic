@@ -3,7 +3,6 @@ import 'rxjs/add/operator/map';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MdlArticulo} from "../../pages/model/mdl-articulo";
 import {ResponseGetArticulo} from "../../pages/response/response-get-articulo";
-import {AlertController} from "ionic-angular";
 import {ResponseList} from "../../pages/response/responseList";
 
 /*
