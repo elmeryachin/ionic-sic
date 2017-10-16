@@ -4,7 +4,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import {NuevoProductoPage} from "../pages/nuevo-producto/nuevo-producto";
+import {PedidosPage} from "../pages/pedidos/pedidos";
+import {EntregasPage} from "../pages/entregas/entregas";
+import {EstadoCuentasPage} from "../pages/estado-cuentas/estado-cuentas";
+import {ReportesPage} from "../pages/reportes/reportes";
+import {DiscosPage} from "../pages/discos/discos";
+import {CierreGestionPage} from "../pages/cierre-gestion/cierre-gestion";
 
 @Component({
   templateUrl: 'app.html'
@@ -21,8 +27,13 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'Registrar Producto', component: NuevoProductoPage },
+      { title: 'Pedidos', component: PedidosPage },
+      { title: 'Entregas', component: EntregasPage },
+      { title: 'Estado Cuentas', component: EstadoCuentasPage },
+      { title: 'Reportes', component: ReportesPage },
+      { title: 'Discos', component: DiscosPage },
+      { title: 'Cierre Gestión', component: CierreGestionPage }
     ];
 
   }
