@@ -1,3 +1,16 @@
 page-nuevo-producto {
-
+  .item-label-stacked .text-input-md, .item-label-floating .text-input-md{
+    margin-left: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  .list-md {
+    margin: 0px 0 0px;
+  }
+  .label-md {
+    margin: 5px 1px 5px 0;
+  }
+  .label-md[stacked] {
+    font-size: 1.4rem;
+  }
 }

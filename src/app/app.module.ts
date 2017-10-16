@@ -16,6 +16,10 @@ import {EstadoCuentasPage} from "../pages/estado-cuentas/estado-cuentas";
 import {NuevoProductoPage} from "../pages/nuevo-producto/nuevo-producto";
 import {PedidosPage} from "../pages/pedidos/pedidos";
 import {ReportesPage} from "../pages/reportes/reportes";
+import { SicServiceProvider } from '../providers/sic-service/sic-service';
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import {HttpModule} from "@angular/http";
 
 @NgModule({
   declarations: [
@@ -34,6 +38,9 @@ import {ReportesPage} from "../pages/reportes/reportes";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    FormsModule,
+    HttpModule,
+    HttpClientModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -52,7 +59,8 @@ import {ReportesPage} from "../pages/reportes/reportes";
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    SicServiceProvider
   ]
 })
 export class AppModule {}
