@@ -78,17 +78,7 @@ export class NuevoProductoPage implements OnInit {
 
     loading.present();
     //this.presentLoadingDefault();
-    this.seActualiza = false;
-    this.descripcion = '';
-    this.precioKilo = 0;
-    this.pesoStock = 0;
-    this.precioZonaLibre = 0;
-    this.porcentajeGastos = 0;
-    this.precioCompra = 0;
-    this.precioMercado = 0;
-    this.precioVenta = 0;
-    this.mensaje = '';
-    this.montoGasto = 0;
+    this.limpiarDatos();
     this.sicService.getArticulo(this.codigoArticulo).subscribe(
       data => {
         loading.dismiss();
@@ -125,6 +115,7 @@ export class NuevoProductoPage implements OnInit {
         this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado))).subscribe(
         data => {
           loading.dismiss();
+          this.limpiarDatos();
           this.presentAlert('Información','Su producto fue registrado correctamente');
           return data;
         });
@@ -134,6 +125,7 @@ export class NuevoProductoPage implements OnInit {
         this.mensaje, this.precioKilo, this.pesoStock, this.precioZonaLibre, this.porcentajeGastos,
         this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado))).subscribe(
         data => {
+          this.limpiarDatos();
           loading.dismiss();
           this.presentAlert('Información','Su producto fué actualizado correctamente');
           return data;
@@ -152,10 +144,24 @@ export class NuevoProductoPage implements OnInit {
       this.sicService.deleteArticulo(this.codigoArticulo).subscribe(
         data => {
           loading.dismiss();
+          this.limpiarDatos();
           this.presentAlert('Información','Su producto fué eliminado correctamente');
           return data;
         });
     }
+  }
+  public limpiarDatos(){
+    this.seActualiza = false;
+    this.descripcion = '';
+    this.precioKilo = 0;
+    this.pesoStock = 0;
+    this.precioZonaLibre = 0;
+    this.porcentajeGastos = 0;
+    this.precioCompra = 0;
+    this.precioMercado = 0;
+    this.precioVenta = 0;
+    this.mensaje = '';
+    this.montoGasto = 0;
   }
 
 }
