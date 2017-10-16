@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {MdlArticulo} from "../model/mdl-articulo";
 import {ObjArticulo} from "../clases/obj-articulo";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
@@ -30,8 +30,14 @@ export class NuevoProductoPage implements OnInit {
   precioVenta = 0;
   seActualiza: boolean;
   mensaje;
-  constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
+              public alertCtrl: AlertController, public toastCtrl: ToastController,
+              public loadingCtrl: LoadingController) {
+
+
   }
+
   ngOnInit() {
     this.seActualiza = false;
 
@@ -43,7 +49,35 @@ export class NuevoProductoPage implements OnInit {
   ionViewDidLoad() {
     console.log('ionViewDidLoad NuevoProductoPage');
   }
+  presentAlert(titulo:string, mensaje:string) {
+    const alert = this.alertCtrl.create({
+      title: titulo,
+      subTitle: mensaje,
+      buttons: ['Aceptar']
+    });
+    alert.present();
+  }
+  presentToast(mensaje:string) {
+    const toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Toas Dimissed');
+    });
+
+    toast.present();
+  }
+
   public buscaProducto() {
+    const loading = this.loadingCtrl.create({
+      content: 'Obteniendo los datos'
+    });
+
+    loading.present();
+    //this.presentLoadingDefault();
     this.seActualiza = false;
     this.descripcion = '';
     this.precioKilo = 0;
@@ -57,9 +91,13 @@ export class NuevoProductoPage implements OnInit {
     this.montoGasto = 0;
     this.sicService.getArticulo(this.codigoArticulo).subscribe(
       data => {
+        loading.dismiss();
+        //this.dimmisLoading();
         console.log(data);
         //this.respuestaArticulo = data;
         if (data.articulo != null) {
+          this.presentToast('Se ha encontrado una coincidencia');
+
           this.seActualiza = true;
           this.descripcion = data.articulo.nombre;
           this.precioKilo = data.articulo.precioKilo;
@@ -76,21 +114,47 @@ export class NuevoProductoPage implements OnInit {
   }
 
   public guardarArticulo() {
+    const loading = this.loadingCtrl.create({
+      content: 'Registrando los datos...'
+    });
+
+    loading.present();
     if (!this.seActualiza) {
       this.sicService.addArticulo(new MdlArticulo(new ObjArticulo(this.codigoArticulo, this.descripcion,
         this.mensaje, this.precioKilo, this.pesoStock, this.precioZonaLibre, this.porcentajeGastos,
-        this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado)));
+        this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado))).subscribe(
+        data => {
+          loading.dismiss();
+          this.presentAlert('Información','Su producto fue registrado correctamente');
+          return data;
+        });
+
     } else {
       this.sicService.updateArticulo(new MdlArticulo(new ObjArticulo(this.codigoArticulo, this.descripcion,
         this.mensaje, this.precioKilo, this.pesoStock, this.precioZonaLibre, this.porcentajeGastos,
-        this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado)));
+        this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado))).subscribe(
+        data => {
+          loading.dismiss();
+          this.presentAlert('Información','Su producto fué actualizado correctamente');
+          return data;
+        });
     }
   }
 
   public eliminarArticulo() {
+    const loading = this.loadingCtrl.create({
+      content: 'Registrando los datos...'
+    });
+
+    loading.present();
     if (this.seActualiza) {
       console.log(this.seActualiza)
-      this.sicService.deleteArticulo(this.codigoArticulo);
+      this.sicService.deleteArticulo(this.codigoArticulo).subscribe(
+        data => {
+          loading.dismiss();
+          this.presentAlert('Información','Su producto fué eliminado correctamente');
+          return data;
+        });
     }
   }
 

@@ -1,16 +1,25 @@
 <ion-menu [content]="content">
   <ion-header>
-    <ion-toolbar>
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
+    <img src="../assets/img/images2.jpg" class="imagen-fondo"/>
+    <div class="menu-lateral">
+      <img class="circle" src="../assets/img/login-user.svg"
+                       style="width: 55px; height: 55px; ">
+      <div class="texto-menu">
+        <a href="#"><span class="white-text name">Belen Luna</span></a>
+      </div>
+      <div class="texto-menu">
+        <a href="#"><span class="white-text email">Sucursal 1</span></a>
+      </div>
+    </div>
   </ion-header>
 
-  <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </ion-list>
+  <ion-content class="contenido">
+
+    <button  menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <ion-icon name="{{p.icon}}"></ion-icon>
+      <span></span> {{p.title}}
+    </button>
+
   </ion-content>
 
 </ion-menu>

@@ -20,20 +20,20 @@ export class MyApp {
 
   rootPage: any = HomePage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, component: any, icon: string}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Registrar Producto', component: NuevoProductoPage },
-      { title: 'Pedidos', component: PedidosPage },
-      { title: 'Entregas', component: EntregasPage },
-      { title: 'Estado Cuentas', component: EstadoCuentasPage },
-      { title: 'Reportes', component: ReportesPage },
-      { title: 'Discos', component: DiscosPage },
-      { title: 'Cierre Gestión', component: CierreGestionPage }
+      { title: 'Registrar Producto', component: NuevoProductoPage, icon: 'archive' },
+      { title: 'Pedidos', component: PedidosPage, icon: 'boat' },
+      { title: 'Entregas', component: EntregasPage, icon: 'aperture' },
+      { title: 'Estado Cuentas', component: EstadoCuentasPage, icon: 'briefcase' },
+      { title: 'Reportes', component: ReportesPage, icon: 'document' },
+      { title: 'Discos', component: DiscosPage, icon: 'disc' },
+      { title: 'Cierre Gestión', component: CierreGestionPage, icon: 'hand' }
     ];
 
   }

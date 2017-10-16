@@ -3,6 +3,7 @@ import 'rxjs/add/operator/map';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MdlArticulo} from "../../pages/model/mdl-articulo";
 import {ResponseGetArticulo} from "../../pages/response/response-get-articulo";
+import {AlertController} from "ionic-angular";
 
 /*
   Generated class for the SicServiceProvider provider.
@@ -33,33 +34,21 @@ export class SicServiceProvider {
 
   addArticulo(articulo: MdlArticulo) {
     this.valor = JSON.stringify(articulo);
-    this.http.post(this.url + '/articulo/add', this.valor, {
+    return this.http.post(this.url + '/articulo/add', this.valor, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-    }).subscribe(
-      data => {
-        console.log(data);
-        return data;
-      });
+    });
   }
 
   updateArticulo(articulo: MdlArticulo) {
     this.valor = JSON.stringify(articulo);
-    this.http.put(this.url + '/articulo/update/' + articulo.objetoArticulo.codigo, this.valor, {
+    return this.http.put(this.url + '/articulo/update/' + articulo.objetoArticulo.codigo, this.valor, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-    }).subscribe(
-      data => {
-        console.log(data);
-        return data;
-      });
+    });
   }
 
   deleteArticulo(codigo: string) {
-    this.http.delete(this.url + '/articulo/delete/' + codigo, {
+    return this.http.delete(this.url + '/articulo/delete/' + codigo, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-    }).subscribe(
-      data => {
-        console.log(data);
-        return data;
-      });
+    });
   }
 }

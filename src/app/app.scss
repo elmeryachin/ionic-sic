@@ -14,3 +14,26 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+.menu-lateral{
+  margin-top: 55px;
+  margin-bottom: 55px;
+  margin-left: 10px;
+}
+.imagen-fondo{
+  height: auto;
+  width: 100%;
+  position: absolute;
+  z-index: -10
+}
+.texto-menu a{
+  color: white;
+  width: 100%;
+  text-decoration: none;
+}
+.contenido{
+  top: 5px !important;
+}
+.items-menu{
+  border-bottom: 0px solid #dedede !important;
+  padding: 2px;
+}
