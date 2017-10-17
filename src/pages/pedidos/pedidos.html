@@ -10,30 +10,241 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Pedidos</ion-title>
+    <ion-title>Datos Pedidos</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <ion-list>
-    <ion-list-header>
-      Datos del Pedido
-    </ion-list-header>
+    <!--<ion-header>Datos de Pedido</ion-header>-->
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-list >
+          <ion-list>
             <ion-item>
-              <ion-label stacked>Código Artículo</ion-label>
-              <ion-input type="text" [(ngModel)]="codigoArticulo" placeholder="ej. asc0123" (change)="buscaProducto()"></ion-input>
+              <ion-label stacked>Numero de Movimiento</ion-label>
+              <ion-input [(ngModel)]="numeroMovimiento" type="number"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Fecha de Movimiento</ion-label>
+              <ion-input [(ngModel)]="fecha" type="date"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Código Proveedor</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>Descripción</ion-label>
+              <ion-textarea [(ngModel)]="montoGasto"></ion-textarea>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>Codigo Artículo</ion-label>
+              <ion-input type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
       </ion-row>
 
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>Cantidad - Compra</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>Precio Uni. Zona Lib.</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>Nombre Proveedor</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>Descripción</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
     </ion-grid>
+    <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Codigo</ion-label>
+              <ion-label stacked>T001</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Cantidad</ion-label>
+              <ion-label stacked>1230</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Precio Venta</ion-label>
+              <ion-label stacked>23</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Sub Total</ion-label>
+              <ion-label stacked>28290</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
 
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Codigo</ion-label>
+              <ion-label stacked>T001</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Cantidad</ion-label>
+              <ion-label stacked>1230</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Precio Venta</ion-label>
+              <ion-label stacked>23</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Sub Total</ion-label>
+              <ion-label stacked>28290</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Codigo</ion-label>
+              <ion-label stacked>T001</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Cantidad</ion-label>
+              <ion-label stacked>1230</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Precio Venta</ion-label>
+              <ion-label stacked>23</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Sub Total</ion-label>
+              <ion-label stacked>28290</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Codigo</ion-label>
+              <ion-label stacked>T001</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Cantidad</ion-label>
+              <ion-label stacked>1230</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Precio Venta</ion-label>
+              <ion-label stacked>23</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Sub Total</ion-label>
+              <ion-label stacked>28290</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Codigo</ion-label>
+              <ion-label stacked>T001</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Cantidad</ion-label>
+              <ion-label stacked>1230</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Precio Venta</ion-label>
+              <ion-label stacked>23</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Sub Total</ion-label>
+              <ion-label stacked>28290</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-scroll>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>Cantidad Total</ion-label>
+            <ion-input type="text" readonly value="123"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>Precio Total</ion-label>
+            <ion-input type="text" readonly value="123"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-list>
 </ion-content>
