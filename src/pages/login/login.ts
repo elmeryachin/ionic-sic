@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 
 /**
  * Generated class for the LoginPage page.
@@ -14,7 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-
+  @ViewChild(Nav) nav: Nav;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
