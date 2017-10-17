@@ -3,7 +3,6 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
 import {NuevoProductoPage} from "../pages/nuevo-producto/nuevo-producto";
 import {PedidosPage} from "../pages/pedidos/pedidos";
 import {EntregasPage} from "../pages/entregas/entregas";
@@ -11,6 +10,7 @@ import {EstadoCuentasPage} from "../pages/estado-cuentas/estado-cuentas";
 import {ReportesPage} from "../pages/reportes/reportes";
 import {DiscosPage} from "../pages/discos/discos";
 import {CierreGestionPage} from "../pages/cierre-gestion/cierre-gestion";
+import {LoginPage} from "../pages/login/login";
 
 @Component({
   templateUrl: 'app.html'
@@ -18,7 +18,7 @@ import {CierreGestionPage} from "../pages/cierre-gestion/cierre-gestion";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any, icon: string}>;
 

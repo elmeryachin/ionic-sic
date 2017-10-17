@@ -39,8 +39,15 @@ $colors: (
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-  cafe-claro:  #CC5F39,
-  naranja:    #FF9800
+  cafe-claro:  (
+    base:#CC5F39,
+    contrast:#ffffff
+  ),
+  naranja:    #FF9800,
+  naranja-logo: (
+      base:#E5B01C,
+      contrast: #FFFFFF
+  )
 );
 
 

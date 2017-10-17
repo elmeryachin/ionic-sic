@@ -1,3 +1,52 @@
-page-login {
 
+page-login {
+  .base{
+    width: 70%;
+    height: auto;
+    float: left;
+    padding: 20px;
+    align-content: center;
+    margin: 0 15%;
+  }
+  .fondo-contenido{
+    background-image: url("../../assets/img/textura.jpg");
+  }
+  .fondo-login {
+    border-radius: 20px;
+    background: color($colors, cafe-claro);
+    @extend .base;
+    .list-md .item-block .item-inner {
+      border-bottom: 0px solid #dedede;
+    }
+    .item-input ion-input, .item-input ion-textarea {
+      background-color: #d88a6f;
+      border-radius: 5px;
+    }
+    .item-inner, .item-md.item-input.input-has-focus .item-inner{
+      border-bottom-color: #ffffff !important;
+      box-shadow: inset 0 0px 0 0 #ffffff;
+      color: #ffffff;
+    }
+    .list-md .item-input.item-input.input-has-focus:last-child {
+      border-bottom-color: #ffffff !important;
+      box-shadow: inset 0 0px 0 0 #ffffff;
+      color: #ffffff;
+    }
+    .list-md .item-input:last-child {
+      border-bottom: 0px solid #ffffff;
+    }
+    .item-input-has-focus .label-md[floating], .input-has-focus .label-md[floating], .item-input-has-value .label-md[floating], .input-has-value .label-md[floating]{
+      border-bottom-color: #ffffff !important;
+      color: #ffffff;
+    }
+  }
+
+  .logo{
+    @extend .base;
+    img{
+      width: 70%;
+      align-items: center;
+      margin: 0 15%;
+    }
+  }
 }

@@ -10,12 +10,30 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>pedidos</ion-title>
+    <ion-title>Pedidos</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-list>
+    <ion-list-header>
+      Datos del Pedido
+    </ion-list-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-list >
+            <ion-item>
+              <ion-label stacked>Código Artículo</ion-label>
+              <ion-input type="text" [(ngModel)]="codigoArticulo" placeholder="ej. asc0123" (change)="buscaProducto()"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
 
+    </ion-grid>
+
+  </ion-list>
 </ion-content>

@@ -4,18 +4,28 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<ion-header>
-
-  <ion-navbar color="cafe-claro">
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>login</ion-title>
-  </ion-navbar>
-
-</ion-header>
 
 
-<ion-content padding>
+<ion-content class="fondo-contenido">
+  <div class="logo">
+    <img src="../../assets/img/sic-logo.png">
+  </div>
+  <div class="fondo-login" color="cafe-claro">
+    <ion-list>
 
+      <ion-item color="cafe-claro">
+        <ion-label floating color="light">Usuario</ion-label>
+        <ion-input color="light" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item color="cafe-claro">
+        <ion-label floating color="light">Constraseña</ion-label>
+        <ion-input color="light" type="password"></ion-input>
+      </ion-item>
+
+    </ion-list>
+    <div style="align-items: flex-end">
+      <button ion-button color="naranja-logo">Iniciar Sessión</button>
+    </div>
+  </div>
 </ion-content>
