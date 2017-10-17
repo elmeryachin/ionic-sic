@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {MenuController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {LoginPage} from "../login/login";
 
 @Component({
   selector: 'page-home',
@@ -7,8 +8,12 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
-
+  token:string = '';
+  constructor(public navCtrl: NavController,public viewCtrl: ViewController, public menu: MenuController, params: NavParams ) {
+    //this.token = navCtrl.
+    menu.enable(true);
+    this.token = params.data.token;
   }
+
 
 }

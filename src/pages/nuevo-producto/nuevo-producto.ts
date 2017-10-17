@@ -20,14 +20,14 @@ export class NuevoProductoPage implements OnInit {
 
   codigoArticulo;
   descripcion;
-  precioKilo = 0;
-  pesoStock = 0;
-  precioZonaLibre = 0;
-  porcentajeGastos = 0;
-  montoGasto = 0;
-  precioCompra = 0;
-  precioMercado = 0;
-  precioVenta = 0;
+  precioKilo:number = 0;
+  pesoStock:number = 0;
+  precioZonaLibre:number = 0;
+  porcentajeGastos:number = 0;
+  montoGasto:number = 0;
+  precioCompra:number = 0;
+  precioMercado:number = 0;
+  precioVenta:number = 0;
   seActualiza: boolean;
   mensaje;
 
@@ -42,7 +42,8 @@ export class NuevoProductoPage implements OnInit {
   }
   public calculaPrecioFinal() {
     this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
-    this.precioCompra = (this.precioKilo * this.pesoStock) + this.precioZonaLibre + this.montoGasto;
+
+    this.precioCompra = (this.precioKilo * this.pesoStock) + (this.precioZonaLibre * 1) + (this.montoGasto*1);
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad NuevoProductoPage');

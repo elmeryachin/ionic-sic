@@ -10,6 +10,7 @@ import {EstadoCuentasPage} from "../pages/estado-cuentas/estado-cuentas";
 import {ReportesPage} from "../pages/reportes/reportes";
 import {DiscosPage} from "../pages/discos/discos";
 import {CierreGestionPage} from "../pages/cierre-gestion/cierre-gestion";
+import {HomePage} from "../pages/home/home";
 import {LoginPage} from "../pages/login/login";
 
 @Component({
