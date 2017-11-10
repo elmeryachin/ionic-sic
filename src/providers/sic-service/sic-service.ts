@@ -21,6 +21,15 @@ export class SicServiceProvider {
     console.log('Hello SicServiceProvider Provider');
     this.url = 'https://app-pos.herokuapp.com';
   }
+  getGlobal<Object>(url:string){
+    return this.http.get<Object>(this.url + url);
+  }
+  postGlobal(objeto: any, url:string){
+    this.valor = JSON.stringify(objeto);
+    return this.http.post(this.url + url, this.valor, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+    });
+  }
 
   listArticulos() {
     return this.http.get<ResponseList>(this.url + '/articulo/list');

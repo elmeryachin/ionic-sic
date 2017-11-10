@@ -25,15 +25,15 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Numero de Movimiento</ion-label>
-              <ion-input [(ngModel)]="numeroMovimiento" type="number"></ion-input>
+              <ion-input [(ngModel)]="txtNumMovimiento" type="number"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label stacked>Fecha de Movimiento</ion-label>
-              <ion-input [(ngModel)]="fecha" type="date"></ion-input>
+              <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="txtFechaConvert"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label stacked>Código Proveedor</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input [(ngModel)]="txtCodProveedor" (change)="BuscarProveedor()" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -41,7 +41,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Descripción</ion-label>
-              <ion-textarea [(ngModel)]="montoGasto"></ion-textarea>
+              <ion-textarea [(ngModel)]="txtDescripcion"></ion-textarea>
             </ion-item>
 
           </ion-list>
@@ -52,7 +52,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Codigo Artículo</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input [(ngModel)]="txtCodArticulo" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -63,7 +63,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Cantidad - Compra</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input [(ngModel)]="txtCantidadCompra" type="number"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -71,7 +71,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Precio Uni. Zona Lib.</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input [(ngModel)]="txtPrecZonLib" type="number"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -79,7 +79,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Nombre Proveedor</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input [(ngModel)]="txtNomProveedor" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -89,7 +89,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Descripción</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input [(ngModel)]="txtDescripcion2" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -98,28 +98,28 @@
     <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
       <ion-grid>
         <ion-row>
-          <ion-col>
+        <ion-col>
             <ion-item>
               <ion-label stacked>Codigo</ion-label>
-              <ion-label stacked>T001</ion-label>
+
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label stacked>Cantidad</ion-label>
-              <ion-label stacked>1230</ion-label>
+
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label stacked>Precio Venta</ion-label>
-              <ion-label stacked>23</ion-label>
+
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label stacked>Sub Total</ion-label>
-              <ion-label stacked>28290</ion-label>
+
             </ion-item>
           </ion-col>
         </ion-row>
@@ -127,25 +127,25 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Codigo</ion-label>
+
               <ion-label stacked>T001</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Cantidad</ion-label>
+
               <ion-label stacked>1230</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Precio Venta</ion-label>
+
               <ion-label stacked>23</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Sub Total</ion-label>
+
               <ion-label stacked>28290</ion-label>
             </ion-item>
           </ion-col>
@@ -153,25 +153,25 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Codigo</ion-label>
+
               <ion-label stacked>T001</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Cantidad</ion-label>
+
               <ion-label stacked>1230</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Precio Venta</ion-label>
+
               <ion-label stacked>23</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Sub Total</ion-label>
+
               <ion-label stacked>28290</ion-label>
             </ion-item>
           </ion-col>
@@ -179,25 +179,25 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Codigo</ion-label>
+
               <ion-label stacked>T001</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Cantidad</ion-label>
+
               <ion-label stacked>1230</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Precio Venta</ion-label>
+
               <ion-label stacked>23</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Sub Total</ion-label>
+
               <ion-label stacked>28290</ion-label>
             </ion-item>
           </ion-col>
@@ -205,25 +205,25 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Codigo</ion-label>
+
               <ion-label stacked>T001</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Cantidad</ion-label>
+
               <ion-label stacked>1230</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Precio Venta</ion-label>
+
               <ion-label stacked>23</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Sub Total</ion-label>
+
               <ion-label stacked>28290</ion-label>
             </ion-item>
           </ion-col>
@@ -235,17 +235,32 @@
         <ion-col>
           <ion-item>
             <ion-label stacked>Cantidad Total</ion-label>
-            <ion-input type="text" readonly value="123"></ion-input>
+            <ion-input [(ngModel)]="txtCantidadTotal" type="text" readonly value="123"></ion-input>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
             <ion-label stacked>Precio Total</ion-label>
-            <ion-input type="text" readonly value="123"></ion-input>
+            <ion-input [(ngModel)]="txtPrecioTotal" type="text" readonly value="123"></ion-input>
           </ion-item>
 
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-list>
+  <ion-fab bottom right >
+    <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="primary" (click)="accionPorLlegar()" ><ion-icon name="send"></ion-icon></button>
+      <button ion-fab color="cafe-claro" (click)="accionArticulo()" ><ion-icon name="archive"></ion-icon></button>
+      <button ion-fab color="secondary" (click)="accionProveedor()" ><ion-icon name="body"></ion-icon></button>
+      <button ion-fab color="naranja" (click)="accionPedidos()" ><ion-icon name="cart"></ion-icon></button>
+    </ion-fab-list>
+    <ion-fab-list side="left">
+      <button ion-fab color="primary" (click)="iniciarNuevoPedido()" ><ion-icon name="document"></ion-icon></button><!--Buscar-->
+      <button ion-fab color="cafe-claro" ><ion-icon name="cloud-download"></ion-icon></button><!--Por Llegar-->
+      <button ion-fab color="secondary" ><ion-icon name="trash"></ion-icon></button><!--Nuevo Almacen-->
+      <button ion-fab color="naranja" ><ion-icon name="print"></ion-icon></button><!--Llegadas-->
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
