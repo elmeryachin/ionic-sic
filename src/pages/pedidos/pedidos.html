@@ -52,7 +52,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Codigo Artículo</ion-label>
-              <ion-input [(ngModel)]="txtCodArticulo" type="text"></ion-input>
+              <ion-input (change)="obtenerArticulo()" [(ngModel)]="txtCodArticulo" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>

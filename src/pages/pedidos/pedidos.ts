@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular';
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
-import {ignoreElements} from "rxjs/operator/ignoreElements";
-import {ResponseGetArticulo} from "../response/response-get-articulo";
 import {ResponseIniPedido} from "../response/response-ini-pedido";
 import {ResponseDatosProveedor} from "../response/response-datos-proveedor";
+import {ResponseListaProveedor} from "../response/response-lista-proveedor";
+import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
+import {ResponseListArticulotr} from "../response/response-list-articulotr";
 
 /**
  * Generated class for the PedidosPage page.
@@ -36,7 +37,8 @@ export class PedidosPage {
   txtFechaConvert;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController,
-              public loadingCtrl: LoadingController, private sicService: SicServiceProvider, public toastCtrl: ToastController) {
+              public loadingCtrl: LoadingController, private sicService: SicServiceProvider, public toastCtrl: ToastController,
+              public alertCtrl: AlertController) {
   }
   //debe obtener el ultimo numero de pedido
   public iniciarNuevoPedido(){
@@ -197,7 +199,7 @@ export class PedidosPage {
         {
           text: 'Localizar',
           handler: () => {
-            console.log('Localizar Proveedor');
+            this.listaProveedores();
           }
         },
         {
@@ -244,4 +246,101 @@ export class PedidosPage {
     actionSheet.present();
   }
 
+
+  public listaProveedores(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/proveedor/list';
+    this.sicService.getGlobal<ResponseListaProveedor>(urlListaProveedor).subscribe(
+      data => {
+        loading.dismiss();
+        let alert = this.alertCtrl.create();
+        alert.setTitle('Seleccione un Item');
+
+
+        for (let lista of data.list){
+          alert.addInput({
+            type: 'radio',
+            name: 'codigo',
+            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            value: lista.codigo
+          });
+        }
+
+        alert.addButton('Cancelar');
+        alert.addButton({
+          text: 'Aceptar',
+          handler: (data: any) => {
+            console.log('Datos Enviados:', data);
+            this.txtCodProveedor = data;
+            this.BuscarProveedor();
+          }
+        });
+
+        alert.present();
+        return data;
+      });
+
+  }
+
+  public obtenerArticulo(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/articulo/quest/' + this.txtCodArticulo;
+    this.sicService.getGlobal<ResponseGetArticuloPr>(urlListaProveedor).subscribe(
+      data => {
+        loading.dismiss();
+        if (data != null) {
+          if(data) {
+            this.txtCodArticulo = data.codigo;
+            this.txtDescripcion2 = data.nombre;
+            this.txtPrecZonLib = data.precio;
+          }else{
+            this.presentToast('No se pudo recuperar los datos solicitados.');
+          }
+        }
+      });
+  }
+
+  public listaExistenciasArticulos(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/articulo/'+ this.txtCodArticulo +'/existence';
+    this.sicService.getGlobal<ResponseListArticulotr>(urlListaProveedor).subscribe(
+      data => {
+        loading.dismiss();
+        let alert = this.alertCtrl.create();
+        alert.setTitle('Seleccione un Item');
+
+
+        for (let lista of data.list){
+          alert.addInput({
+            type: 'radio',
+            name: 'codigo',
+            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            value: lista.codigo
+          });
+        }
+
+        alert.addButton('Cancelar');
+        alert.addButton({
+          text: 'Aceptar',
+          handler: (data: any) => {
+            console.log('Datos Enviados:', data);
+            this.txtCodProveedor = data;
+            this.BuscarProveedor();
+          }
+        });
+
+        alert.present();
+        return data;
+      });
+
+  }
 }
