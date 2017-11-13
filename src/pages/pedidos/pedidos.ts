@@ -7,6 +7,8 @@ import {ResponseDatosProveedor} from "../response/response-datos-proveedor";
 import {ResponseListaProveedor} from "../response/response-lista-proveedor";
 import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
 import {ResponseListArticulotr} from "../response/response-list-articulotr";
+import {ArticuloPedido, Pedido, RequestPedido} from "../request/request-pedido";
+import {ResponseAddPedido} from "../response/response-add-pedido";
 
 /**
  * Generated class for the PedidosPage page.
@@ -35,6 +37,8 @@ export class PedidosPage {
   txtPrecioTotal;
   convertedDate = '';
   txtFechaConvert;
+  listadoInPedidos : ArticuloPedido[];
+  pedidosGuardados:RequestPedido;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController,
               public loadingCtrl: LoadingController, private sicService: SicServiceProvider, public toastCtrl: ToastController,
@@ -57,6 +61,7 @@ export class PedidosPage {
     this.txtDescripcion2 = 0;
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
+    this.listadoInPedidos = [];
   }
 
   ionViewDidLoad() {
@@ -127,6 +132,7 @@ export class PedidosPage {
     this.txtDescripcion2 = 0;
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
+    this.listadoInPedidos = [];
   }
   accionPorLlegar() {
     let actionSheet = this.actionSheetCtrl.create({
@@ -173,6 +179,7 @@ export class PedidosPage {
           text: 'Localizar',
           handler: () => {
             console.log('Localizar Artículo');
+            this.listaArticulos();
           }
         },
         {
@@ -341,6 +348,123 @@ export class PedidosPage {
         alert.present();
         return data;
       });
+  }
+  public listaArticulos(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/articulo/list';
+    this.sicService.getGlobal<ResponseListArticulotr>(urlListaProveedor).subscribe(
+      data => {
+        loading.dismiss();
+        let alert = this.alertCtrl.create();
+        alert.setTitle('Seleccione un Item');
+
+
+        for (let lista of data.list){
+          alert.addInput({
+            type: 'radio',
+            name: 'codigo',
+            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            value: lista.codigo
+          });
+        }
+
+        alert.addButton('Cancelar');
+        alert.addButton({
+          text: 'Aceptar',
+          handler: (data: any) => {
+            console.log('Datos Enviados:', data);
+            this.txtCodArticulo = data;
+            this.obtenerArticulo();
+          }
+        });
+
+        alert.present();
+        return data;
+      });
+  }
+  //TODO: preguntar este metodo
+  public listaArticuloPatron(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/articulo/list/' ;
+    this.sicService.getGlobal<ResponseListArticulotr>(urlListaProveedor).subscribe(
+      data => {
+        loading.dismiss();
+        let alert = this.alertCtrl.create();
+        alert.setTitle('Seleccione un Item');
+
+
+        for (let lista of data.list){
+          alert.addInput({
+            type: 'radio',
+            name: 'codigo',
+            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            value: lista.codigo
+          });
+        }
+
+        alert.addButton('Cancelar');
+        alert.addButton({
+          text: 'Aceptar',
+          handler: (data: any) => {
+            console.log('Datos Enviados:', data);
+            this.txtCodArticulo = data;
+            this.obtenerArticulo();
+          }
+        });
+        alert.present();
+        return data;
+      });
+  }
+  public crearPedido(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/add';
+    var pedido = new Pedido(null,this.txtFechaConvert,this.txtNumMovimiento,this.txtCodProveedor,this.txtDescripcion,this.listadoInPedidos);
+    var requestPedido = new RequestPedido(pedido);
+    this.sicService.postGlobal<ResponseAddPedido>(requestPedido,urlListaProveedor).subscribe(data=>{
+      loading.dismiss();
+      this.pedidosGuardados = data.pedidoObjeto;
+      if(data.respuesta){
+        this.presentToast('Se guardo el pedido correctamente.');
+      }else{
+        this.presentToast(data.mensaje);
+      }
+    })
+
+  }
+  public addListaPedidos(cantidadCompra:number){
+    var articuloPedido = new ArticuloPedido(null,this.txtCodArticulo, (cantidadCompra*1),(this.txtPrecZonLib*1),null);
+    this.listadoInPedidos.push(articuloPedido);
+    this.txtCantidadTotal = 0;
+    this.txtPrecioTotal = 0;
+    for (let articulo of this.listadoInPedidos) {
+      this.txtCantidadTotal = (this.txtCantidadTotal*1) + (articulo.cantidad*1);
+      this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
+    }
+  }
+  public eliminarArticuloPedido(item: ArticuloPedido){
+    var listaAuxiliar: ArticuloPedido[];
+    listaAuxiliar = this.listadoInPedidos;
+    this.listadoInPedidos = [];
+    this.txtCantidadTotal = 0;
+    this.txtPrecioTotal = 0;
+    for (let articulo of listaAuxiliar) {
+      if(articulo!=item){
+        this.listadoInPedidos.push(articulo);
+        this.txtCantidadTotal = (this.txtCantidadTotal*1) + (articulo.cantidad*1);
+        this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
+      }
+    }
+  }
+  public buscarPedido(){
 
   }
 }

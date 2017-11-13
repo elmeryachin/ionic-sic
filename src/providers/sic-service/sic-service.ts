@@ -24,9 +24,9 @@ export class SicServiceProvider {
   getGlobal<Object>(url:string){
     return this.http.get<Object>(this.url + url);
   }
-  postGlobal(objeto: any, url:string){
+  postGlobal<Object>(objeto: any, url:string){
     this.valor = JSON.stringify(objeto);
-    return this.http.post(this.url + url, this.valor, {
+    return this.http.post<Object>(this.url + url, this.valor, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     });
   }
