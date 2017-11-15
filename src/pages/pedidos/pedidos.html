@@ -96,29 +96,29 @@
       </ion-row>
     </ion-grid>
     <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
-      <ion-grid>
+      <ion-grid class="grilla-pedidos">
         <ion-row>
         <ion-col>
             <ion-item>
-              <ion-label stacked>Codigo</ion-label>
+              <ion-label class="titulos" stacked>Codigo</ion-label>
 
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Cantidad</ion-label>
+              <ion-label class="titulos" stacked>Cantidad</ion-label>
 
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Precio Venta</ion-label>
+              <ion-label class="titulos" stacked>Precio Venta</ion-label>
 
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label stacked>Sub Total</ion-label>
+              <ion-label class="titulos" stacked>Sub Total</ion-label>
 
             </ion-item>
           </ion-col>
@@ -144,7 +144,7 @@
           </ion-col>
           <ion-col (click)="eliminarArticuloPedido(item)">
             <ion-item>
-              <ion-label stacked>{{item.cantidad * item.precio}}</ion-label>
+              <ion-label stacked>{{item.cantidad * item.precio}} <ion-icon name="trash"></ion-icon></ion-label>
             </ion-item>
           </ion-col>
         </ion-row>

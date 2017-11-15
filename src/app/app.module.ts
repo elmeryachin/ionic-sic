@@ -20,6 +20,7 @@ import { SicServiceProvider } from '../providers/sic-service/sic-service';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {HttpModule} from "@angular/http";
+import {ModalLlegadasPage} from "../pages/modal-llegadas/modal-llegadas";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {HttpModule} from "@angular/http";
     EstadoCuentasPage,
     NuevoProductoPage,
     PedidosPage,
-    ReportesPage
+    ReportesPage,
+    ModalLlegadasPage
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,8 @@ import {HttpModule} from "@angular/http";
     EstadoCuentasPage,
     NuevoProductoPage,
     PedidosPage,
-    ReportesPage
+    ReportesPage,
+    ModalLlegadasPage
   ],
   providers: [
     StatusBar,

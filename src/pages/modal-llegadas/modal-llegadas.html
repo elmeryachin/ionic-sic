@@ -1,0 +1,180 @@
+<!--
+  Generated template for the ModalLlegadasPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="cafe-claro">
+    <ion-title>Llegadas</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
+    <ion-grid class="grilla-pedidos">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="titulos" stacked>Codigo</ion-label>
+
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="titulos" stacked>Fecha</ion-label>
+
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="titulos" stacked>Num Movimiento</ion-label>
+
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="titulos" stacked>Observación</ion-label>
+
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista)">
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{item.codigoProveedor}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+
+            <ion-label stacked>{{item.fechaMovimiento}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+
+            <ion-label stacked>{{item.nroMovimiento}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{item.observacion}}
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-scroll>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+        <ion-item>
+          <ion-label stacked>Cantidad</ion-label>
+          <ion-input type="number" readonly="true">{{cantidadPedidos}}</ion-input>
+        </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>Precio</ion-label>
+            <ion-input type="number" readonly="true">{{precioPedidos}}</ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
+    <ion-grid class="grilla-pedidos">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label class="titulos" stacked>Codigo</ion-label>
+
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="titulos" stacked>Cantidad</ion-label>
+
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="titulos" stacked>Precio</ion-label>
+
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label class="titulos" stacked>Observación</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let art of listaArticulosPorPedido">
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{art.codigoArticulo}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+
+            <ion-label stacked>{{art.cantidad}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+
+            <ion-label stacked>{{art.precio}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{art.observacion}}
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-scroll>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>Cantidad Total</ion-label>
+            <ion-input type="number" readonly="true">{{cantidadTotalPedido}}</ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>Precio Total Compra</ion-label>
+            <ion-input type="number" readonly="true">{{precioTotalPedido}}</ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>Precio Total Venta</ion-label>
+            <ion-input type="number" readonly="true">{{precioTotalCompra}}</ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

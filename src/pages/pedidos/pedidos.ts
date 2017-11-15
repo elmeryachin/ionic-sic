@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {
+  AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams,
+  ToastController
+} from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular';
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {ResponseIniPedido} from "../response/response-ini-pedido";
@@ -9,6 +12,8 @@ import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
 import {ResponseListArticulotr} from "../response/response-list-articulotr";
 import {ArticuloPedido, Pedido, RequestPedido} from "../request/request-pedido";
 import {ResponseAddPedido} from "../response/response-add-pedido";
+import {ModalLlegadasPage} from "../modal-llegadas/modal-llegadas";
+import {ArticulosPedidosGet, ResponseListPedidos} from "../response/response-list-pedidos";
 
 /**
  * Generated class for the PedidosPage page.
@@ -40,9 +45,18 @@ export class PedidosPage {
   listadoInPedidos : ArticuloPedido[];
   pedidosGuardados:RequestPedido;
 
+  listaPedidos:ResponseListPedidos;
+  listaArticulosPorPedido: ArticulosPedidosGet[];
+  cantidadPedidos:number = 0;
+  precioPedidos:number = 0;
+
+  cantidadTotalPedido:number = 0;
+  precioTotalPedido:number = 0;
+  precioTotalCompra:number = 0;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController,
               public loadingCtrl: LoadingController, private sicService: SicServiceProvider, public toastCtrl: ToastController,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, public modalCtrl: ModalController) {
   }
   //debe obtener el ultimo numero de pedido
   public iniciarNuevoPedido(){
@@ -66,8 +80,10 @@ export class PedidosPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PedidosPage');
+    this.iniciarNuevoPedido();
+    //this.detallePedidos();
   }
-  presentToast(mensaje:string) {
+  public presentToast(mensaje:string) {
     const toast = this.toastCtrl.create({
       message: mensaje,
       duration: 3000,
@@ -134,7 +150,7 @@ export class PedidosPage {
     this.txtPrecioTotal = 0;
     this.listadoInPedidos = [];
   }
-  accionPorLlegar() {
+  public accionPorLlegar() {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Por Llegar',
       buttons: [
@@ -171,7 +187,7 @@ export class PedidosPage {
     actionSheet.present();
   }
 
-  accionArticulo() {
+  public accionArticulo() {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Artículo',
       buttons: [
@@ -199,7 +215,7 @@ export class PedidosPage {
     actionSheet.present();
   }
 
-  accionProveedor() {
+  public accionProveedor() {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Proveedor',
       buttons: [
@@ -226,7 +242,7 @@ export class PedidosPage {
     actionSheet.present();
   }
 
-  accionPedidos() {
+  public accionPedidos() {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Pedidos',
       buttons: [
@@ -234,6 +250,8 @@ export class PedidosPage {
           text: 'Hojear Por Llegar',
           handler: () => {
             console.log('Accion Por Llegar');
+            //this.detallePedidos();
+            this.openModalWithParams();
           }
         },
         {
@@ -466,5 +484,44 @@ export class PedidosPage {
   }
   public buscarPedido(){
 
+  }
+  public openBasicModal() {
+    let myModal = this.modalCtrl.create(ModalLlegadasPage);
+    myModal.present();
+  }
+
+  public detallePedidos(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/llegada/list';
+    this.sicService.getGlobal<ResponseListPedidos>(urlListaProveedor).subscribe(
+      data => {
+        console.log(data);
+        loading.dismiss();
+        if(data.respuesta) {
+          this.listaPedidos = data;
+          /*for (let lista of data.list){
+            for(let lisArt of lista.lista){
+              this.cantidadPedidos = (lisArt.cantidad*1) + this.cantidadPedidos;
+              this.precioPedidos = (lisArt.precio * 1) + this.precioPedidos;
+            }
+          }*/
+          this.navCtrl.push(ModalLlegadasPage, {
+            detallePedidos: this.listaPedidos
+          });
+        }else{
+          this.presentToast('No se pudo recuperar los datos solicitados.');
+        }
+      });
+  }
+
+  public openModalWithParams() {
+    //detallePedidos
+    /*this.navCtrl.push(ModalLlegadasPage, {
+      detallePedidos: this.listaPedidos
+    });*/
+    this.detallePedidos();
   }
 }
