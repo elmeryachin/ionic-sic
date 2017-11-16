@@ -258,6 +258,7 @@ export class PedidosPage {
           text: 'Hojear Llegadas',
           handler: () => {
             console.log('Accion Llegadas');
+            this.detalleLlegadas();
           }
         },{
           text: 'Cancelar',
@@ -495,6 +496,27 @@ export class PedidosPage {
       content: 'Listando Productos'
     });
     loading.present();
+    var urlListaProveedor = '/pedido/list';
+    this.sicService.getGlobal<ResponseListPedidos>(urlListaProveedor).subscribe(
+      data => {
+        console.log(data);
+        loading.dismiss();
+        if(data.respuesta) {
+          this.listaPedidos = data;
+          this.navCtrl.push(ModalLlegadasPage, {
+            detallePedidos: this.listaPedidos,
+            tipoPeticion: 0
+          });
+        }else{
+          this.presentToast('No se pudo recuperar los datos solicitados.');
+        }
+      });
+  }
+  public detalleLlegadas(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
     var urlListaProveedor = '/pedido/llegada/list';
     this.sicService.getGlobal<ResponseListPedidos>(urlListaProveedor).subscribe(
       data => {
@@ -502,14 +524,9 @@ export class PedidosPage {
         loading.dismiss();
         if(data.respuesta) {
           this.listaPedidos = data;
-          /*for (let lista of data.list){
-            for(let lisArt of lista.lista){
-              this.cantidadPedidos = (lisArt.cantidad*1) + this.cantidadPedidos;
-              this.precioPedidos = (lisArt.precio * 1) + this.precioPedidos;
-            }
-          }*/
           this.navCtrl.push(ModalLlegadasPage, {
-            detallePedidos: this.listaPedidos
+            detallePedidos: this.listaPedidos,
+            tipoPeticion: 1
           });
         }else{
           this.presentToast('No se pudo recuperar los datos solicitados.');
@@ -518,10 +535,6 @@ export class PedidosPage {
   }
 
   public openModalWithParams() {
-    //detallePedidos
-    /*this.navCtrl.push(ModalLlegadasPage, {
-      detallePedidos: this.listaPedidos
-    });*/
     this.detallePedidos();
   }
 }

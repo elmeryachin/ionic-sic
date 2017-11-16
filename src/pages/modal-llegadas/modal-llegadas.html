@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="cafe-claro">
-    <ion-title>Llegadas</ion-title>
+    <ion-title>{{titulo}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,36 +15,37 @@
 
 <ion-content padding>
 
+  <ion-grid class="grilla-pedidos">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="titulos" stacked>Codigo</ion-label>
+
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="titulos" stacked>Fecha</ion-label>
+
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="titulos" stacked>Num Mov</ion-label>
+
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="titulos" stacked>Observación</ion-label>
+
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
-    <ion-grid class="grilla-pedidos">
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label class="titulos" stacked>Codigo</ion-label>
-
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="titulos" stacked>Fecha</ion-label>
-
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="titulos" stacked>Num Movimiento</ion-label>
-
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="titulos" stacked>Observación</ion-label>
-
-          </ion-item>
-        </ion-col>
-      </ion-row>
-
-      <ion-row *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista)">
+    <ion-grid  class="grilla-pedidos">
+      <ion-row class="seleccionado" *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista, item.id)" ngClass="background: color($colors, cafe-suave);">
         <ion-col>
           <ion-item>
             <ion-label stacked>{{item.codigoProveedor}}</ion-label>
@@ -78,7 +79,7 @@
         <ion-list>
         <ion-item>
           <ion-label stacked>Cantidad</ion-label>
-          <ion-input type="number" readonly="true">{{cantidadPedidos}}</ion-input>
+          <ion-input type="number" readonly="true" value="{{cantidadPedidos}}"></ion-input>
         </ion-item>
         </ion-list>
       </ion-col>
@@ -86,42 +87,42 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Precio</ion-label>
-            <ion-input type="number" readonly="true">{{precioPedidos}}</ion-input>
+            <ion-input type="number" readonly="true" value="{{precioPedidos}}"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
 
+  <ion-grid class="grilla-pedidos">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label class="titulos" stacked>Codigo</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="titulos" stacked>Cantidad</ion-label>
+
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="titulos" stacked>Precio</ion-label>
+
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label class="titulos" stacked>Observación</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
     <ion-grid class="grilla-pedidos">
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label class="titulos" stacked>Codigo</ion-label>
-
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="titulos" stacked>Cantidad</ion-label>
-
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="titulos" stacked>Precio</ion-label>
-
-          </ion-item>
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label class="titulos" stacked>Observación</ion-label>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-
-      <ion-row *ngFor="let art of listaArticulosPorPedido">
+      <ion-row  *ngFor="let art of listaArticulosPorPedido">
         <ion-col>
           <ion-item>
             <ion-label stacked>{{art.codigoArticulo}}</ion-label>
@@ -148,14 +149,13 @@
       </ion-row>
     </ion-grid>
   </ion-scroll>
-
   <ion-grid>
     <ion-row>
       <ion-col>
         <ion-list>
           <ion-item>
             <ion-label stacked>Cantidad Total</ion-label>
-            <ion-input type="number" readonly="true">{{cantidadTotalPedido}}</ion-input>
+            <ion-input type="number" readonly="true" value="{{cantidadTotalPedido}}"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -163,7 +163,7 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Precio Total Compra</ion-label>
-            <ion-input type="number" readonly="true">{{precioTotalPedido}}</ion-input>
+            <ion-input type="number" readonly="true" value="{{precioTotalPedido}}"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -171,10 +171,17 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Precio Total Venta</ion-label>
-            <ion-input type="number" readonly="true">{{precioTotalCompra}}</ion-input>
+            <ion-input type="number" readonly="true" value="{{precioTotalCompra}}"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-fab bottom right *ngIf="tipoPeticion == 0" >
+    <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
+    <ion-fab-list side="left">
+      <button ion-fab color="primary" (click)="guardarPedido()" ><ion-icon name="cloud-download"></ion-icon></button><!--Por Llegar-->
+      <button ion-fab color="cafe-claro" (click)="eliminarPedido()" ><ion-icon name="trash"></ion-icon></button><!--Por Llegar-->
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

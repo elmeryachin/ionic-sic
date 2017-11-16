@@ -8,6 +8,11 @@ export class Pedido{
   }
 }
 export class ArticuloPedido{
-  constructor(public id:number, public codigoArticulo:string, public cantidad:number, public precio:number, public observacion:string){
+  constructor(
+    public id:number,
+    public codigoArticulo:string,
+    public cantidad:number,
+    public precio:number,
+    public observacion:string){
   }
 }

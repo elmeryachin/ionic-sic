@@ -30,7 +30,17 @@ export class SicServiceProvider {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     });
   }
-
+  deleteGlobal<Object>(codigo:string, url :string){
+    return this.http.delete<Object>(this.url + url + codigo, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+    });
+  }
+  putGlobal<Object>(objeto:any, url: string, id: string){
+    this.valor = JSON.stringify(objeto);
+    return this.http.put<Object>(this.url + url + id, this.valor, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+    });
+  }
   listArticulos() {
     return this.http.get<ResponseList>(this.url + '/articulo/list');
   }
