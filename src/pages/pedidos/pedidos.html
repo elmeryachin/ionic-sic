@@ -51,8 +51,9 @@
         <ion-col>
           <ion-list>
             <ion-item>
-              <ion-label stacked>Codigo Artículo</ion-label>
-              <ion-input (change)="obtenerArticulo()" [(ngModel)]="txtCodArticulo" type="text"></ion-input>
+              <ion-label stacked>Nombre Proveedor</ion-label>
+              <ion-input [(ngModel)]="txtNomProveedor" type="text"></ion-input>
+
             </ion-item>
           </ion-list>
         </ion-col>
@@ -62,8 +63,18 @@
         <ion-col>
           <ion-list>
             <ion-item>
+              <ion-label stacked>Codigo Artículo</ion-label>
+              <ion-input (change)="obtenerArticulo()" [(ngModel)]="txtCodArticulo" type="text"></ion-input>
+
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col>
+          <ion-list>
+            <ion-item>
               <ion-label stacked>Cantidad - Compra</ion-label>
               <ion-input #cantidadCompra (keyup.enter)="addListaPedidos(cantidadCompra.value)" [(ngModel)]="txtCantidadCompra" type="number"></ion-input>
+
             </ion-item>
           </ion-list>
         </ion-col>
@@ -72,14 +83,6 @@
             <ion-item>
               <ion-label stacked>Precio Uni. Zona Lib.</ion-label>
               <ion-input [(ngModel)]="txtPrecZonLib" type="number"></ion-input>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-        <ion-col>
-          <ion-list>
-            <ion-item>
-              <ion-label stacked>Nombre Proveedor</ion-label>
-              <ion-input [(ngModel)]="txtNomProveedor" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>

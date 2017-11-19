@@ -14,6 +14,8 @@ import {ArticuloPedido, Pedido, RequestPedido} from "../request/request-pedido";
 import {ResponseAddPedido} from "../response/response-add-pedido";
 import {ModalLlegadasPage} from "../modal-llegadas/modal-llegadas";
 import {ArticulosPedidosGet, ResponseListPedidos} from "../response/response-list-pedidos";
+import {RequestProveedor} from "../request/request-proveedor";
+import {GlobalResponse} from "../response/globalResponse";
 
 /**
  * Generated class for the PedidosPage page.
@@ -229,6 +231,7 @@ export class PedidosPage {
           text: 'Nuevo Proveedor',
           handler: () => {
             console.log('Nuevo Proveedor');
+            this.presentPrompt();
           }
         },{
           text: 'Cancelar',
@@ -532,6 +535,65 @@ export class PedidosPage {
           this.presentToast('No se pudo recuperar los datos solicitados.');
         }
       });
+  }
+  public presentPrompt() {
+    let alert = this.alertCtrl.create({
+      title: 'Nuevo Proveedor',
+      inputs: [
+        {
+          name: 'codigo',
+          placeholder: 'Código'
+        },
+        {
+          name: 'nombre',
+          placeholder: 'Nombre'
+        },
+        {
+          name: 'direccion',
+          placeholder: 'Dirección'
+        },
+        {
+          name: 'telefono',
+          placeholder: 'Teléfono'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Registrar',
+          handler: data => {
+            const loading = this.loadingCtrl.create({
+              content: 'Listando Productos'
+            });
+            loading.present();
+            var urlListaProveedor = '/pedido/proveedor/alta';
+            var urlListaProveedor = '/pedido/proveedor/alta';
+            var requestPedido: RequestProveedor;
+            requestPedido.codigo = data.codigo;
+            requestPedido.nombre = data.nombre;
+            requestPedido.direccion = data.direccion;
+            requestPedido.telefono = data.telefono;
+            this.sicService.postGlobal<GlobalResponse>(requestPedido,urlListaProveedor).subscribe(
+              data => {
+                loading.dismiss();
+                if(data.respuesta) {
+                  this.presentToast('Se ha encontrado una coincidencia');
+                }else{
+                  this.presentToast(data.mensaje);
+                }
+
+              });
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   public openModalWithParams() {
