@@ -21,6 +21,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {HttpModule} from "@angular/http";
 import {ModalLlegadasPage} from "../pages/modal-llegadas/modal-llegadas";
+import { DataShareProvider } from '../providers/data-share/data-share';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {ModalLlegadasPage} from "../pages/modal-llegadas/modal-llegadas";
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    SicServiceProvider
+    SicServiceProvider,
+    DataShareProvider
   ]
 })
 export class AppModule {}

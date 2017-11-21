@@ -39,8 +39,8 @@
         </ion-col>
         <ion-col>
           <ion-list>
-            <ion-item>
-              <ion-label stacked>Descripción</ion-label>
+            <ion-item >
+              <ion-label stacked>Observación</ion-label>
               <ion-textarea [(ngModel)]="txtDescripcion"></ion-textarea>
             </ion-item>
 
@@ -50,9 +50,9 @@
       <ion-row>
         <ion-col>
           <ion-list>
-            <ion-item>
+            <ion-item class="remarcados">
               <ion-label stacked>Nombre Proveedor</ion-label>
-              <ion-input [(ngModel)]="txtNomProveedor" type="text"></ion-input>
+              <ion-input disabled [(ngModel)]="txtNomProveedor" type="text" ></ion-input>
 
             </ion-item>
           </ion-list>
@@ -90,9 +90,9 @@
       <ion-row>
         <ion-col>
           <ion-list>
-            <ion-item>
-              <ion-label stacked>Descripción</ion-label>
-              <ion-input [(ngModel)]="txtDescripcion2" type="text"></ion-input>
+            <ion-item class="remarcados">
+              <ion-label stacked>Nombre Artículo</ion-label>
+              <ion-input disabled [(ngModel)]="txtDescripcion2" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -127,26 +127,24 @@
           </ion-col>
         </ion-row>
 
-        <ion-row *ngFor="let item of listadoInPedidos" >
+        <ion-row *ngFor="let item of listadoInPedidos" class="grillas" >
           <ion-col>
-            <ion-item>
+            <ion-item class="grillas">
               <ion-label stacked>{{item.codigoArticulo}}</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
-            <ion-item>
-
+            <ion-item class="grillas">
               <ion-label stacked>{{item.cantidad}}</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
-            <ion-item>
-
+            <ion-item class="grillas">
               <ion-label stacked>{{item.precio}}</ion-label>
             </ion-item>
           </ion-col>
           <ion-col (click)="eliminarArticuloPedido(item)">
-            <ion-item>
+            <ion-item class="grillas">
               <ion-label stacked>{{item.cantidad * item.precio}} <ion-icon name="trash"></ion-icon></ion-label>
             </ion-item>
           </ion-col>

@@ -13,9 +13,11 @@ import {ResponseListArticulotr} from "../response/response-list-articulotr";
 import {ArticuloPedido, Pedido, RequestPedido} from "../request/request-pedido";
 import {ResponseAddPedido} from "../response/response-add-pedido";
 import {ModalLlegadasPage} from "../modal-llegadas/modal-llegadas";
-import {ArticulosPedidosGet, ResponseListPedidos} from "../response/response-list-pedidos";
+import {ArticulosPedidosGet, DatosPedidos, ResponseListPedidos} from "../response/response-list-pedidos";
 import {RequestProveedor} from "../request/request-proveedor";
 import {GlobalResponse} from "../response/globalResponse";
+import {DataShareProvider} from "../../providers/data-share/data-share";
+import {Subscription} from "rxjs/Subscription";
 
 /**
  * Generated class for the PedidosPage page.
@@ -56,9 +58,28 @@ export class PedidosPage {
   precioTotalPedido:number = 0;
   precioTotalCompra:number = 0;
 
+  pedidoBack:DatosPedidos;
+
+
+  message: any;
+  subscription: Subscription;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController,
               public loadingCtrl: LoadingController, private sicService: SicServiceProvider, public toastCtrl: ToastController,
-              public alertCtrl: AlertController, public modalCtrl: ModalController) {
+              public alertCtrl: AlertController, public modalCtrl: ModalController, public sharedService: DataShareProvider) {
+    /*this.sharedService.dataChange.subscribe((data) => {
+      var valor = JSON.stringify(data);
+      //let datosPedido: DatosPedidos;
+      Object.assign(this.pedidoBack, valor);
+      console.log(this.pedidoBack);
+    });*/
+    this.subscription = this.sharedService.getData().subscribe(data => {
+      var valor = JSON.stringify(data);
+      console.log(data);
+      console.log(valor);
+      /*Object.assign(this.pedidoBack, valor);
+      console.log(this.pedidoBack);*/
+    });
   }
   //debe obtener el ultimo numero de pedido
   public iniciarNuevoPedido(){
@@ -74,7 +95,7 @@ export class PedidosPage {
     this.txtCodArticulo = '';
     this.txtCantidadCompra = 0;
     this.txtPrecZonLib = 0;
-    this.txtDescripcion2 = 0;
+    this.txtDescripcion2 = "";
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
     this.listadoInPedidos = [];
@@ -572,7 +593,6 @@ export class PedidosPage {
               content: 'Listando Productos'
             });
             loading.present();
-            var urlListaProveedor = '/pedido/proveedor/alta';
             var urlListaProveedor = '/pedido/proveedor/alta';
             var requestPedido: RequestProveedor;
             requestPedido.codigo = data.codigo;

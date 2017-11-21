@@ -18,7 +18,6 @@ export class SicServiceProvider {
   valor: string;
   jsonNew: string;
   constructor(private http: HttpClient) {
-    console.log('Hello SicServiceProvider Provider');
     this.url = 'https://app-pos.herokuapp.com';
   }
   getGlobal<Object>(url:string){

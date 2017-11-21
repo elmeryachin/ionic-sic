@@ -33,4 +33,10 @@ page-pedidos {
     font-weight: bold !important;
     text-align: center !important;
   }
+  .remarcados{
+    background: color($colors, amarrillo-claro);
+  }
+  .grillas{//amarillo-grid
+    background: color($colors, amarillo-grid);
+  }
 }

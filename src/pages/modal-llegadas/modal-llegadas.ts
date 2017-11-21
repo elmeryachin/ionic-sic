@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
 import {
   AlertController,
-  IonicPage, LoadingController, NavController, NavParams, ViewController
+  IonicPage, LoadingController, NavController, NavParams, ToastController
 } from 'ionic-angular';
-import {ArticulosPedidosGet, ResponseListPedidos} from "../response/response-list-pedidos";
+import {ArticulosPedidosGet, DatosPedidos, ResponseListPedidos} from "../response/response-list-pedidos";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {GlobalResponse} from "../response/globalResponse";
+import {DataShareProvider} from "../../providers/data-share/data-share";
 
 /**
  * Generated class for the ModalLlegadasPage page.
@@ -35,7 +36,8 @@ export class ModalLlegadasPage {
   titulo: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
-              public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+              public loadingCtrl: LoadingController, public alertCtrl: AlertController, public toastCtrl: ToastController,
+              public sharedService: DataShareProvider) {
 
     this.listaPedidos = navParams.get('detallePedidos');
     this.tipoPeticion = navParams.get('tipoPeticion');
@@ -57,6 +59,15 @@ export class ModalLlegadasPage {
     this.detallePedidos();
   }
 
+  public limpiarPedidos(){
+    this.listaArticulosPorPedido = null;
+    this.cantidadPedidos= 0;
+    this.precioPedidos= 0;
+    this.cantidadTotalPedido= 0;
+    this.precioTotalPedido= 0;
+    this.precioTotalCompra= 0;
+    this.idPedido= 0;
+  }
   public detallePedidos() {
     for (let lista of this.listaPedidos.list) {
       for (let lisArt of lista.lista) {
@@ -66,7 +77,9 @@ export class ModalLlegadasPage {
     }
   }
 
-  public listarArticulos(item: ArticulosPedidosGet[], id: number) {
+  public listarArticulos(item: ArticulosPedidosGet[], id: number, articuloSolicitado: DatosPedidos) {
+    console.log(articuloSolicitado);
+    this.sharedService.setData(articuloSolicitado);
     this.precioTotalPedido = 0;
     this.cantidadTotalPedido = 0;
     this.idPedido = id;
@@ -102,7 +115,14 @@ export class ModalLlegadasPage {
         alert = this.alertCtrl.create({
           title: 'Pedidos',
           subTitle: 'Se ha registrado el pedido como Llegada',
-          buttons: ['Aceptar']
+          buttons: [{
+            text: 'Aceptar',
+            handler: () => {
+              this.limpiarPedidos();
+              this.detallarPedidos();
+
+            }
+          }]
         });
         alert.present();
       } else {
@@ -137,12 +157,21 @@ export class ModalLlegadasPage {
       loading.dismiss();
       let alert;
       if (data.respuesta) {
+
         alert = this.alertCtrl.create({
           title: 'Pedidos',
-          subTitle: 'Se ha registrado el pedido como Llegada',
-          buttons: ['Aceptar']
+          subTitle: 'El pedido ha sido eliminado correctamente.',
+          buttons: [{
+            text: 'Aceptar',
+            handler: () => {
+              this.limpiarPedidos();
+              this.detallarPedidos();
+
+            }
+          }]
         });
         alert.present();
+
       } else {
         alert = this.alertCtrl.create({
           title: 'Ups',
@@ -153,5 +182,36 @@ export class ModalLlegadasPage {
         return;
       }
     });
+  }
+
+  public detallarPedidos(){
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/list';
+    this.sicService.getGlobal<ResponseListPedidos>(urlListaProveedor).subscribe(
+      data => {
+        console.log(data);
+        loading.dismiss();
+        if(data.respuesta) {
+          this.listaPedidos = data;
+        }else{
+          this.presentToast('No se pudo recuperar los datos solicitados.');
+        }
+      });
+  }
+  public presentToast(mensaje:string) {
+    const toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Toas Dimissed');
+    });
+
+    toast.present();
   }
 }

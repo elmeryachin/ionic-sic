@@ -47,7 +47,12 @@ page-modal-llegadas {
   .scroll-content {
     padding: 0px 16px !important;
   }
-
+  .grillas{//amarillo-grid
+    background: color($colors, amarillo-grid);
+  }
+  .remarcados{
+    background: color($colors, amarrillo-claro);
+  }
 
 
 }
