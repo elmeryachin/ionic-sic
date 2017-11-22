@@ -212,7 +212,7 @@ export class ModalLlegadasPage implements OnDestroy {
             var id = this.idPedido + '';
             console.log(id);
             var url = '/pedido/llegada/cancelar/';
-            this.sicService.deleteGlobal<GlobalResponse>(id, url).subscribe(data => {
+            this.sicService.putGlobal<GlobalResponse>(null,url,id).subscribe(data => {
               loading.dismiss();
               let alert;
               if (data.respuesta) {
