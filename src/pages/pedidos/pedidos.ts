@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams,
   ToastController
 } from 'ionic-angular';
-import { ActionSheetController } from 'ionic-angular';
+import {ActionSheetController} from 'ionic-angular';
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {ResponseIniPedido} from "../response/response-ini-pedido";
 import {ResponseDatosProveedor} from "../response/response-datos-proveedor";
@@ -31,14 +31,14 @@ import {Subscription} from "rxjs/Subscription";
   selector: 'page-pedidos',
   templateUrl: 'pedidos.html',
 })
-export class PedidosPage {
+export class PedidosPage implements OnDestroy, OnInit {
 
   txtNumMovimiento;
-  txtFecha:any;
+  txtFecha: any;
   txtCodProveedor;
   txtDescripcion;
   txtCodArticulo;
-  txtCantidadCompra:number = 0;
+  txtCantidadCompra: number = 0;
   txtPrecZonLib: number = 0;
   txtNomProveedor;
   txtDescripcion2;
@@ -46,47 +46,83 @@ export class PedidosPage {
   txtPrecioTotal;
   convertedDate = '';
   txtFechaConvert;
-  listadoInPedidos : ArticuloPedido[];
-  pedidosGuardados:RequestPedido;
-
-  listaPedidos:ResponseListPedidos;
+  listadoInPedidos: ArticuloPedido[];
+  pedidosGuardados: RequestPedido;
+  idPedidoRecuperado:number;
+  listaPedidos: ResponseListPedidos;
   listaArticulosPorPedido: ArticulosPedidosGet[];
-  cantidadPedidos:number = 0;
-  precioPedidos:number = 0;
+  cantidadPedidos: number = 0;
+  precioPedidos: number = 0;
 
-  cantidadTotalPedido:number = 0;
-  precioTotalPedido:number = 0;
-  precioTotalCompra:number = 0;
+  cantidadTotalPedido: number = 0;
+  precioTotalPedido: number = 0;
+  precioTotalCompra: number = 0;
 
-  pedidoBack:DatosPedidos;
+  pedidoBack: DatosPedidos;
 
 
   message: any;
   subscription: Subscription;
+  jsonConvert: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController,
               public loadingCtrl: LoadingController, private sicService: SicServiceProvider, public toastCtrl: ToastController,
               public alertCtrl: AlertController, public modalCtrl: ModalController, public sharedService: DataShareProvider) {
-    /*this.sharedService.dataChange.subscribe((data) => {
-      var valor = JSON.stringify(data);
-      //let datosPedido: DatosPedidos;
-      Object.assign(this.pedidoBack, valor);
-      console.log(this.pedidoBack);
-    });*/
+
     this.subscription = this.sharedService.getData().subscribe(data => {
-      var valor = JSON.stringify(data);
-      console.log(data);
-      console.log(valor);
-      /*Object.assign(this.pedidoBack, valor);
-      console.log(this.pedidoBack);*/
+      if (data != null) {
+        var valor = JSON.stringify(data);
+        if (valor != null) {
+          console.log(valor);
+          this.toDatosPedidos(valor);
+        }
+      }
     });
   }
+
+  ngOnInit() {
+    console.log("obtiene String");
+
+  }
+
+  public toDatosPedidos(data: string) {
+    if (data != null) {
+      var jsonData: any = new Object();
+      //try{
+      jsonData = JSON.parse(data);
+      this.jsonConvert = jsonData;
+      console.log("JSON DATA");
+      console.log(jsonData);
+    }
+  }
+
+  public obtenerString() {
+    console.log(this.jsonConvert);
+    console.log(this.jsonConvert.id);
+    this.idPedidoRecuperado = this.jsonConvert.id;
+    this.txtFechaConvert = this.jsonConvert.fechaMovimiento;
+    this.txtNumMovimiento = this.jsonConvert.nroMovimiento;
+    this.txtCodProveedor = this.jsonConvert.codigoProveedor;
+    this.BuscarProveedor();
+    this.txtDescripcion = this.jsonConvert.observacion;
+    this.listadoInPedidos = [];
+    for (let articulo of this.jsonConvert.lista) {
+      this.listadoInPedidos.push(new ArticuloPedido(articulo.id,articulo.codigoArticulo, articulo.cantidad, articulo.precio, articulo.observacion));
+      this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
+      this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
+    }
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.subscription.unsubscribe();
+  }
   //debe obtener el ultimo numero de pedido
-  public iniciarNuevoPedido(){
+  public iniciarNuevoPedido() {
     this.BuscarPedido();
     //this.txtNumMovimiento = 12312; //TODO: obtener los valores
     this.txtFecha = new Date();
-    if(!this.txtFechaConvert){
+    if (!this.txtFechaConvert) {
       this.txtFechaConvert = new Date(this.txtFecha).toISOString();
     }
     this.txtDescripcion = '';
@@ -106,7 +142,8 @@ export class PedidosPage {
     this.iniciarNuevoPedido();
     //this.detallePedidos();
   }
-  public presentToast(mensaje:string) {
+
+  public presentToast(mensaje: string) {
     const toast = this.toastCtrl.create({
       message: mensaje,
       duration: 3000,
@@ -120,7 +157,7 @@ export class PedidosPage {
     toast.present();
   }
 
-  public BuscarPedido(){
+  public BuscarPedido() {
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
     });
@@ -130,17 +167,18 @@ export class PedidosPage {
     this.sicService.getGlobal<ResponseIniPedido>(url).subscribe(data => {
       loading.dismiss();
       if (data != null) {
-        if(data.respuesta) {
+        if (data.respuesta) {
           this.txtNumMovimiento = data.nroMovimiento;
           this.txtFechaConvert = data.fechaMovimiento;
-        }else{
+        } else {
           this.presentToast('No se pudo recuperar los datos solicitados.');
           this.txtNumMovimiento = 0;
         }
       }
     });
   }
-  public BuscarProveedor(){
+
+  public BuscarProveedor() {
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
     });
@@ -149,16 +187,17 @@ export class PedidosPage {
     this.sicService.getGlobal<ResponseDatosProveedor>(url).subscribe(data => {
       loading.dismiss();
       if (data != null) {
-        if(data.respuesta) {
+        if (data.respuesta) {
           this.txtCodProveedor = data.codigo;
           this.txtNomProveedor = data.nombre;
-        }else{
+        } else {
           this.presentToast('No se pudo recuperar los datos solicitados.');
         }
       }
     });
   }
-  private limpiarDatos(){
+
+  private limpiarDatos() {
     this.txtNumMovimiento = 0; //TODO: obtener los valores
     this.txtFecha = new Date();
     this.txtFechaConvert = '';
@@ -173,6 +212,7 @@ export class PedidosPage {
     this.txtPrecioTotal = 0;
     this.listadoInPedidos = [];
   }
+
   public accionPorLlegar() {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Por Llegar',
@@ -187,18 +227,19 @@ export class PedidosPage {
           text: 'Grabar',
           handler: () => {
             console.log('Grabar Pedido');
+            this.confirmarAccion();
           }
-        },{
+        },/* {
           text: 'Localizar Pedido',
           handler: () => {
             console.log('Localizar Pedido');
           }
-        },{
+        }, {
           text: 'Entrada - Almacen',
           handler: () => {
             console.log('Entrada Almacen');
           }
-        },{
+        },*/{
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
@@ -220,13 +261,13 @@ export class PedidosPage {
             console.log('Localizar Artículo');
             this.listaArticulos();
           }
-        },
+        },/*
         {
           text: 'Estado General',
           handler: () => {
             console.log('Estado General');
           }
-        },{
+        }, */{
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
@@ -254,7 +295,7 @@ export class PedidosPage {
             console.log('Nuevo Proveedor');
             this.presentPrompt();
           }
-        },{
+        }, {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
@@ -284,7 +325,7 @@ export class PedidosPage {
             console.log('Accion Llegadas');
             this.detalleLlegadas();
           }
-        },{
+        }, {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
@@ -297,7 +338,7 @@ export class PedidosPage {
   }
 
 
-  public listaProveedores(){
+  public listaProveedores() {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
@@ -310,11 +351,11 @@ export class PedidosPage {
         alert.setTitle('Seleccione un Item');
 
 
-        for (let lista of data.list){
+        for (let lista of data.list) {
           alert.addInput({
             type: 'radio',
             name: 'codigo',
-            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            label: '' + lista.codigo + ' -- ' + lista.nombre,
             value: lista.codigo
           });
         }
@@ -335,7 +376,7 @@ export class PedidosPage {
 
   }
 
-  public obtenerArticulo(){
+  public obtenerArticulo() {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
@@ -345,23 +386,23 @@ export class PedidosPage {
       data => {
         loading.dismiss();
         if (data != null) {
-          if(data) {
+          if (data) {
             this.txtCodArticulo = data.codigo;
             this.txtDescripcion2 = data.nombre;
             this.txtPrecZonLib = data.precio;
-          }else{
+          } else {
             this.presentToast('No se pudo recuperar los datos solicitados.');
           }
         }
       });
   }
 
-  public listaExistenciasArticulos(){
+  public listaExistenciasArticulos() {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
     loading.present();
-    var urlListaProveedor = '/pedido/articulo/'+ this.txtCodArticulo +'/existence';
+    var urlListaProveedor = '/pedido/articulo/' + this.txtCodArticulo + '/existence';
     this.sicService.getGlobal<ResponseListArticulotr>(urlListaProveedor).subscribe(
       data => {
         loading.dismiss();
@@ -369,11 +410,11 @@ export class PedidosPage {
         alert.setTitle('Seleccione un Item');
 
 
-        for (let lista of data.list){
+        for (let lista of data.list) {
           alert.addInput({
             type: 'radio',
             name: 'codigo',
-            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            label: '' + lista.codigo + ' -- ' + lista.nombre,
             value: lista.codigo
           });
         }
@@ -392,7 +433,8 @@ export class PedidosPage {
         return data;
       });
   }
-  public listaArticulos(){
+
+  public listaArticulos() {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
@@ -405,11 +447,11 @@ export class PedidosPage {
         alert.setTitle('Seleccione un Item');
 
 
-        for (let lista of data.list){
+        for (let lista of data.list) {
           alert.addInput({
             type: 'radio',
             name: 'codigo',
-            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            label: '' + lista.codigo + ' -- ' + lista.nombre,
             value: lista.codigo
           });
         }
@@ -428,13 +470,14 @@ export class PedidosPage {
         return data;
       });
   }
+
   //TODO: preguntar este metodo
-  public listaArticuloPatron(){
+  public listaArticuloPatron() {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
     loading.present();
-    var urlListaProveedor = '/pedido/articulo/list/' ;
+    var urlListaProveedor = '/pedido/articulo/list/';
     this.sicService.getGlobal<ResponseListArticulotr>(urlListaProveedor).subscribe(
       data => {
         loading.dismiss();
@@ -442,11 +485,11 @@ export class PedidosPage {
         alert.setTitle('Seleccione un Item');
 
 
-        for (let lista of data.list){
+        for (let lista of data.list) {
           alert.addInput({
             type: 'radio',
             name: 'codigo',
-            label: '' + lista.codigo + ' -- '+ lista.nombre,
+            label: '' + lista.codigo + ' -- ' + lista.nombre,
             value: lista.codigo
           });
         }
@@ -464,58 +507,86 @@ export class PedidosPage {
         return data;
       });
   }
-  public crearPedido(){
+  public confirmarAccion() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirmar',
+      message: 'Está seguro que quiere realizar la operación?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.crearPedido();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  public crearPedido() {
+
+
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
     loading.present();
     var urlListaProveedor = '/pedido/add';
-    var pedido = new Pedido(null,this.txtFechaConvert,this.txtNumMovimiento,this.txtCodProveedor,this.txtDescripcion,this.listadoInPedidos);
+    var pedido = new Pedido(null, this.txtFechaConvert, this.txtNumMovimiento, this.txtCodProveedor, this.txtDescripcion, this.listadoInPedidos);
     var requestPedido = new RequestPedido(pedido);
-    this.sicService.postGlobal<ResponseAddPedido>(requestPedido,urlListaProveedor).subscribe(data=>{
+    this.sicService.postGlobal<ResponseAddPedido>(requestPedido, urlListaProveedor).subscribe(data => {
       loading.dismiss();
       this.pedidosGuardados = data.pedidoObjeto;
-      if(data.respuesta){
+      if (data.respuesta) {
         this.presentToast('Se guardo el pedido correctamente.');
-      }else{
+      } else {
         this.presentToast(data.mensaje);
       }
     })
 
   }
-  public addListaPedidos(cantidadCompra:number){
-    var articuloPedido = new ArticuloPedido(null,this.txtCodArticulo, (cantidadCompra*1),(this.txtPrecZonLib*1),null);
+
+  public addListaPedidos(cantidadCompra: number) {
+    var articuloPedido = new ArticuloPedido(null, this.txtCodArticulo, (cantidadCompra * 1), (this.txtPrecZonLib * 1), null);
     this.listadoInPedidos.push(articuloPedido);
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
     for (let articulo of this.listadoInPedidos) {
-      this.txtCantidadTotal = (this.txtCantidadTotal*1) + (articulo.cantidad*1);
+      this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
       this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
     }
   }
-  public eliminarArticuloPedido(item: ArticuloPedido){
+
+  public eliminarArticuloPedido(item: ArticuloPedido) {
     var listaAuxiliar: ArticuloPedido[];
     listaAuxiliar = this.listadoInPedidos;
     this.listadoInPedidos = [];
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
     for (let articulo of listaAuxiliar) {
-      if(articulo!=item){
+      if (articulo != item) {
         this.listadoInPedidos.push(articulo);
-        this.txtCantidadTotal = (this.txtCantidadTotal*1) + (articulo.cantidad*1);
+        this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
         this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
       }
     }
   }
-  public buscarPedido(){
+
+  public buscarPedido() {
 
   }
+
   public openBasicModal() {
     let myModal = this.modalCtrl.create(ModalLlegadasPage);
     myModal.present();
   }
 
-  public detallePedidos(){
+  public detallePedidos() {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
@@ -525,18 +596,19 @@ export class PedidosPage {
       data => {
         console.log(data);
         loading.dismiss();
-        if(data.respuesta) {
+        if (data.respuesta) {
           this.listaPedidos = data;
           this.navCtrl.push(ModalLlegadasPage, {
             detallePedidos: this.listaPedidos,
             tipoPeticion: 0
           });
-        }else{
+        } else {
           this.presentToast('No se pudo recuperar los datos solicitados.');
         }
       });
   }
-  public detalleLlegadas(){
+
+  public detalleLlegadas() {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
@@ -546,17 +618,18 @@ export class PedidosPage {
       data => {
         console.log(data);
         loading.dismiss();
-        if(data.respuesta) {
+        if (data.respuesta) {
           this.listaPedidos = data;
           this.navCtrl.push(ModalLlegadasPage, {
             detallePedidos: this.listaPedidos,
             tipoPeticion: 1
           });
-        }else{
+        } else {
           this.presentToast('No se pudo recuperar los datos solicitados.');
         }
       });
   }
+
   public presentPrompt() {
     let alert = this.alertCtrl.create({
       title: 'Nuevo Proveedor',
@@ -599,12 +672,12 @@ export class PedidosPage {
             requestPedido.nombre = data.nombre;
             requestPedido.direccion = data.direccion;
             requestPedido.telefono = data.telefono;
-            this.sicService.postGlobal<GlobalResponse>(requestPedido,urlListaProveedor).subscribe(
+            this.sicService.postGlobal<GlobalResponse>(requestPedido, urlListaProveedor).subscribe(
               data => {
                 loading.dismiss();
-                if(data.respuesta) {
+                if (data.respuesta) {
                   this.presentToast('Se ha encontrado una coincidencia');
-                }else{
+                } else {
                   this.presentToast(data.mensaje);
                 }
 

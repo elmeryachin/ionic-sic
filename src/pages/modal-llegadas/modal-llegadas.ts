@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {
   AlertController,
   IonicPage, LoadingController, NavController, NavParams, ToastController
@@ -7,6 +7,7 @@ import {ArticulosPedidosGet, DatosPedidos, ResponseListPedidos} from "../respons
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {GlobalResponse} from "../response/globalResponse";
 import {DataShareProvider} from "../../providers/data-share/data-share";
+import { Location } from '@angular/common';
 
 /**
  * Generated class for the ModalLlegadasPage page.
@@ -20,7 +21,8 @@ import {DataShareProvider} from "../../providers/data-share/data-share";
   selector: 'page-modal-llegadas',
   templateUrl: 'modal-llegadas.html',
 })
-export class ModalLlegadasPage {
+export class ModalLlegadasPage implements OnDestroy {
+
 
   listaPedidos: ResponseListPedidos;
   listaArticulosPorPedido: ArticulosPedidosGet[];
@@ -37,8 +39,7 @@ export class ModalLlegadasPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public loadingCtrl: LoadingController, public alertCtrl: AlertController, public toastCtrl: ToastController,
-              public sharedService: DataShareProvider) {
-
+              public sharedService: DataShareProvider, public location: Location) {
     this.listaPedidos = navParams.get('detallePedidos');
     this.tipoPeticion = navParams.get('tipoPeticion');
 
@@ -47,7 +48,7 @@ export class ModalLlegadasPage {
     }else{
       this.titulo = "Llegadas"
     }
-    console.log(this.listaPedidos);
+    //console.log(this.listaPedidos);
   }
 
   ionViewDidLoad() {
@@ -78,7 +79,7 @@ export class ModalLlegadasPage {
   }
 
   public listarArticulos(item: ArticulosPedidosGet[], id: number, articuloSolicitado: DatosPedidos) {
-    console.log(articuloSolicitado);
+    //console.log(articuloSolicitado);
     this.sharedService.setData(articuloSolicitado);
     this.precioTotalPedido = 0;
     this.cantidadTotalPedido = 0;
@@ -90,7 +91,28 @@ export class ModalLlegadasPage {
       //TODO: falta para precioTotalCompra;
     }
   }
-
+  public confirmarAccion() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirmar',
+      message: 'Está seguro que quiere realizar la operación?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.guardarPedido();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
   public guardarPedido() {
     if (this.idPedido === 0) {
       let mostrarAlert = this.alertCtrl.create({
@@ -135,6 +157,95 @@ export class ModalLlegadasPage {
         return;
       }
     });
+  }
+  public confirmarEliminar() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirmar',
+      message: 'Está seguro que quiere realizar la operación?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.eliminarPedido();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  public eliminarPedidoLlegado(){
+    let alert = this.alertCtrl.create({
+      title: 'Confirmar',
+      message: 'Está seguro que quiere realizar la operación?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            if (this.idPedido === 0) {
+              let mostrarAlert = this.alertCtrl.create({
+                title: 'Error',
+                subTitle: 'Debe seleccionar un pedido.',
+                buttons: ['Aceptar']
+              });
+              mostrarAlert.present();
+              return;
+            }
+
+            const loading = this.loadingCtrl.create({
+              content: 'Obteniendo los datos'
+            });
+            loading.present();
+            var id = this.idPedido + '';
+            console.log(id);
+            var url = '/pedido/llegada/cancelar/';
+            this.sicService.deleteGlobal<GlobalResponse>(id, url).subscribe(data => {
+              loading.dismiss();
+              let alert;
+              if (data.respuesta) {
+
+                alert = this.alertCtrl.create({
+                  title: 'Pedidos',
+                  subTitle: 'El pedido ha sido eliminado correctamente.',
+                  buttons: [{
+                    text: 'Aceptar',
+                    handler: () => {
+                      this.limpiarPedidos();
+                      this.detalleLlegadas();
+
+                    }
+                  }]
+                });
+                alert.present();
+
+              } else {
+                alert = this.alertCtrl.create({
+                  title: 'Ups',
+                  subTitle: data.mensaje,
+                  buttons: ['Aceptar']
+                });
+                alert.present();
+                return;
+              }
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
   }
   public eliminarPedido(){
     if (this.idPedido === 0) {
@@ -183,6 +294,27 @@ export class ModalLlegadasPage {
       }
     });
   }
+  public detalleLlegadas() {
+    const loading = this.loadingCtrl.create({
+      content: 'Listando Productos'
+    });
+    loading.present();
+    var urlListaProveedor = '/pedido/llegada/list';
+    this.sicService.getGlobal<ResponseListPedidos>(urlListaProveedor).subscribe(
+      data => {
+        console.log(data);
+        loading.dismiss();
+        if (data.respuesta) {
+          this.listaPedidos = data;
+          this.navCtrl.push(ModalLlegadasPage, {
+            detallePedidos: this.listaPedidos,
+            tipoPeticion: 1
+          });
+        } else {
+          this.presentToast('No se pudo recuperar los datos solicitados.');
+        }
+      });
+  }
 
   public detallarPedidos(){
     const loading = this.loadingCtrl.create({
@@ -213,5 +345,8 @@ export class ModalLlegadasPage {
     });
 
     toast.present();
+  }
+  ngOnDestroy(): void {
+    console.log("Objeto Destruido");
   }
 }
