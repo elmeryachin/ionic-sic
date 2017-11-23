@@ -79,8 +79,10 @@ export class ModalLlegadasPage implements OnDestroy {
   }
 
   public listarArticulos(item: ArticulosPedidosGet[], id: number, articuloSolicitado: DatosPedidos) {
-    //console.log(articuloSolicitado);
-    this.sharedService.setData(articuloSolicitado);
+    if(this.tipoPeticion == 0){
+      this.sharedService.setData(articuloSolicitado);
+    }
+
     this.precioTotalPedido = 0;
     this.cantidadTotalPedido = 0;
     this.idPedido = id;
@@ -302,7 +304,6 @@ export class ModalLlegadasPage implements OnDestroy {
     var urlListaProveedor = '/pedido/llegada/list';
     this.sicService.getGlobal<ResponseListPedidos>(urlListaProveedor).subscribe(
       data => {
-        console.log(data);
         loading.dismiss();
         if (data.respuesta) {
           this.listaPedidos = data;
@@ -324,7 +325,6 @@ export class ModalLlegadasPage implements OnDestroy {
     var urlListaProveedor = '/pedido/list';
     this.sicService.getGlobal<ResponseListPedidos>(urlListaProveedor).subscribe(
       data => {
-        console.log(data);
         loading.dismiss();
         if(data.respuesta) {
           this.listaPedidos = data;

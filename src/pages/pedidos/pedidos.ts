@@ -73,7 +73,6 @@ export class PedidosPage implements OnDestroy, OnInit {
       if (data != null) {
         var valor = JSON.stringify(data);
         if (valor != null) {
-          console.log(valor);
           this.toDatosPedidos(valor);
         }
       }
@@ -92,13 +91,12 @@ export class PedidosPage implements OnDestroy, OnInit {
       jsonData = JSON.parse(data);
       this.jsonConvert = jsonData;
       console.log("JSON DATA");
-      console.log(jsonData);
+
+      this.obtenerString();
     }
   }
 
   public obtenerString() {
-    console.log(this.jsonConvert);
-    console.log(this.jsonConvert.id);
     this.idPedidoRecuperado = this.jsonConvert.id;
     this.txtFechaConvert = this.jsonConvert.fechaMovimiento;
     this.txtNumMovimiento = this.jsonConvert.nroMovimiento;
@@ -116,6 +114,64 @@ export class PedidosPage implements OnDestroy, OnInit {
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
+  }
+  public confirmarActualizacion() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirmar',
+      message: 'Está seguro que quiere realizar la operación?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.actualizarPedido();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  public actualizarPedido(){
+    const loading = this.loadingCtrl.create({
+      content: 'Obteniendo los datos'
+    });
+    loading.present();
+    var id = '';
+    var url = '/pedido/update';
+    var pedido = new Pedido(this.idPedidoRecuperado, this.txtFechaConvert, this.txtNumMovimiento, this.txtCodProveedor, this.txtDescripcion, this.listadoInPedidos);
+    var requestPedido = new RequestPedido(pedido);
+    this.sicService.putGlobal<ResponseAddPedido>(requestPedido, url, id).subscribe(data => {
+      loading.dismiss();
+      let alert;
+      if(data.respuesta){
+        alert = this.alertCtrl.create({
+          title: 'Pedidos',
+          subTitle: 'Se ha modificado el pedido correctamente',
+          buttons: [{
+            text: 'Aceptar',
+            handler: () => {
+              this.iniciarNuevoPedido();
+            }
+          }]
+        });
+        alert.present();
+      }else{
+        alert = this.alertCtrl.create({
+          title: 'Ups',
+          subTitle: data.mensaje,
+          buttons: ['Aceptar']
+        });
+        alert.present();
+        return;
+      }
+
+    });
   }
   //debe obtener el ultimo numero de pedido
   public iniciarNuevoPedido() {
