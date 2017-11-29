@@ -145,6 +145,8 @@ export class PedidosPage implements OnDestroy, OnInit {
     var id = '';
     var url = '/pedido/update';
     var pedido = new Pedido(this.idPedidoRecuperado, this.txtFechaConvert, this.txtNumMovimiento, this.txtCodProveedor, this.txtDescripcion, this.listadoInPedidos);
+    console.log("LOG");
+    console.log(JSON.stringify(pedido));
     var requestPedido = new RequestPedido(pedido);
     this.sicService.putGlobal<ResponseAddPedido>(requestPedido, url, id).subscribe(data => {
       loading.dismiss();

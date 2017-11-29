@@ -48,24 +48,24 @@
       <ion-row class="seleccionado" *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista, item.id, item)" ngClass="background: color($colors, cafe-suave);">
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{item.codigoProveedor}}</ion-label>
+            <ion-label stacked class="wrap">{{item.codigoProveedor}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
 
-            <ion-label stacked>{{item.fechaMovimiento}}</ion-label>
+            <ion-label stacked class="wrap">{{item.fechaMovimiento}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
 
-            <ion-label stacked>{{item.nroMovimiento}}</ion-label>
+            <ion-label stacked class="wrap">{{item.nroMovimiento}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{item.observacion}}
+            <ion-label stacked class="wrap">{{item.observacion}}
             </ion-label>
           </ion-item>
         </ion-col>
@@ -125,22 +125,22 @@
       <ion-row  *ngFor="let art of listaArticulosPorPedido">
         <ion-col>
           <ion-item class="grillas">
-            <ion-label stacked>{{art.codigoArticulo}}</ion-label>
+            <ion-label stacked class="wrap">{{art.codigoArticulo}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item class="grillas">
-            <ion-label stacked>{{art.cantidad}}</ion-label>
+            <ion-label stacked class="wrap">{{art.cantidad}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item class="grillas">
-            <ion-label stacked>{{art.precio}}</ion-label>
+            <ion-label stacked class="wrap">{{art.precio}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item class="grillas">
-            <ion-label stacked>{{art.observacion}}
+            <ion-label stacked class="wrap">{{art.observacion}}
             </ion-label>
           </ion-item>
         </ion-col>

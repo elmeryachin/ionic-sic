@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import {AlertController, Nav, Platform, ToastController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -22,7 +22,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any, icon: string}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private toastCtrl:   ToastController, private alertCtrl: AlertController) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -42,9 +42,52 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
+      this.platform.registerBackButtonAction(()=>{
+        if(this.nav.canGoBack()){
+          this.nav.pop();
+        }else{
+            this.showAlert();
+        }
+      });
+      this.statusBar.backgroundColorByHexString("#b55736");
       this.splashScreen.hide();
     });
+  }
+  showAlert() {
+    let confirm = this.alertCtrl.create({
+      title: 'Salir',
+      message: 'Realmente quiere salir de la aplicación?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Disagree clicked');
+            return;
+          }
+        },
+        {
+          text: 'Salir',
+          handler: () => {
+            console.log('Agree clicked');
+            this.platform.exitApp();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+  showToast() {
+    let toast = this.toastCtrl.create({
+      message: 'Press Again to exit',
+      duration: 2000,
+      position: 'bottom'
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
   }
 
   openPage(page) {

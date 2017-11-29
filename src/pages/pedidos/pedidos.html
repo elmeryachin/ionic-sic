@@ -130,21 +130,21 @@
         <ion-row *ngFor="let item of listadoInPedidos" class="grillas" >
           <ion-col>
             <ion-item class="grillas">
-              <ion-label stacked>{{item.codigoArticulo}}</ion-label>
+              <ion-label stacked class="wrap"> {{item.codigoArticulo}}</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
-            <ion-item class="grillas">
+            <ion-item class="grillas" class="wrap">
               <ion-label stacked>{{item.cantidad}}</ion-label>
             </ion-item>
           </ion-col>
           <ion-col>
-            <ion-item class="grillas">
+            <ion-item class="grillas" class="wrap">
               <ion-label stacked>{{item.precio}}</ion-label>
             </ion-item>
           </ion-col>
           <ion-col (click)="eliminarArticuloPedido(item)">
-            <ion-item class="grillas">
+            <ion-item class="grillas" class="wrap">
               <ion-label stacked>{{item.cantidad * item.precio}} <ion-icon name="trash"></ion-icon></ion-label>
             </ion-item>
           </ion-col>
