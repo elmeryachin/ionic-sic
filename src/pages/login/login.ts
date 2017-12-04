@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AlertController, IonicPage, LoadingController, MenuController, NavController, NavParams} from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
-import { Device } from '@ionic-native/device';
+import {Device} from '@ionic-native/device';
 import {RequestLogin} from "../request/request-login";
 import {ResponseLogin} from "../response/response-login";
 import {TokenShareProvider} from "../../providers/token-share/token-share";

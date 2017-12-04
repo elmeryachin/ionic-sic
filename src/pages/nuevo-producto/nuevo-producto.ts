@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {
+  ActionSheetController, AlertController, IonicPage, LoadingController, NavController, NavParams,
+  ToastController
+} from 'ionic-angular';
 import {MdlArticulo} from "../model/mdl-articulo";
 import {ObjArticulo} from "../clases/obj-articulo";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
@@ -33,7 +36,7 @@ export class NuevoProductoPage implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
-              public loadingCtrl: LoadingController) {
+              public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController) {
   }
 
   ngOnInit() {
@@ -200,6 +203,52 @@ export class NuevoProductoPage implements OnInit {
         alert.present();
         return data;
       });
+  }
+  public reportesPedidos(){
+    let url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Reportes',
+      buttons: [
+        {
+          text: 'Stock PDF',
+          handler: () => {
+            console.log('Destructive clicked');
+            window.open(url + "/reporte/stock/pdf/download", "_blank");
+          }
+        },
+        {
+          text: 'Stock Excel',
+          handler: () => {
+            console.log('Destructive clicked');
+            window.open(url + "/reporte/stock/xls/download", "_blank");
+          }
+        },
+        {
+          text: 'Existencias PDF',
+          handler: () => {
+            console.log('Archive clicked');
+           // /reporte/existencia/{formato}/download
+            window.open(url + "/reporte/existencia/pdf/download", "_blank");
+          }
+        },
+        {
+          text: 'Existencias Excel',
+          handler: () => {
+            console.log('Archive clicked');
+            window.open(url + "/reporte/existencia/xls/download", "_blank");
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+
+    actionSheet.present();
   }
 
 }

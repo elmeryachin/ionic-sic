@@ -180,12 +180,14 @@
     <ion-fab-list side="left">
       <button ion-fab color="primary" (click)="confirmarAccion()" ><ion-icon name="cloud-download"></ion-icon></button><!--Por Llegar-->
       <button ion-fab color="secondary" (click)="confirmarEliminar()" ><ion-icon name="trash"></ion-icon></button><!--Por Llegar-->
+      <button ion-fab color="naranja" (click)="reportePorLlegar()" ><ion-icon name="print"></ion-icon></button><!--Por Llegar-->
     </ion-fab-list>
   </ion-fab>
   <ion-fab bottom right *ngIf="tipoPeticion != 0" >
     <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
     <ion-fab-list side="left">
       <button ion-fab color="cafe-claro" (click)="eliminarPedidoLlegado()" ><ion-icon name="trash"></ion-icon></button><!--Por Llegar-->
+      <button ion-fab color="naranja" (click)="reporteLlegadas()" ><ion-icon name="print"></ion-icon></button><!--Por Llegar-->
     </ion-fab-list>
   </ion-fab>
 </ion-content>

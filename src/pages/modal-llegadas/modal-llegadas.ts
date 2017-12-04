@@ -1,5 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {
+  ActionSheetController,
   AlertController,
   IonicPage, LoadingController, NavController, NavParams, ToastController
 } from 'ionic-angular';
@@ -39,7 +40,7 @@ export class ModalLlegadasPage implements OnDestroy {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public loadingCtrl: LoadingController, public alertCtrl: AlertController, public toastCtrl: ToastController,
-              public sharedService: DataShareProvider, public location: Location) {
+              public sharedService: DataShareProvider, public location: Location, public actionSheetCtrl: ActionSheetController) {
     this.listaPedidos = navParams.get('detallePedidos');
     this.tipoPeticion = navParams.get('tipoPeticion');
 
@@ -348,5 +349,98 @@ export class ModalLlegadasPage implements OnDestroy {
   }
   ngOnDestroy(): void {
     console.log("Objeto Destruido");
+  }
+  public reportePorLlegar(){
+    let url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Reportes',
+      buttons: [
+        {
+          text: 'Reporte Por Llegar',
+          handler: () => {
+            console.log('Destructive clicked');
+            window.open(url + "/reporte/porllegar/pdf/download", "_blank");
+          }
+        },
+        {
+          text: 'Stock Excel',
+          handler: () => {
+            console.log('Destructive clicked');
+            window.open(url + "/reporte/porllegar/xls/download", "_blank");
+          }
+        },
+        {
+          text: 'Movimientos PDF',
+          handler: () => {
+            console.log('Archive clicked');
+            // /reporte/existencia/{formato}/download
+            window.open(url + "/reporte/porllegar_mov/pdf/download", "_blank");
+          }
+        },
+        {
+          text: 'Existencias Excel',
+          handler: () => {
+            console.log('Archive clicked');
+            window.open(url + "/reporte/porllegar_mov/xls/download", "_blank");
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+
+    actionSheet.present();
+
+  }
+  public reporteLlegadas() {
+    let url: string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Reportes',
+      buttons: [
+        {
+          text: 'Llegadas PDF',
+          handler: () => {
+            console.log('Destructive clicked');
+            window.open(url + "/reporte/llegada/pdf/download", "_blank");
+          }
+        },
+        {
+          text: 'Llegadas Excel',
+          handler: () => {
+            console.log('Destructive clicked');
+            window.open(url + "/reporte/llegada/xls/download", "_blank");
+          }
+        },
+        {
+          text: 'Movimientos PDF',
+          handler: () => {
+            console.log('Archive clicked');
+            // /reporte/existencia/{formato}/download
+            window.open(url + "/reporte/llegada_mov/pdf/download", "_blank");
+          }
+        },
+        {
+          text: 'Movimientos Excel',
+          handler: () => {
+            console.log('Archive clicked');
+            window.open(url + "/reporte/llegada_mov/xls/download", "_blank");
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+
+    actionSheet.present();
   }
 }
