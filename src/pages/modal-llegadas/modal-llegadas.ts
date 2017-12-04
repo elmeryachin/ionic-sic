@@ -37,7 +37,7 @@ export class ModalLlegadasPage implements OnDestroy {
   idPedido: number = 0;
   tipoPeticion :number;
   titulo: string;
-
+  url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public loadingCtrl: LoadingController, public alertCtrl: AlertController, public toastCtrl: ToastController,
               public sharedService: DataShareProvider, public location: Location, public actionSheetCtrl: ActionSheetController) {
@@ -351,22 +351,22 @@ export class ModalLlegadasPage implements OnDestroy {
     console.log("Objeto Destruido");
   }
   public reportePorLlegar(){
-    let url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Reportes',
       buttons: [
         {
-          text: 'Reporte Por Llegar',
+          text: 'Por Llegar PDF',
           handler: () => {
             console.log('Destructive clicked');
-            window.open(url + "/reporte/porllegar/pdf/download", "_blank");
+            window.open(this.url + "/reporte/porllegar/pdf/download", "_blank");
           }
         },
         {
-          text: 'Stock Excel',
+          text: 'Por Llegar Excel',
           handler: () => {
             console.log('Destructive clicked');
-            window.open(url + "/reporte/porllegar/xls/download", "_blank");
+            window.open(this.url + "/reporte/porllegar/xls/download", "_blank");
           }
         },
         {
@@ -374,14 +374,14 @@ export class ModalLlegadasPage implements OnDestroy {
           handler: () => {
             console.log('Archive clicked');
             // /reporte/existencia/{formato}/download
-            window.open(url + "/reporte/porllegar_mov/pdf/download", "_blank");
+            window.open(this.url + "/reporte/porllegar_mov/pdf/download", "_blank");
           }
         },
         {
-          text: 'Existencias Excel',
+          text: 'Movimientos Excel',
           handler: () => {
             console.log('Archive clicked');
-            window.open(url + "/reporte/porllegar_mov/xls/download", "_blank");
+            window.open(this.url + "/reporte/porllegar_mov/xls/download", "_blank");
           }
         },
         {
@@ -398,7 +398,6 @@ export class ModalLlegadasPage implements OnDestroy {
 
   }
   public reporteLlegadas() {
-    let url: string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Reportes',
       buttons: [
@@ -406,14 +405,14 @@ export class ModalLlegadasPage implements OnDestroy {
           text: 'Llegadas PDF',
           handler: () => {
             console.log('Destructive clicked');
-            window.open(url + "/reporte/llegada/pdf/download", "_blank");
+            window.open(this.url + "/reporte/llegada/pdf/download", "_blank");
           }
         },
         {
           text: 'Llegadas Excel',
           handler: () => {
             console.log('Destructive clicked');
-            window.open(url + "/reporte/llegada/xls/download", "_blank");
+            window.open(this.url + "/reporte/llegada/xls/download", "_blank");
           }
         },
         {
@@ -421,14 +420,14 @@ export class ModalLlegadasPage implements OnDestroy {
           handler: () => {
             console.log('Archive clicked');
             // /reporte/existencia/{formato}/download
-            window.open(url + "/reporte/llegada_mov/pdf/download", "_blank");
+            window.open(this.url + "/reporte/llegada_mov/pdf/download", "_blank");
           }
         },
         {
           text: 'Movimientos Excel',
           handler: () => {
             console.log('Archive clicked');
-            window.open(url + "/reporte/llegada_mov/xls/download", "_blank");
+            window.open(this.url + "/reporte/llegada_mov/xls/download", "_blank");
           }
         },
         {

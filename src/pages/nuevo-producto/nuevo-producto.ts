@@ -33,7 +33,7 @@ export class NuevoProductoPage implements OnInit {
   precioVenta:number = 0;
   seActualiza: boolean;
   mensaje;
-
+  url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController) {
@@ -205,7 +205,7 @@ export class NuevoProductoPage implements OnInit {
       });
   }
   public reportesPedidos(){
-    let url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Reportes',
       buttons: [
@@ -213,14 +213,14 @@ export class NuevoProductoPage implements OnInit {
           text: 'Stock PDF',
           handler: () => {
             console.log('Destructive clicked');
-            window.open(url + "/reporte/stock/pdf/download", "_blank");
+            window.open(this.url + "/reporte/stock/pdf/download", "_blank");
           }
         },
         {
           text: 'Stock Excel',
           handler: () => {
             console.log('Destructive clicked');
-            window.open(url + "/reporte/stock/xls/download", "_blank");
+            window.open(this.url + "/reporte/stock/xls/download", "_blank");
           }
         },
         {
@@ -228,14 +228,14 @@ export class NuevoProductoPage implements OnInit {
           handler: () => {
             console.log('Archive clicked');
            // /reporte/existencia/{formato}/download
-            window.open(url + "/reporte/existencia/pdf/download", "_blank");
+            window.open(this.url + "/reporte/existencia/pdf/download", "_blank");
           }
         },
         {
           text: 'Existencias Excel',
           handler: () => {
             console.log('Archive clicked');
-            window.open(url + "/reporte/existencia/xls/download", "_blank");
+            window.open(this.url + "/reporte/existencia/xls/download", "_blank");
           }
         },
         {

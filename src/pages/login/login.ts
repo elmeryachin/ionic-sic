@@ -43,11 +43,12 @@ export class LoginPage {
     let requestPedido:RequestLogin = new RequestLogin(this.txtUsuario, this.txtPassword,this.appName,this.appKey, this.device.platform + " " + this.device.model);
     var url = '/acceso/login';
     this.sicService.postGlobal<ResponseLogin>(requestPedido, url).subscribe( data =>{
-      console.log(data);
+
       loading.dismiss();
       let alert;
       if(data.respuesta){
         this.tokenShare.setData(data);
+
         this.navCtrl.setRoot(HomePage,{data});
       }else{
         alert = this.alertCtrl.create({
