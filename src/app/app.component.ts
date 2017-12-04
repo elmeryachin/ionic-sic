@@ -11,20 +11,33 @@ import {ReportesPage} from "../pages/reportes/reportes";
 import {DiscosPage} from "../pages/discos/discos";
 import {CierreGestionPage} from "../pages/cierre-gestion/cierre-gestion";
 import {LoginPage} from "../pages/login/login";
+import {Subscription} from "rxjs/Subscription";
+import {TokenShareProvider} from "../providers/token-share/token-share";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  nombreSession = "";
+  sucursalSession = "";
 
   rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any, icon: string}>;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private toastCtrl:   ToastController, private alertCtrl: AlertController) {
+  subscription: Subscription;
+  jsonConvert: any;
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
+              private toastCtrl:ToastController, private alertCtrl: AlertController,public tokenShare:TokenShareProvider) {
     this.initializeApp();
-
+    this.subscription = this.tokenShare.getData().subscribe(data => {
+      if (data != null) {
+        var valor = JSON.stringify(data);
+        if (valor != null) {
+          this.toDatosPedidos(valor);
+        }
+      }
+    });
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Registrar Producto', component: NuevoProductoPage, icon: 'archive' },
@@ -36,6 +49,21 @@ export class MyApp {
       { title: 'Cierre Gestión', component: CierreGestionPage, icon: 'hand' }
     ];
 
+  }
+  public toDatosPedidos(data: string) {
+    if (data != null) {
+      var jsonData: any = new Object();
+      //try{
+      jsonData = JSON.parse(data);
+      this.jsonConvert = jsonData;
+      console.log("JSON DATA");
+
+      this.obtenerString();
+    }
+  }
+  public obtenerString() {
+    this.nombreSession = this.jsonConvert.nombreUsuario;
+    this.sucursalSession = this.jsonConvert.nombreAmbiente;
   }
 
   initializeApp() {
@@ -78,7 +106,7 @@ export class MyApp {
   }
   showToast() {
     let toast = this.toastCtrl.create({
-      message: 'Press Again to exit',
+      message: 'Presione otra vez para salir.',
       duration: 2000,
       position: 'bottom'
     });

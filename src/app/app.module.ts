@@ -22,6 +22,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {HttpModule} from "@angular/http";
 import {ModalLlegadasPage} from "../pages/modal-llegadas/modal-llegadas";
 import { DataShareProvider } from '../providers/data-share/data-share';
+import {Device} from "@ionic-native/device";
+import { TokenShareProvider } from '../providers/token-share/token-share';
 
 @NgModule({
   declarations: [
@@ -63,9 +65,11 @@ import { DataShareProvider } from '../providers/data-share/data-share';
   providers: [
     StatusBar,
     SplashScreen,
+    Device,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     SicServiceProvider,
-    DataShareProvider
+    DataShareProvider,
+    TokenShareProvider
   ]
 })
 export class AppModule {}

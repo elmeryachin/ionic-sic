@@ -15,12 +15,12 @@
 
       <ion-item color="cafe-claro">
         <ion-label floating color="light">Usuario</ion-label>
-        <ion-input color="light" type="text" required="true"></ion-input>
+        <ion-input color="light" [(ngModel)]="txtUsuario" type="text" required="true"></ion-input>
       </ion-item>
 
       <ion-item color="cafe-claro">
         <ion-label floating color="light">Constraseña</ion-label>
-        <ion-input color="light" type="password"></ion-input>
+        <ion-input color="light" [(ngModel)]="txtPassword" type="password"></ion-input>
       </ion-item>
 
     </ion-list>
