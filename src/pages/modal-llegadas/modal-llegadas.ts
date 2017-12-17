@@ -37,7 +37,7 @@ export class ModalLlegadasPage implements OnDestroy {
   idPedido: number = 0;
   tipoPeticion :number;
   titulo: string;
-  url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+  url:string = 'https://app-pos.herokuapp.com';//'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public loadingCtrl: LoadingController, public alertCtrl: AlertController, public toastCtrl: ToastController,
               public sharedService: DataShareProvider, public location: Location, public actionSheetCtrl: ActionSheetController) {
