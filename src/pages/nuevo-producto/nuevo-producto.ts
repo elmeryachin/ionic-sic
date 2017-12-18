@@ -81,7 +81,7 @@ export class NuevoProductoPage implements OnInit {
     loading.present();
     //this.presentLoadingDefault();
     this.limpiarDatos();
-    this.sicService.getArticulo(this.codigoArticulo).subscribe(
+    this.sicService.getArticulo(this.codigoArticulo.toUpperCase()).subscribe(
       data => {
         loading.dismiss();
         //this.dimmisLoading();
@@ -111,6 +111,9 @@ export class NuevoProductoPage implements OnInit {
     });
 
     loading.present();
+    if(this.codigoArticulo !=undefined){
+      this.codigoArticulo.toUpperCase()
+    }
     if (!this.seActualiza) {
       this.sicService.addArticulo(new MdlArticulo(new ObjArticulo(this.codigoArticulo, this.descripcion,
         this.mensaje, this.precioKilo, this.pesoStock, this.precioZonaLibre, this.porcentajeGastos,
@@ -127,7 +130,7 @@ export class NuevoProductoPage implements OnInit {
         });
 
     } else {
-      this.sicService.updateArticulo(new MdlArticulo(new ObjArticulo(this.codigoArticulo, this.descripcion,
+      this.sicService.updateArticulo(new MdlArticulo(new ObjArticulo(this.codigoArticulo.toUpperCase(), this.descripcion,
         this.mensaje, this.precioKilo, this.pesoStock, this.precioZonaLibre, this.porcentajeGastos,
         this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado))).subscribe(
         data => {
