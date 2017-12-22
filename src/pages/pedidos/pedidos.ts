@@ -171,17 +171,6 @@ export class PedidosPage implements OnDestroy, OnInit {
         return;
       }
 
-    },err =>{
-      loading.dismiss();
-      console.log(err);
-      let alert;
-      alert = this.alertCtrl.create({
-        title: 'Ups',
-        subTitle: 'Error al guardar los datos.',
-        buttons: ['Aceptar']
-      });
-      alert.present();
-      return;
     });
   }
   //debe obtener el ultimo numero de pedido
@@ -242,10 +231,6 @@ export class PedidosPage implements OnDestroy, OnInit {
           this.txtNumMovimiento = 0;
         }
       }
-    },err =>{
-      loading.dismiss();
-      console.log(err);
-      this.presentToast('No se pudo recuperar los datos solicitados.');
     });
   }
 
@@ -265,10 +250,6 @@ export class PedidosPage implements OnDestroy, OnInit {
           this.presentToast('No se pudo recuperar los datos solicitados.');
         }
       }
-    },err =>{
-      loading.dismiss();
-      console.log(err);
-      this.presentToast('No se pudo recuperar los datos solicitados.');
     });
   }
 
@@ -447,10 +428,6 @@ export class PedidosPage implements OnDestroy, OnInit {
 
         alert.present();
         return data;
-      },err =>{
-        loading.dismiss();
-        console.log(err);
-        this.presentToast('No se pudo recuperar los datos solicitados.');
       });
 
   }
@@ -473,10 +450,6 @@ export class PedidosPage implements OnDestroy, OnInit {
             this.presentToast('No se pudo recuperar los datos solicitados.');
           }
         }
-      },err =>{
-        loading.dismiss();
-        console.log(err);
-        this.presentToast('No se pudo recuperar los datos solicitados.');
       });
   }
 
@@ -514,10 +487,6 @@ export class PedidosPage implements OnDestroy, OnInit {
 
         alert.present();
         return data;
-      },err =>{
-        loading.dismiss();
-        console.log(err);
-        this.presentToast('No se pudo recuperar los datos solicitados.');
       });
   }
 
@@ -555,10 +524,6 @@ export class PedidosPage implements OnDestroy, OnInit {
 
         alert.present();
         return data;
-      },err =>{
-        loading.dismiss();
-        console.log(err);
-        this.presentToast('No se pudo recuperar los datos solicitados.');
       });
   }
 
@@ -596,10 +561,6 @@ export class PedidosPage implements OnDestroy, OnInit {
         });
         alert.present();
         return data;
-      },err =>{
-        loading.dismiss();
-        console.log(err);
-        this.presentToast('No se pudo recuperar los datos solicitados.');
       });
   }
   public confirmarAccion() {
@@ -642,10 +603,6 @@ export class PedidosPage implements OnDestroy, OnInit {
       } else {
         this.presentToast(data.mensaje);
       }
-    },err =>{
-      loading.dismiss();
-      console.log(err);
-      this.presentToast('No se pudo recuperar los datos solicitados.');
     })
 
   }
@@ -704,10 +661,6 @@ export class PedidosPage implements OnDestroy, OnInit {
         } else {
           this.presentToast('No se pudo recuperar los datos solicitados.');
         }
-      },err =>{
-        loading.dismiss();
-        console.log(err);
-        this.presentToast('No se pudo recuperar los datos solicitados.');
       });
   }
 
@@ -730,10 +683,6 @@ export class PedidosPage implements OnDestroy, OnInit {
         } else {
           this.presentToast('No se pudo recuperar los datos solicitados.');
         }
-      },err =>{
-        loading.dismiss();
-        console.log(err);
-        this.presentToast('No se pudo recuperar los datos solicitados.');
       });
   }
 
@@ -788,10 +737,6 @@ export class PedidosPage implements OnDestroy, OnInit {
                   this.presentToast(data.mensaje);
                 }
 
-              },err =>{
-                loading.dismiss();
-                console.log(err);
-                this.presentToast('No se pudo recuperar los datos solicitados.');
               });
           }
         }

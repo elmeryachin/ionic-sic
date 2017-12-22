@@ -31,9 +31,9 @@ export class NuevoProductoPage implements OnInit {
   precioCompra:number = 0;
   precioMercado:number = 0;
   precioVenta:number = 0;
-  seActualiza: boolean = false;
+  seActualiza: boolean;
   mensaje;
-  url:string = 'https://app-pos.herokuapp.com';//'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+  url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController) {
@@ -123,10 +123,6 @@ export class NuevoProductoPage implements OnInit {
           this.limpiarDatos();
           this.presentAlert('Información','Su producto fue registrado correctamente');
           return data;
-        },err =>{
-          loading.dismiss();
-          console.log(err);
-          this.presentAlert('Error','No se introdujeron los datos correctamente.');
         });
 
     } else {
@@ -138,10 +134,6 @@ export class NuevoProductoPage implements OnInit {
           loading.dismiss();
           this.presentAlert('Información','Su producto fué actualizado correctamente');
           return data;
-        },err =>{
-          loading.dismiss();
-          console.log(err);
-          this.presentAlert('Error','No se introdujeron los datos correctamente.');
         });
     }
   }
@@ -160,10 +152,6 @@ export class NuevoProductoPage implements OnInit {
           this.limpiarDatos();
           this.presentAlert('Información','Su producto fué eliminado correctamente');
           return data;
-        },err =>{
-          loading.dismiss();
-          console.log(err);
-          this.presentAlert('Error','Error al obtener los datos.');
         });
     }
   }
