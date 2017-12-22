@@ -1,6 +1,6 @@
 {
   "name": "sic",
-  "app_id": "",
+  "app_id": "6207f3a3",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
