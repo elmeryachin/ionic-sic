@@ -41,7 +41,7 @@
           <ion-list>
             <ion-item >
               <ion-label stacked>Observación</ion-label>
-              <ion-textarea [(ngModel)]="txtDescripcion"></ion-textarea>
+              <ion-textarea [(ngModel)]="txtDescripcion" (keyup.enter)="keytab($event)" ></ion-textarea>
             </ion-item>
 
           </ion-list>

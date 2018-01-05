@@ -597,6 +597,7 @@ export class PedidosPage implements OnDestroy, OnInit {
     var requestPedido = new RequestPedido(pedido);
     this.sicService.postGlobal<ResponseAddPedido>(requestPedido, urlListaProveedor).subscribe(data => {
       loading.dismiss();
+      this.iniciarNuevoPedido();
       this.pedidosGuardados = data.pedidoObjeto;
       if (data.respuesta) {
         this.presentToast('Se guardo el pedido correctamente.');
@@ -747,5 +748,13 @@ export class PedidosPage implements OnDestroy, OnInit {
 
   public openModalWithParams() {
     this.detallePedidos();
+  }
+  public keytab(event){
+    console.log("evento log")
+    console.log(event);
+    console.log(event.srcElement.attrs);
+    let element = event.srcElement.nextElementSibling;
+    console.log(element);
+
   }
 }

@@ -26,6 +26,7 @@ export class ModalLlegadasPage implements OnDestroy {
 
 
   listaPedidos: ResponseListPedidos;
+  listaPedidosGuardado: ResponseListPedidos;
   listaArticulosPorPedido: ArticulosPedidosGet[];
   cantidadPedidos: number = 0;
   precioPedidos: number = 0;
@@ -58,6 +59,7 @@ export class ModalLlegadasPage implements OnDestroy {
 
   ngOnInit() {
     this.listaPedidos = this.navParams.get('detallePedidos');
+    this.listaPedidosGuardado = this.navParams.get('detallePedidos');
     this.detallePedidos();
   }
 
@@ -441,5 +443,17 @@ export class ModalLlegadasPage implements OnDestroy {
     });
 
     actionSheet.present();
+  }
+  public listarPedidos(){
+    this.listaPedidos.list = this.listaPedidosGuardado.list;
+    this.listaPedidos = this.navParams.get('detallePedidos');
+    this.listaPedidosGuardado = this.navParams.get('detallePedidos');
+    this.detallePedidos();
+  }
+  public filtrarPorCodigo(datosPedido:string){
+    let listaPedidosLocal:DatosPedidos[];
+    listaPedidosLocal = this.listaPedidos.list.filter(item => item.codigoProveedor == datosPedido);
+
+    this.listaPedidos.list = listaPedidosLocal;
   }
 }

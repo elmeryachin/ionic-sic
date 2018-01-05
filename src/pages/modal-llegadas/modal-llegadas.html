@@ -8,6 +8,11 @@
 
   <ion-navbar color="cafe-claro">
     <ion-title>{{titulo}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="listarPedidos()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -16,26 +21,26 @@
 <ion-content padding>
 
   <ion-grid class="grilla-pedidos">
-    <ion-row>
-      <ion-col>
+    <ion-row (click)="listarPedidos()">
+      <ion-col (click)="listarPedidos()">
         <ion-item>
           <ion-label class="titulos" stacked>Codigo</ion-label>
 
         </ion-item>
       </ion-col>
-      <ion-col>
+      <ion-col (click)="listarPedidos()">
         <ion-item>
           <ion-label class="titulos" stacked>Fecha</ion-label>
 
         </ion-item>
       </ion-col>
-      <ion-col>
+      <ion-col (click)="listarPedidos()">
         <ion-item>
           <ion-label class="titulos" stacked>Num Mov</ion-label>
 
         </ion-item>
       </ion-col>
-      <ion-col>
+      <ion-col (click)="listarPedidos()">
         <ion-item>
           <ion-label class="titulos" stacked>Observación</ion-label>
 
@@ -45,26 +50,26 @@
   </ion-grid>
   <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
     <ion-grid  class="grilla-pedidos">
-      <ion-row class="seleccionado" *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista, item.id, item)" ngClass="background: color($colors, cafe-suave);">
+      <ion-row class="seleccionado grillas" *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista, item.id, item)" ngClass="background: color($colors, cafe-suave);">
         <ion-col>
-          <ion-item>
+          <ion-item class="grillas" (click)="filtrarPorCodigo(item.codigoProveedor)">
             <ion-label stacked class="wrap">{{item.codigoProveedor}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
-          <ion-item>
+          <ion-item class="grillas">
 
             <ion-label stacked class="wrap">{{item.fechaMovimiento}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
-          <ion-item>
+          <ion-item class="grillas">
 
             <ion-label stacked class="wrap">{{item.nroMovimiento}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
-          <ion-item>
+          <ion-item class="grillas">
             <ion-label stacked class="wrap">{{item.observacion}}
             </ion-label>
           </ion-item>
@@ -95,7 +100,7 @@
   </ion-grid>
 
   <ion-grid class="grilla-pedidos">
-    <ion-row>
+    <ion-row >
       <ion-col>
         <ion-item>
           <ion-label class="titulos" stacked>Codigo</ion-label>
@@ -121,8 +126,8 @@
     </ion-row>
   </ion-grid>
   <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
-    <ion-grid class="grilla-pedidos grillas">
-      <ion-row  *ngFor="let art of listaArticulosPorPedido">
+    <ion-grid class="grilla-pedidos">
+      <ion-row  *ngFor="let art of listaArticulosPorPedido" class="grillas">
         <ion-col>
           <ion-item class="grillas">
             <ion-label stacked class="wrap">{{art.codigoArticulo}}</ion-label>
