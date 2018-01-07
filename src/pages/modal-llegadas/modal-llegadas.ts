@@ -9,6 +9,7 @@ import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {GlobalResponse} from "../response/globalResponse";
 import {DataShareProvider} from "../../providers/data-share/data-share";
 import { Location } from '@angular/common';
+import {Subscription} from "rxjs/Subscription";
 
 /**
  * Generated class for the ModalLlegadasPage page.
@@ -38,7 +39,10 @@ export class ModalLlegadasPage implements OnDestroy {
   idPedido: number = 0;
   tipoPeticion :number;
   titulo: string;
+  strDetallePedidos: string;
   url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+  subscription: Subscription;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public loadingCtrl: LoadingController, public alertCtrl: AlertController, public toastCtrl: ToastController,
               public sharedService: DataShareProvider, public location: Location, public actionSheetCtrl: ActionSheetController) {
@@ -58,10 +62,17 @@ export class ModalLlegadasPage implements OnDestroy {
   }
 
   ngOnInit() {
+    this.strDetallePedidos = JSON.stringify(this.listaPedidos.list);
+    let pedidosDetalle:ResponseListPedidos;
     this.listaPedidos = this.navParams.get('detallePedidos');
-    this.listaPedidosGuardado = this.navParams.get('detallePedidos');
+    pedidosDetalle = this.listaPedidos;
+    this.listaPedidosGuardado = pedidosDetalle;
+    console.log(this.listaPedidosGuardado);
+    //this.sharedService.setUtilData(this.listaPedidosGuardado);
     this.detallePedidos();
   }
+
+
 
   public limpiarPedidos(){
     this.listaArticulosPorPedido = null;
@@ -351,6 +362,7 @@ export class ModalLlegadasPage implements OnDestroy {
   }
   ngOnDestroy(): void {
     console.log("Objeto Destruido");
+    //this.subscription.unsubscribe();
   }
   public reportePorLlegar(){
 
@@ -445,15 +457,31 @@ export class ModalLlegadasPage implements OnDestroy {
     actionSheet.present();
   }
   public listarPedidos(){
+    console.log(this.listaPedidos.list);
+    console.log("****************************************")
+    console.log(this.listaPedidosGuardado.list);
+
+    console.log("****************************************")
     this.listaPedidos.list = this.listaPedidosGuardado.list;
-    this.listaPedidos = this.navParams.get('detallePedidos');
-    this.listaPedidosGuardado = this.navParams.get('detallePedidos');
+    //this.listaPedidos = this.navParams.get('detallePedidos');
+    //this.listaPedidosGuardado = this.navParams.get('detallePedidos');
+    let datosPedidos:DatosPedidos[] = JSON.parse(this.strDetallePedidos)
+    console.log(this.listaPedidos.list);
+    this.listaPedidos.list = datosPedidos;
+    /*this.subscription = this.sharedService.getUtilData().subscribe(data => {
+      this.listaPedidos = data;
+    });*/
+    this.limpiarPedidos();
     this.detallePedidos();
   }
   public filtrarPorCodigo(datosPedido:string){
+
     let listaPedidosLocal:DatosPedidos[];
     listaPedidosLocal = this.listaPedidos.list.filter(item => item.codigoProveedor == datosPedido);
 
     this.listaPedidos.list = listaPedidosLocal;
+    console.log(this.strDetallePedidos)
+    this.limpiarPedidos();
+    this.detallePedidos();
   }
 }

@@ -45,6 +45,7 @@ export class SicServiceProvider {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     });
   }
+
   listArticulos() {
     return this.http.get<ResponseList>(this.url + '/articulo/list');
   }

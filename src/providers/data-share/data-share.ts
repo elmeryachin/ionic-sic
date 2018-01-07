@@ -12,23 +12,9 @@ import {Subject} from "rxjs/Subject";
 */
 @Injectable()
 export class DataShareProvider {
-  /*data: any;
-  dataChange: Observable<any>;
-  dataChangeObserver = new Observer<any>();
-  constructor(public http: Http) {
-    this.dataChangeObserver = new Subject();
-    this.dataChange = new Observable((observer:Observer<any>)=> {
-      this.dataChangeObserver = observer;
-    });
-  }
 
-  setData(data:any) {
-    console.log(this.dataChangeObserver);
-    this.dataChangeObserver = new Subject();
-    this.data = data;
-    this.dataChangeObserver.next(this.data);
-  }*/
   private subject = new Subject<any>();
+  private utilSubject = new Subject<any>();
   constructor(public http: Http) {
 
   }
@@ -38,6 +24,12 @@ export class DataShareProvider {
   }
   getData(): Observable<any> {
     return this.subject.asObservable();
+  }
+  setUtilData(data:any){
+    this.utilSubject.next(data);
+  }
+  getUtilData(): Observable<any>{
+    return this.utilSubject.asObservable();
   }
 
 }
