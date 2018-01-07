@@ -484,4 +484,14 @@ export class ModalLlegadasPage implements OnDestroy {
     this.limpiarPedidos();
     this.detallePedidos();
   }
+  public filtrarPorObservacion(datosPedido:string){
+
+    let listaPedidosLocal:DatosPedidos[];
+    listaPedidosLocal = this.listaPedidos.list.filter(item => item.observacion == datosPedido);
+
+    this.listaPedidos.list = listaPedidosLocal;
+    console.log(this.strDetallePedidos)
+    this.limpiarPedidos();
+    this.detallePedidos();
+  }
 }

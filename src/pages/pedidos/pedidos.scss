@@ -15,7 +15,7 @@ page-pedidos {
     margin: 5px 1px 5px 0;
   }
   .label-md[stacked] {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
   }
   .item-input .label-md, .item-select .label-md, .item-datetime .label-md {
     color: #3c3c3c;
@@ -25,11 +25,11 @@ page-pedidos {
       min-height: 2.3rem !important;
     }
     .item-md{
-      font-size: 1.4rem !important;
+      font-size: 1.2rem !important;//todo: tamanio de fuente
     }
   }
   .titulos{
-    font-size: 1.5rem !important;
+    font-size: 1.1rem !important; //todo: tamanio de fuente
     font-weight: bold !important;
     text-align: center !important;
   }

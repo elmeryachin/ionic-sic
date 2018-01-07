@@ -69,7 +69,7 @@
           </ion-item>
         </ion-col>
         <ion-col>
-          <ion-item class="grillas">
+          <ion-item class="grillas" (click)="filtrarPorObservacion(item.observacion)">
             <ion-label stacked class="wrap">{{item.observacion}}
             </ion-label>
           </ion-item>
