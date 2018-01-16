@@ -26,7 +26,6 @@
     "@ionic-native/status-bar": "4.3.0",
     "@ionic/storage": "2.0.1",
     "cordova-browser": "~5.0.1",
-    "cordova-ios": "^4.5.1",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-ionic-webview": "^1.1.15",
     "cordova-plugin-splashscreen": "^4.0.3",
@@ -37,7 +36,8 @@
     "ionicons": "3.0.0",
     "rxjs": "5.4.3",
     "sw-toolbox": "^3.6.0",
-    "zone.js": "0.8.18"
+    "zone.js": "0.8.18",
+    "cordova-android": "~7.0.0"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.0.0",
@@ -46,8 +46,9 @@
   "description": "An Ionic project",
   "cordova": {
     "platforms": [
-      "ios",
-      "browser"
+      "browser",
+      "android",
+      "ios"
     ],
     "plugins": {
       "ionic-plugin-keyboard": {},

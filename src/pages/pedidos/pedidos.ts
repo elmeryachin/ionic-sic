@@ -610,7 +610,18 @@ export class PedidosPage implements OnDestroy, OnInit {
 
   public addListaPedidos(cantidadCompra: number) {
     var articuloPedido = new ArticuloPedido(null, this.txtCodArticulo.toUpperCase(), (cantidadCompra * 1), (this.txtPrecZonLib * 1), null);
-    this.listadoInPedidos.push(articuloPedido);
+
+    var articuloAdiciona = this.listadoInPedidos.filter(item => item.codigoArticulo = articuloPedido.codigoArticulo);
+    if(articuloAdiciona==null || articuloAdiciona == undefined) {
+      this.listadoInPedidos.push(articuloPedido);
+    }else{
+      let alert = this.alertCtrl.create({
+        title: 'Existen datos duplicados',
+        subTitle: 'El codigo ' + this.txtCodArticulo + " se encuentra duplicado, debe eliminar el articulo para registrar uno nuevo.",
+        buttons: ['Aceptar']
+      });
+      alert.present();
+    }
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
     for (let articulo of this.listadoInPedidos) {

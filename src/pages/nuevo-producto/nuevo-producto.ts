@@ -33,7 +33,7 @@ export class NuevoProductoPage implements OnInit {
   precioVenta:number = 0;
   seActualiza: boolean;
   mensaje;
-  url:string = 'https://desa-pos.herokuapp.com';//'https://app-pos.herokuapp.com';
+  url:string = 'http://localhost:8080';//'https://app-pos.herokuapp.com';
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController) {
