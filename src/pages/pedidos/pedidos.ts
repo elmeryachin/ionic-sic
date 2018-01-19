@@ -48,7 +48,7 @@ export class PedidosPage implements OnDestroy, OnInit {
   txtFechaConvert;
   listadoInPedidos: ArticuloPedido[];
   pedidosGuardados: RequestPedido;
-  idPedidoRecuperado:number;
+  idPedidoRecuperado: number;
   listaPedidos: ResponseListPedidos;
   listaArticulosPorPedido: ArticulosPedidosGet[];
   cantidadPedidos: number = 0;
@@ -97,17 +97,21 @@ export class PedidosPage implements OnDestroy, OnInit {
   }
 
   public obtenerString() {
-    this.idPedidoRecuperado = this.jsonConvert.id;
-    this.txtFechaConvert = this.jsonConvert.fechaMovimiento;
-    this.txtNumMovimiento = this.jsonConvert.nroMovimiento;
-    this.txtCodProveedor = this.jsonConvert.codigoProveedor.toUpperCase();
-    this.BuscarProveedor();
-    this.txtDescripcion = this.jsonConvert.observacion;
-    this.listadoInPedidos = [];
-    for (let articulo of this.jsonConvert.lista) {
-      this.listadoInPedidos.push(new ArticuloPedido(articulo.id,articulo.codigoArticulo, articulo.cantidad, articulo.precio, articulo.observacion));
-      this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
-      this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
+    if(this.jsonConvert.id == 0){
+      this.iniciarNuevoPedido();
+    }else {
+      this.idPedidoRecuperado = this.jsonConvert.id;
+      this.txtFechaConvert = this.jsonConvert.fechaMovimiento;
+      this.txtNumMovimiento = this.jsonConvert.nroMovimiento;
+      this.txtCodProveedor = this.jsonConvert.codigoProveedor.toUpperCase();
+      this.BuscarProveedor();
+      this.txtDescripcion = this.jsonConvert.observacion;
+      this.listadoInPedidos = [];
+      for (let articulo of this.jsonConvert.lista) {
+        this.listadoInPedidos.push(new ArticuloPedido(articulo.id, articulo.codigoArticulo, articulo.cantidad, articulo.precio, articulo.observacion));
+        this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
+        this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
+      }
     }
   }
 
@@ -115,6 +119,7 @@ export class PedidosPage implements OnDestroy, OnInit {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
   }
+
   public confirmarActualizacion() {
     let alert = this.alertCtrl.create({
       title: 'Confirmar',
@@ -137,7 +142,8 @@ export class PedidosPage implements OnDestroy, OnInit {
     });
     alert.present();
   }
-  public actualizarPedido(){
+
+  public actualizarPedido() {
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
     });
@@ -149,7 +155,7 @@ export class PedidosPage implements OnDestroy, OnInit {
     this.sicService.putGlobal<ResponseAddPedido>(requestPedido, url, id).subscribe(data => {
       loading.dismiss();
       let alert;
-      if(data.respuesta){
+      if (data.respuesta) {
         alert = this.alertCtrl.create({
           title: 'Pedidos',
           subTitle: 'Se ha modificado el pedido correctamente',
@@ -161,7 +167,7 @@ export class PedidosPage implements OnDestroy, OnInit {
           }]
         });
         alert.present();
-      }else{
+      } else {
         alert = this.alertCtrl.create({
           title: 'Ups',
           subTitle: data.mensaje,
@@ -173,6 +179,7 @@ export class PedidosPage implements OnDestroy, OnInit {
 
     });
   }
+
   //debe obtener el ultimo numero de pedido
   public iniciarNuevoPedido() {
     this.BuscarPedido();
@@ -285,7 +292,7 @@ export class PedidosPage implements OnDestroy, OnInit {
             console.log('Grabar Pedido');
             this.confirmarAccion();
           }
-        },/* {
+        }, /* {
           text: 'Localizar Pedido',
           handler: () => {
             console.log('Localizar Pedido');
@@ -317,7 +324,7 @@ export class PedidosPage implements OnDestroy, OnInit {
             console.log('Localizar Artículo');
             this.listaArticulos();
           }
-        },/*
+        }, /*
         {
           text: 'Estado General',
           handler: () => {
@@ -563,6 +570,7 @@ export class PedidosPage implements OnDestroy, OnInit {
         return data;
       });
   }
+
   public confirmarAccion() {
     let alert = this.alertCtrl.create({
       title: 'Confirmar',
@@ -585,6 +593,7 @@ export class PedidosPage implements OnDestroy, OnInit {
     });
     alert.present();
   }
+
   public crearPedido() {
 
 
@@ -610,11 +619,23 @@ export class PedidosPage implements OnDestroy, OnInit {
 
   public addListaPedidos(cantidadCompra: number) {
     var articuloPedido = new ArticuloPedido(null, this.txtCodArticulo.toUpperCase(), (cantidadCompra * 1), (this.txtPrecZonLib * 1), null);
-
-    var articuloAdiciona = this.listadoInPedidos.filter(item => item.codigoArticulo = articuloPedido.codigoArticulo);
-    if(articuloAdiciona==null || articuloAdiciona == undefined) {
+    let modificar = true;
+    //var articuloAdiciona = this.listadoInPedidos.filter(item => item.codigoArticulo = articuloPedido.codigoArticulo);
+    for(let articulo of this.listadoInPedidos){
+      if(this.txtCodArticulo.toUpperCase() == articulo.codigoArticulo.toUpperCase()){
+        modificar = false;
+        break;
+      }
+    }
+    if (modificar) {
       this.listadoInPedidos.push(articuloPedido);
-    }else{
+      this.txtCantidadTotal = 0;
+      this.txtPrecioTotal = 0;
+      for (let articulo of this.listadoInPedidos) {
+        this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
+        this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
+      }
+    } else {
       let alert = this.alertCtrl.create({
         title: 'Existen datos duplicados',
         subTitle: 'El codigo ' + this.txtCodArticulo + " se encuentra duplicado, debe eliminar el articulo para registrar uno nuevo.",
@@ -622,12 +643,7 @@ export class PedidosPage implements OnDestroy, OnInit {
       });
       alert.present();
     }
-    this.txtCantidadTotal = 0;
-    this.txtPrecioTotal = 0;
-    for (let articulo of this.listadoInPedidos) {
-      this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
-      this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
-    }
+
   }
 
   public eliminarArticuloPedido(item: ArticuloPedido) {
@@ -760,7 +776,8 @@ export class PedidosPage implements OnDestroy, OnInit {
   public openModalWithParams() {
     this.detallePedidos();
   }
-  public keytab(event){
+
+  public keytab(event) {
     console.log("evento log")
     console.log(event);
     console.log(event.srcElement.attrs);

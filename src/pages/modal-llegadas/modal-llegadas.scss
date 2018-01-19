@@ -54,11 +54,11 @@ page-modal-llegadas {
     background: color($colors, amarrillo-claro);
   }
   .wrap{
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap: break-word;
+    //white-space: pre-wrap;
+    //white-space: -moz-pre-wrap;
+    //white-space: -pre-wrap;
+    //white-space: -o-pre-wrap;
+    //word-wrap: break-word;
     /*
     overflow:hidden;
     white-space:nowrap;
@@ -66,5 +66,18 @@ page-modal-llegadas {
 
   }
 
+  .estilizado{
+    font-weight: bold !important;
+    text-decoration: underline !important;
+  }
+  .mostrarObservacion{
+    //width: 25%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+.col{
+  width: 25% !important;
+}
 
 }

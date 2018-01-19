@@ -52,12 +52,12 @@
     <ion-grid  class="grilla-pedidos">
       <ion-row class="seleccionado grillas" *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista, item.id, item)" ngClass="background: color($colors, cafe-suave);">
         <ion-col>
-          <ion-item class="grillas" (click)="filtrarPorCodigo(item.codigoProveedor)">
+          <ion-item class="grillas estilizado " (click)="filtrarPorCodigo(item.codigoProveedor)">
             <ion-label stacked class="wrap">{{item.codigoProveedor}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
-          <ion-item class="grillas">
+          <ion-item class="grillas ">
 
             <ion-label stacked class="wrap">{{item.fechaMovimiento}}</ion-label>
           </ion-item>
@@ -69,7 +69,7 @@
           </ion-item>
         </ion-col>
         <ion-col>
-          <ion-item class="grillas" (click)="filtrarPorObservacion(item.observacion)">
+          <ion-item class="grillas estilizado mostrarObservacion" (click)="filtrarPorObservacion(item.observacion)">
             <ion-label stacked class="wrap">{{item.observacion}}
             </ion-label>
           </ion-item>
@@ -120,7 +120,7 @@
       </ion-col>
       <ion-col>
         <ion-item>
-          <ion-label class="titulos" stacked>Observación</ion-label>
+          <ion-label class="titulos" stacked>Sub Total</ion-label>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -145,7 +145,7 @@
         </ion-col>
         <ion-col>
           <ion-item class="grillas">
-            <ion-label stacked class="wrap">{{art.observacion}}
+            <ion-label stacked class="wrap">{{art.cantidad * art.precio}}
             </ion-label>
           </ion-item>
         </ion-col>

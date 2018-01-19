@@ -130,6 +130,8 @@ export class ModalLlegadasPage implements OnDestroy {
     alert.present();
   }
   public guardarPedido() {
+    this.sharedService.setData(new DatosPedidos("0","",0,"","",null));
+
     if (this.idPedido === 0) {
       let mostrarAlert = this.alertCtrl.create({
         title: 'Error',
@@ -485,6 +487,15 @@ export class ModalLlegadasPage implements OnDestroy {
     this.detallePedidos();
   }
   public filtrarPorObservacion(datosPedido:string){
+
+
+      let alert = this.alertCtrl.create({
+        title: 'Observacion',
+        subTitle: datosPedido,
+        buttons: ['Aceptar']
+      });
+      alert.present();
+
 
     let listaPedidosLocal:DatosPedidos[];
     listaPedidosLocal = this.listaPedidos.list.filter(item => item.observacion == datosPedido);
