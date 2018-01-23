@@ -64,7 +64,8 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Codigo Artículo</ion-label>
-              <ion-input (change)="obtenerArticulo()" [(ngModel)]="txtCodArticulo" type="text"></ion-input>
+              <!--(change)="obtenerArticulo()"-->
+              <ion-input (click)="filtrarArticulo()" [(ngModel)]="txtCodArticulo" type="text"></ion-input>
 
             </ion-item>
           </ion-list>
@@ -173,7 +174,7 @@
     <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
     <ion-fab-list side="top">
       <button ion-fab color="primary" (click)="accionPorLlegar()" ><ion-icon name="send"></ion-icon></button>
-      <button ion-fab color="cafe-claro" (click)="accionArticulo()" ><ion-icon name="archive"></ion-icon></button>
+      <!--<button ion-fab color="cafe-claro" (click)="accionArticulo()" ><ion-icon name="archive"></ion-icon></button>-->
       <button ion-fab color="secondary" (click)="accionProveedor()" ><ion-icon name="body"></ion-icon></button>
       <button ion-fab color="naranja" (click)="accionPedidos()" ><ion-icon name="cart"></ion-icon></button>
     </ion-fab-list>

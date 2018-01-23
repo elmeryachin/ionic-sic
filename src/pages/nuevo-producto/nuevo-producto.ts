@@ -6,6 +6,7 @@ import {
 import {MdlArticulo} from "../model/mdl-articulo";
 import {ObjArticulo} from "../clases/obj-articulo";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
+import {Ambientes, ResponseExistences} from "../response/response-existences";
 
 /**
  * Generated class for the NuevoProductoPage page.
@@ -33,6 +34,8 @@ export class NuevoProductoPage implements OnInit {
   precioVenta:number = 0;
   seActualiza: boolean;
   mensaje;
+  mostrarExistencias = false;
+  respuestaExistencias:ResponseExistences = new ResponseExistences(null,true,"");
   url:string = 'http://localhost:8080';//'https://app-pos.herokuapp.com';
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
@@ -44,6 +47,7 @@ export class NuevoProductoPage implements OnInit {
 
   }
   public calculaPrecioFinal() {
+    this.mostrarExistencias = false;
     this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
 
     this.precioCompra = (this.precioKilo * this.pesoStock) + (this.precioZonaLibre * 1) + (this.montoGasto*1);
@@ -74,6 +78,7 @@ export class NuevoProductoPage implements OnInit {
   }
 
   public buscaProducto() {
+    this.mostrarExistencias = true;
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
     });
@@ -101,11 +106,19 @@ export class NuevoProductoPage implements OnInit {
           this.precioVenta = data.articulo.precioVenta;
           this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
           this.mensaje = data.articulo.descripcion;
+
+          this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.codigoArticulo.toUpperCase()+"/existence").subscribe(
+            data2 => {
+              console.log(data2);
+
+              this.respuestaExistencias = data2;
+            });
         }
       });
   }
 
   public guardarArticulo() {
+    this.mostrarExistencias = false;
     const loading = this.loadingCtrl.create({
       content: 'Registrando los datos...'
     });
@@ -139,6 +152,7 @@ export class NuevoProductoPage implements OnInit {
   }
 
   public eliminarArticulo() {
+    this.mostrarExistencias = false;
     const loading = this.loadingCtrl.create({
       content: 'Registrando los datos...'
     });
@@ -156,6 +170,7 @@ export class NuevoProductoPage implements OnInit {
     }
   }
   public limpiarDatos(){
+    this.mostrarExistencias = false;
     this.seActualiza = false;
     this.descripcion = '';
     this.precioKilo = 0;
@@ -169,6 +184,7 @@ export class NuevoProductoPage implements OnInit {
     this.montoGasto = 0;
   }
   public listarProductos(){
+    this.mostrarExistencias = false;
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
@@ -208,7 +224,7 @@ export class NuevoProductoPage implements OnInit {
       });
   }
   public reportesPedidos(){
-
+    this.mostrarExistencias = false;
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Reportes',
       buttons: [

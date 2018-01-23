@@ -89,65 +89,15 @@
         </ion-list>
       </ion-col>
     </ion-row>
+
     <ion-row>
-      <ion-col col-md-6 push-md-3>
-        <ion-list>
-          <ion-item>
-            <ion-label stacked>Gastos</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Compra</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Venta</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Mercado</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-      <ion-col col-md-3 push-md-3>
-        <ion-list>
-          <ion-item>
-            <ion-label stacked>Gastos</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Compra</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Venta</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Mercado</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-      <ion-col col-md-3 pull-md-9>
-        <ion-list>
-          <ion-item>
-            <ion-label stacked>Gastos</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Compra</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Venta</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Precio Mercado</ion-label>
-            <ion-input type="text"></ion-input>
-          </ion-item>
+      <ion-col>
+          <ion-list >
+            <ion-item *ngFor="let item of respuestaExistencias.lista">
+              <ion-label stacked>{{item.codigoAmbiente}}</ion-label>
+              <ion-input type="text" disabled="true">{{item.cantidad}}</ion-input>
+            </ion-item>
+
         </ion-list>
       </ion-col>
     </ion-row>

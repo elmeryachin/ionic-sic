@@ -9,7 +9,7 @@ import {ResponseIniPedido} from "../response/response-ini-pedido";
 import {ResponseDatosProveedor} from "../response/response-datos-proveedor";
 import {ResponseListaProveedor} from "../response/response-lista-proveedor";
 import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
-import {ResponseListArticulotr} from "../response/response-list-articulotr";
+import {claseListaArticuloPr, ResponseListArticulotr} from "../response/response-list-articulotr";
 import {ArticuloPedido, Pedido, RequestPedido} from "../request/request-pedido";
 import {ResponseAddPedido} from "../response/response-add-pedido";
 import {ModalLlegadasPage} from "../modal-llegadas/modal-llegadas";
@@ -18,6 +18,7 @@ import {RequestProveedor} from "../request/request-proveedor";
 import {GlobalResponse} from "../response/globalResponse";
 import {DataShareProvider} from "../../providers/data-share/data-share";
 import {Subscription} from "rxjs/Subscription";
+import {RequestPedidosLista} from "../request/RequestPedidosLista";
 
 /**
  * Generated class for the PedidosPage page.
@@ -770,6 +771,78 @@ export class PedidosPage implements OnDestroy, OnInit {
         }
       ]
     });
+    alert.present();
+  }
+  public filtrarArticulo(){
+    let alert = this.alertCtrl.create();
+    alert.setTitle("Buscar Articulo");
+    alert.addInput({
+      type: 'text',
+      placeholder:"Buscar",
+      name:"txtBuscaArticulo"
+
+    });
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        console.log(data.toString());
+        const loading = this.loadingCtrl.create({
+          content: 'Listando Productos'
+        });
+        loading.present();
+
+        var urlListaProveedor = '/articulo/list';
+        let requestArticulo:RequestPedidosLista = new RequestPedidosLista("");
+        requestArticulo.patron = data.txtBuscaArticulo.trim().toUpperCase();
+        this.sicService.postGlobal<ResponseListArticulotr>(requestArticulo, urlListaProveedor).subscribe(data2 => {
+          loading.dismiss();
+
+          console.log(data2);
+          let alertInterno = this.alertCtrl.create();
+          alertInterno.setTitle('Resultados');
+          if(data2.respuesta){
+            console.log("respuesta ok")
+            let check:boolean = true;
+
+
+            for(let item of data2.lista){
+              console.log("lista")
+              alertInterno.addInput({
+                type: 'radio',
+                label: item.codigo + '-' + item.nombre,
+                value: item.codigo,
+                checked: check
+              });
+              check = false
+            }
+
+
+
+          }else{
+            alertInterno.addInput({
+              type: 'text',
+              label: data2.mensaje,
+              value: data2.mensaje,
+              disabled : true
+            });
+          }
+          alertInterno.addButton('Cancelar');
+          alertInterno.addButton({
+            text: 'Aceptar',
+            handler: (data: any) => {
+              if(data != undefined){
+                console.log('Datos Enviados:', data);
+                this.txtCodArticulo = data.toUpperCase();
+                this.obtenerArticulo();
+              }
+            }
+          });
+          alertInterno.present();
+        });
+      }
+    });
+
     alert.present();
   }
 
