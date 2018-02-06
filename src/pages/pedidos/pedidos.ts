@@ -858,4 +858,80 @@ export class PedidosPage implements OnDestroy, OnInit {
     console.log(element);
 
   }
+
+  public filtrarProveedor(){
+    let alert = this.alertCtrl.create();
+    alert.setTitle("Buscar Proveedor");
+    alert.addInput({
+      type: 'text',
+      placeholder:"Buscar",
+      name:"txtBuscarProveedor"
+
+    });
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        console.log(data.toString());
+        const loading = this.loadingCtrl.create({
+          content: 'Listando Productos'
+        });
+        loading.present();
+
+        var urlListaProveedor = '/pedido/proveedor/list';
+        let requestArticulo:RequestPedidosLista = new RequestPedidosLista("");
+        requestArticulo.patron = data.txtBuscaArticulo.trim().toUpperCase();
+        this.sicService.postGlobal<ResponseListArticulotr>(requestArticulo, urlListaProveedor).subscribe(data2 => {
+          loading.dismiss();
+
+          console.log(data2);
+          let alertInterno = this.alertCtrl.create();
+          alertInterno.setTitle('Resultados');
+          if(data2.respuesta){
+            console.log("respuesta ok")
+            let check:boolean = true;
+
+
+            for(let item of data2.lista){
+              console.log("lista")
+              alertInterno.addInput({
+                type: 'radio',
+                label: item.codigo + '-' + item.nombre,
+                value: item.codigo,
+                checked: check
+              });
+              check = false
+            }
+
+
+
+          }else{
+            alertInterno.addInput({
+              type: 'text',
+              label: data2.mensaje,
+              value: data2.mensaje,
+              disabled : true
+            });
+          }
+          alertInterno.addButton('Cancelar');
+          alertInterno.addButton({
+            text: 'Aceptar',
+            handler: (data: any) => {
+              if(data != undefined){
+                console.log('Datos Enviados:', data);
+                this.txtCodArticulo = data.toUpperCase();
+                this.obtenerArticulo();
+              }
+            }
+          });
+          alertInterno.present();
+        });
+      }
+    });
+
+    alert.present();
+  }
+
+
+
 }

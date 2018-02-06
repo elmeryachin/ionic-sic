@@ -46,4 +46,11 @@ page-pedidos {
     white-space: -o-pre-wrap;
     word-wrap: break-word;
   }
+  @font-face {
+    font-family: "IconWolf";
+    src: url("../../../www/assets/fonts/i.ttf");
+  }
+  .icon-floppy-disk:before {
+    content: "\e962";
+  }
 }
