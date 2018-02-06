@@ -59,6 +59,15 @@ export class LoginPage {
         alert.present();
         return;
       }
+    }, error =>{
+      let alert;
+      alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: 'Error al iniciar sessión',
+        buttons: ['Aceptar']
+      });
+      alert.present();
+      return;
     });
 
 

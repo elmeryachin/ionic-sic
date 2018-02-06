@@ -6,7 +6,7 @@ import {
 import {MdlArticulo} from "../model/mdl-articulo";
 import {ObjArticulo} from "../clases/obj-articulo";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
-import {Ambientes, ResponseExistences} from "../response/response-existences";
+import {ResponseExistences} from "../response/response-existences";
 
 /**
  * Generated class for the NuevoProductoPage page.
@@ -124,8 +124,19 @@ export class NuevoProductoPage implements OnInit {
     });
 
     loading.present();
-    if(this.codigoArticulo !=undefined){
+    if(this.codigoArticulo != undefined){
       this.codigoArticulo.toUpperCase()
+    }else{
+      loading.dismiss();
+    let alert;
+        alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: 'Debe ingresar los datos solicitados.',
+          buttons: ['Aceptar']
+        });
+        alert.present();
+        return;
+
     }
     if (!this.seActualiza) {
       this.sicService.addArticulo(new MdlArticulo(new ObjArticulo(this.codigoArticulo, this.descripcion,
@@ -136,6 +147,16 @@ export class NuevoProductoPage implements OnInit {
           this.limpiarDatos();
           this.presentAlert('Información','Su producto fue registrado correctamente');
           return data;
+        }, error =>{
+          let alert;
+          loading.dismiss();
+          alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: 'Error al guardar el articulo.',
+            buttons: ['Aceptar']
+          });
+          alert.present();
+          return;
         });
 
     } else {
@@ -147,6 +168,16 @@ export class NuevoProductoPage implements OnInit {
           loading.dismiss();
           this.presentAlert('Información','Su producto fué actualizado correctamente');
           return data;
+        }, error =>{
+          let alert;
+          loading.dismiss();
+          alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: 'Error al actualizar el articulo',
+            buttons: ['Aceptar']
+          });
+          alert.present();
+          return;
         });
     }
   }
