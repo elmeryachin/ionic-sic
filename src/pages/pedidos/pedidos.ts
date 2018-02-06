@@ -9,7 +9,7 @@ import {ResponseIniPedido} from "../response/response-ini-pedido";
 import {ResponseDatosProveedor} from "../response/response-datos-proveedor";
 import {ResponseListaProveedor} from "../response/response-lista-proveedor";
 import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
-import {claseListaArticuloPr, ResponseListArticulotr} from "../response/response-list-articulotr";
+import {ResponseListArticulotr} from "../response/response-list-articulotr";
 import {ArticuloPedido, Pedido, RequestPedido} from "../request/request-pedido";
 import {ResponseAddPedido} from "../response/response-add-pedido";
 import {ModalLlegadasPage} from "../modal-llegadas/modal-llegadas";
