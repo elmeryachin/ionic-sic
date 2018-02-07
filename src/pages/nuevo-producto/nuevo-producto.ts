@@ -6,7 +6,11 @@ import {
 import {MdlArticulo} from "../model/mdl-articulo";
 import {ObjArticulo} from "../clases/obj-articulo";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
-import {ResponseExistences} from "../response/response-existences";
+import {Ambientes, ResponseExistences} from "../response/response-existences";
+import {ResponseSucursales, Sucursales} from "../response/ResponseSucursales";
+import {MdlSucursales} from "../model/MdlSucursales";
+import {RequestPedidosLista} from "../request/RequestPedidosLista";
+import {ResponseListArticulotr} from "../response/response-list-articulotr";
 
 /**
  * Generated class for the NuevoProductoPage page.
@@ -36,24 +40,12 @@ export class NuevoProductoPage implements OnInit {
   mensaje;
   mostrarExistencias = false;
   respuestaExistencias:ResponseExistences = new ResponseExistences(null,true,"");
+    listaSucursales:Sucursales[];
+  mdlSucursales:MdlSucursales[] = new Array();
   url:string = 'http://localhost:8080';//'https://app-pos.herokuapp.com';
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController) {
-  }
-
-  ngOnInit() {
-    this.seActualiza = false;
-
-  }
-  public calculaPrecioFinal() {
-    this.mostrarExistencias = false;
-    this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
-
-    this.precioCompra = (this.precioKilo * this.pesoStock) + (this.precioZonaLibre * 1) + (this.montoGasto*1);
-  }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad NuevoProductoPage');
   }
   presentAlert(titulo:string, mensaje:string) {
     const alert = this.alertCtrl.create({
@@ -76,6 +68,42 @@ export class NuevoProductoPage implements OnInit {
 
     toast.present();
   }
+  private CargarSucrsales(){
+
+    const loading = this.loadingCtrl.create({
+      content: 'Obteniendo los datos'
+    });
+    loading.present();
+    var url = '/inventario/articulo/sucursales';
+    this.sicService.getGlobal<ResponseSucursales>(url).subscribe(data => {
+      loading.dismiss();
+      if (data != null) {
+        if(data.respuesta){
+          this.listaSucursales = data.list;
+          for(let i:number = 0; i < this.listaSucursales.length; i++){
+            this.mdlSucursales.push(new MdlSucursales(this.listaSucursales[i].codigo,this.listaSucursales[i].nombre,0));
+          }
+        }else{
+          this.presentToast("No se pudieron obtener los datos de sucursales.")
+        }
+      }
+    });
+  }
+  ngOnInit() {
+    this.seActualiza = false;
+    this.CargarSucrsales();
+
+  }
+  public calculaPrecioFinal() {
+    this.mostrarExistencias = false;
+    this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
+
+    this.precioCompra = (this.precioKilo * this.pesoStock) + (this.precioZonaLibre * 1) + (this.montoGasto*1);
+  }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad NuevoProductoPage');
+  }
+
 
   public buscaProducto() {
     this.mostrarExistencias = true;
@@ -112,6 +140,15 @@ export class NuevoProductoPage implements OnInit {
               console.log(data2);
 
               this.respuestaExistencias = data2;
+              let ambientes:Ambientes[] = new Array();
+              ambientes = data2.list;
+              for(let i=0; i < ambientes.length;i++){
+                for(let j=0; j< this.mdlSucursales.length;j++){
+                  if(ambientes[i].codigoAmbiente == this.mdlSucursales[j].codigoSucursal){
+                    this.mdlSucursales[j].cantidadArticulo =ambientes[i].cantidad;
+                  }
+                }
+              }
             });
         }
       });
@@ -299,6 +336,80 @@ export class NuevoProductoPage implements OnInit {
     });
 
     actionSheet.present();
+  }
+
+
+  public filtrarArticulo(){
+    let alert = this.alertCtrl.create();
+    alert.setTitle("Buscar Articulo");
+    alert.addInput({
+      type: 'text',
+      placeholder:"Buscar",
+      name:"txtBuscaArticulo"
+
+    });
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        console.log(data.toString());
+        const loading = this.loadingCtrl.create({
+          content: 'Listando Productos'
+        });
+        loading.present();
+
+        var urlListaProveedor = '/articulo/list';
+        let requestArticulo:RequestPedidosLista = new RequestPedidosLista("");
+        requestArticulo.patron = data.txtBuscaArticulo.trim().toUpperCase();
+        this.sicService.postGlobal<ResponseListArticulotr>(requestArticulo, urlListaProveedor).subscribe(data2 => {
+          loading.dismiss();
+
+          console.log(data2);
+          let alertInterno = this.alertCtrl.create();
+          alertInterno.setTitle('Resultados');
+          if(data2.respuesta){
+            console.log("respuesta ok")
+            let check:boolean = true;
+
+
+            for(let item of data2.lista){
+              console.log("lista")
+              alertInterno.addInput({
+                type: 'radio',
+                label: item.codigo + '-' + item.nombre,
+                value: item.codigo,
+                checked: check
+              });
+              check = false
+            }
+
+
+
+          }else{
+            alertInterno.addInput({
+              type: 'text',
+              label: data2.mensaje,
+              value: data2.mensaje,
+              disabled : true
+            });
+          }
+          alertInterno.addButton('Cancelar');
+          alertInterno.addButton({
+            text: 'Aceptar',
+            handler: (data: any) => {
+              if(data != undefined){
+                console.log('Datos Enviados:', data);
+                this.codigoArticulo = data.toUpperCase();
+                this.buscaProducto();
+              }
+            }
+          });
+          alertInterno.present();
+        });
+      }
+    });
+
+    alert.present();
   }
 
 }

@@ -19,17 +19,18 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-list >
+        <ion-list>
           <ion-item>
             <ion-label stacked>Código Artículo</ion-label>
-            <ion-input type="text" [(ngModel)]="codigoArticulo" placeholder="ej. asc0123" (change)="buscaProducto()"></ion-input>
+            <ion-input type="text" [(ngModel)]="codigoArticulo" placeholder="ej. asc0123"
+                       (change)="buscaProducto()"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-list >
+        <ion-list>
           <ion-item>
             <ion-label stacked>Descripción</ion-label>
             <ion-input type="text" [(ngModel)]="descripcion" type="text"></ion-input>
@@ -39,7 +40,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-list >
+        <ion-list>
           <ion-item>
             <ion-label stacked>Precio por Kilo</ion-label>
             <ion-input [(ngModel)]="precioKilo" (change)="calculaPrecioFinal()" type="number"></ion-input>
@@ -53,8 +54,9 @@
             <ion-input type="number" (change)="calculaPrecioFinal()" [(ngModel)]="precioZonaLibre"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label stacked>% Gastos % </ion-label>
-            <ion-input type="number" (change)="calculaPrecioFinal()" step="any" [(ngModel)]="porcentajeGastos"></ion-input>
+            <ion-label stacked>% Gastos %</ion-label>
+            <ion-input type="number" (change)="calculaPrecioFinal()" step="any"
+                       [(ngModel)]="porcentajeGastos"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -62,7 +64,8 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Gastos</ion-label>
-            <ion-input type="number" (change)="calculaPrecioFinal()" step="any" disabled [(ngModel)]="montoGasto"></ion-input>
+            <ion-input type="number" (change)="calculaPrecioFinal()" step="any" disabled
+                       [(ngModel)]="montoGasto"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Precio Compra</ion-label>
@@ -81,7 +84,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-list >
+        <ion-list>
           <ion-item>
             <ion-label stacked>Mensaje</ion-label>
             <ion-input type="text" [(ngModel)]="mensaje" type="text"></ion-input>
@@ -89,30 +92,41 @@
         </ion-list>
       </ion-col>
     </ion-row>
-
-    <ion-row>
+    <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
+    <ion-row *ngFor="let item of mdlSucursales" class="grillas">
       <ion-col>
-          <ion-list >
-            <ion-item *ngFor="let item of respuestaExistencias.lista">
-              <ion-label stacked>{{item.codigoAmbiente}}</ion-label>
-              <ion-input type="text" disabled="true">{{item.cantidad}}</ion-input>
-            </ion-item>
-
-        </ion-list>
+        <ion-item class="grillas">
+          <ion-label stacked class="wrap"> {{item.nombreSucursal}}</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item class="grillas" class="wrap">
+          <ion-label stacked>{{item.cantidadArticulo}}</ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
+    </ion-scroll>
 
   </ion-grid>
-  <ion-fab bottom right >
-    <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
+  <ion-fab bottom right>
+    <button ion-fab color="danger">
+      <ion-icon name="more"></ion-icon>
+    </button>
     <ion-fab-list side="top">
-      <button ion-fab color="primary" (click)="guardarArticulo()"><img class="itm-img" src="assets/img/save.svg" /></button>
-      <button ion-fab color="secondary" (click)="eliminarArticulo()"><ion-icon name="trash"></ion-icon></button>
+      <button ion-fab color="primary" (click)="guardarArticulo()"><img class="itm-img" src="assets/img/save.svg"/>
+      </button>
+      <button ion-fab color="secondary" (click)="eliminarArticulo()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
 
     </ion-fab-list>
     <ion-fab-list side="left">
-      <button ion-fab color="naranja" (click)="listarProductos()"><ion-icon name="list"></ion-icon></button>
-      <button ion-fab color="secondary" (click)="reportesPedidos()" ><ion-icon name="print"></ion-icon></button>
+      <button ion-fab color="naranja" (click)="filtrarArticulo()">
+        <ion-icon name="list"></ion-icon>
+      </button>
+      <button ion-fab color="secondary" (click)="reportesPedidos()">
+        <ion-icon name="print"></ion-icon>
+      </button>
     </ion-fab-list>
   </ion-fab>
 

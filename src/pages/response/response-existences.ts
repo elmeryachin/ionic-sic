@@ -1,5 +1,5 @@
 export class ResponseExistences{
-  constructor(public lista: Ambientes[], public respuesta : boolean, public mensaje: string ) {
+  constructor(public list: Ambientes[], public respuesta : boolean, public mensaje: string ) {
   }
 
 }

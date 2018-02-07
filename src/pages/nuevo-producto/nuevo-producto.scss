@@ -16,5 +16,16 @@ page-nuevo-producto {
   .item-input .label-md, .item-select .label-md, .item-datetime .label-md {
     color: #3c3c3c;
   }
+  .grillas{//amarillo-grid
+    background: color($colors, amarillo-grid);
+  }
+  .grid{
+    .item-block{
+      min-height: 2.3rem !important;
+    }
+    .item-md{
+      font-size: 1.2rem !important;//todo: tamanio de fuente
+    }
+  }
 
 }
