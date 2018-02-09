@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {MenuController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 
 
 @Component({
@@ -9,7 +10,7 @@ import {MenuController, NavController, NavParams, ViewController} from 'ionic-an
 export class HomePage {
 
   token:string = '';
-  constructor(public navCtrl: NavController,public viewCtrl: ViewController, public menu: MenuController, params: NavParams) {
+  constructor(public navCtrl: NavController,public viewCtrl: ViewController, public menu: MenuController, params: NavParams, public sicService:SicServiceProvider) {
     //this.token = navCtrl.
     menu.enable(true);
     console.log("Esto es DATA");
@@ -17,6 +18,13 @@ export class HomePage {
     this.token = params.data.data.token;
     console.log(this.token);
     //this.servicioTest();
+
+  }
+  ngOnInit() {
+    console.log("obtiene String");
+    this.sicService.getFeed("http://www.la-razon.com/rss/latest/?contentType=NWS").subscribe(data => {
+      console.log(data);
+    });
 
   }
 

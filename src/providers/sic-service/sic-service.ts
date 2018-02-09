@@ -73,4 +73,7 @@ export class SicServiceProvider {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
     });
   }
+  getFeed(url:string){
+    return this.http.get(url);
+  }
 }
