@@ -22,9 +22,9 @@ export class HomePage {
   }
   ngOnInit() {
     console.log("obtiene String");
-    this.sicService.getFeed("http://www.la-razon.com/rss/latest/?contentType=NWS").subscribe(data => {
-      console.log(data);
-    });
+    //this.sicService.getFeed("http://rss.eldiario.net/index.php").subscribe(data => {
+    //  console.log(data);
+    //});
 
   }
 

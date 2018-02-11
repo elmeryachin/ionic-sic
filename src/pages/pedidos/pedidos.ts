@@ -779,7 +779,8 @@ export class PedidosPage implements OnDestroy, OnInit {
     alert.addInput({
       type: 'text',
       placeholder:"Buscar",
-      name:"txtBuscaArticulo"
+      name:"txtBuscaArticulo",
+      id:"txtBuscarArticulo"
 
     });
     alert.addButton('Cancel');
@@ -844,6 +845,7 @@ export class PedidosPage implements OnDestroy, OnInit {
     });
 
     alert.present();
+    //document.getElementById('txtBuscarArticulo').focus();
   }
 
   public openModalWithParams() {

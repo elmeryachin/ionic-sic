@@ -87,6 +87,10 @@ export class NuevoProductoPage implements OnInit {
           this.presentToast("No se pudieron obtener los datos de sucursales.")
         }
       }
+    }, error=>
+    {
+      loading.dismiss();
+      this.presentToast("Error al obtener los datos");
     });
   }
   ngOnInit() {
@@ -112,13 +116,18 @@ export class NuevoProductoPage implements OnInit {
     });
 
     loading.present();
+    if(this.codigoArticulo.trim()== 0){
+      loading.dismiss();
+      this.presentToast("El valor de articulo no es correcto");
+      return;
+    }
     //this.presentLoadingDefault();
     this.limpiarDatos();
     this.sicService.getArticulo(this.codigoArticulo.toUpperCase()).subscribe(
       data => {
         loading.dismiss();
         //this.dimmisLoading();
-        console.log(data);
+
         //this.respuestaArticulo = data;
         if (data.articulo != null) {
           this.presentToast('Se ha encontrado una coincidencia');
@@ -137,20 +146,42 @@ export class NuevoProductoPage implements OnInit {
 
           this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.codigoArticulo.toUpperCase()+"/existence").subscribe(
             data2 => {
+              console.log("*************")
               console.log(data2);
 
               this.respuestaExistencias = data2;
               let ambientes:Ambientes[] = new Array();
               ambientes = data2.list;
-              for(let i=0; i < ambientes.length;i++){
-                for(let j=0; j< this.mdlSucursales.length;j++){
-                  if(ambientes[i].codigoAmbiente == this.mdlSucursales[j].codigoSucursal){
-                    this.mdlSucursales[j].cantidadArticulo =ambientes[i].cantidad;
+              console.log(this.respuestaExistencias.respuesta);
+              if(this.respuestaExistencias.respuesta) {
+                console.log("ingresa por true");
+                for (let i = 0; i < ambientes.length; i++) {
+                  for (let j = 0; j < this.mdlSucursales.length; j++) {
+                    if (ambientes[i].codigoAmbiente == this.mdlSucursales[j].codigoSucursal) {
+                      this.mdlSucursales[j].cantidadArticulo = ambientes[i].cantidad;
+                    }
                   }
                 }
+              }else{
+                console.log("ingresa por false");
+                for(let j=0; j< this.mdlSucursales.length;j++){
+                    this.mdlSucursales[j].cantidadArticulo = 0;
+                }
               }
+            },error=>{
+              loading.dismiss();
+              this.presentToast("Error al obtener los datos.");
             });
+        }else{
+          console.log("ingresa por false");
+          for(let j=0; j< this.mdlSucursales.length;j++){
+            this.mdlSucursales[j].cantidadArticulo = 0;
+          }
         }
+      },
+      error =>{
+        loading.dismiss();
+        this.presentToast("Error al obtener los datos");
       });
   }
 
@@ -234,7 +265,10 @@ export class NuevoProductoPage implements OnInit {
           this.limpiarDatos();
           this.presentAlert('Información','Su producto fué eliminado correctamente');
           return data;
-        });
+        }, error=>{
+          loading.dismiss();
+          this.presentToast("Error al obtener los datos.");
+      });
     }
   }
   public limpiarDatos(){
@@ -289,6 +323,9 @@ export class NuevoProductoPage implements OnInit {
 
         alert.present();
         return data;
+      },error =>{
+        loading.dismiss();
+        this.presentToast("Error al obtener los datos.");
       });
   }
   public reportesPedidos(){
@@ -357,7 +394,11 @@ export class NuevoProductoPage implements OnInit {
           content: 'Listando Productos'
         });
         loading.present();
-
+        if(data.txtBuscaArticulo.trim().toUpperCase() == '%' || data.txtBuscaArticulo.trim().toUpperCase() == '%%'){
+          this.presentToast("Debe ingresar un codigo");
+          loading.dismiss();
+          return;
+        }
         var urlListaProveedor = '/articulo/list';
         let requestArticulo:RequestPedidosLista = new RequestPedidosLista("");
         requestArticulo.patron = data.txtBuscaArticulo.trim().toUpperCase();
@@ -405,6 +446,9 @@ export class NuevoProductoPage implements OnInit {
             }
           });
           alertInterno.present();
+        },error =>{
+          loading.dismiss();
+          this.presentToast("Error al obtener los datos");
         });
       }
     });
