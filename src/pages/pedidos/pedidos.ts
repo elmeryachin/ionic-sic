@@ -690,6 +690,10 @@ export class PedidosPage implements OnDestroy, OnInit {
         } else {
           this.presentToast('No se pudo recuperar los datos solicitados.');
         }
+      },error=>{
+        loading.dismiss();
+        this.presentToast("No se pudo obtener los datos");
+        //TODO:generar mensaje de error
       });
   }
 

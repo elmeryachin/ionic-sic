@@ -42,7 +42,7 @@ export class LoginPage {
     loading.present();
     let requestPedido:RequestLogin = new RequestLogin(this.txtUsuario, this.txtPassword,this.appName,this.appKey, this.device.platform + " " + this.device.model);
     var url = '/acceso/login';
-    this.sicService.postGlobal<ResponseLogin>(requestPedido, url).subscribe( data =>{
+    this.sicService.postGlobal<ResponseLogin>(requestPedido, url).subscribe( data => {
 
       loading.dismiss();
       let alert;
@@ -60,6 +60,7 @@ export class LoginPage {
         return;
       }
     }, error =>{
+      loading.dismiss();
       let alert;
       alert = this.alertCtrl.create({
         title: 'Error',
