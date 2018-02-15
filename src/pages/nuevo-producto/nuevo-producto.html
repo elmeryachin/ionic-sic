@@ -23,7 +23,18 @@
           <ion-item>
             <ion-label stacked>Código Artículo</ion-label>
             <ion-input autofocus #txtCodArticulo type="text" [(ngModel)]="codigoArticulo" placeholder="ej. asc0123"
-                       (change)="buscaProducto()" ></ion-input>
+                       (change)="buscaProducto()" (keyup)="onKey($event)" ></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>Codigo de Barras</ion-label>
+            <ion-input type="text" [(ngModel)]="codBarras" placeholder="ej. asc0123"></ion-input>
+            <button ion-button icon-only>
+              <ion-icon name="ios-camera"></ion-icon>
+            </button>
           </ion-item>
         </ion-list>
       </ion-col>

@@ -1,4 +1,4 @@
-import {Component,Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {
   ActionSheetController, AlertController, IonicPage, LoadingController, NavController, NavParams,
   ToastController
@@ -43,6 +43,7 @@ export class NuevoProductoPage implements OnInit {
     listaSucursales:Sucursales[];
   mdlSucursales:MdlSucursales[] = new Array();
   url:string = 'http://localhost:8080';//'https://app-pos.herokuapp.com';
+  codBarras:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController) {
@@ -121,9 +122,12 @@ export class NuevoProductoPage implements OnInit {
     },150);
 
   }
-
+  public onKey(event:any){
+    this.codigoArticulo = this.codigoArticulo.toUpperCase();
+  }
 
   public buscaProducto() {
+    this.codigoArticulo = this.codigoArticulo.toUpperCase();
     this.mostrarExistencias = true;
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
@@ -393,15 +397,16 @@ export class NuevoProductoPage implements OnInit {
   public filtrarArticulo(){
     let alert = this.alertCtrl.create();
     alert.setTitle("Buscar Articulo");
+    alert.setMessage("Ingrese el codigo de articulo.");
     alert.addInput({
       type: 'text',
-      placeholder:"Buscar",
-      name:"txtBuscaArticulo"
-
+      placeholder:'Buscar',
+      name:'txtBuscaArticulo',
+      id:'txtBuscaArticulo'
     });
-    alert.addButton('Cancel');
+    alert.addButton('Cancelar');
     alert.addButton({
-      text: 'OK',
+      text: 'Buscar',
       handler: data => {
         console.log(data.toString());
         const loading = this.loadingCtrl.create({
@@ -418,7 +423,7 @@ export class NuevoProductoPage implements OnInit {
         requestArticulo.patron = data.txtBuscaArticulo.trim().toUpperCase();
         this.sicService.postGlobal<ResponseListArticulotr>(requestArticulo, urlListaProveedor).subscribe(data2 => {
           loading.dismiss();
-
+          console.log("data:2");
           console.log(data2);
           let alertInterno = this.alertCtrl.create();
           alertInterno.setTitle('Resultados');
