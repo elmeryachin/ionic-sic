@@ -22,8 +22,8 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Código Artículo</ion-label>
-            <ion-input type="text" [(ngModel)]="codigoArticulo" placeholder="ej. asc0123"
-                       (change)="buscaProducto()"></ion-input>
+            <ion-input autofocus #txtCodArticulo type="text" [(ngModel)]="codigoArticulo" placeholder="ej. asc0123"
+                       (change)="buscaProducto()" ></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>

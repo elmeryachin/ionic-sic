@@ -21,7 +21,7 @@
 
       <ion-item color="cafe-claro">
         <ion-label floating color="light">Constraseña</ion-label>
-        <ion-input color="light" [(ngModel)]="txtPassword" type="password"></ion-input>
+        <ion-input (keyup.enter)="iniciaSesion()" color="light" [(ngModel)]="txtPassword" type="password"></ion-input>
       </ion-item>
 
     </ion-list>

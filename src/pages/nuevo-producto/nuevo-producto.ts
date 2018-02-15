@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component,Input, OnInit, ViewChild} from '@angular/core';
 import {
   ActionSheetController, AlertController, IonicPage, LoadingController, NavController, NavParams,
   ToastController
@@ -47,6 +47,7 @@ export class NuevoProductoPage implements OnInit {
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController) {
   }
+  @ViewChild('txtCodArticulo') myInput ;
   presentAlert(titulo:string, mensaje:string) {
     const alert = this.alertCtrl.create({
       title: titulo,
@@ -94,6 +95,9 @@ export class NuevoProductoPage implements OnInit {
     });
   }
   ngOnInit() {
+    setTimeout(() => {
+      this.myInput.setFocus();
+    },150);
     this.seActualiza = false;
     this.CargarSucrsales();
 
@@ -106,6 +110,16 @@ export class NuevoProductoPage implements OnInit {
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad NuevoProductoPage');
+    setTimeout(() => {
+      this.myInput.setFocus();
+    },150);
+  }
+  ionViewLoaded() {
+
+    setTimeout(() => {
+      this.myInput.setFocus();
+    },150);
+
   }
 
 
