@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
-  AlertController, IonicPage, LoadingController, ModalController, NavController, NavParams,
+  AlertController, FabContainer, IonicPage, LoadingController, ModalController, NavController, NavParams,
   ToastController
 } from 'ionic-angular';
 import {ActionSheetController} from 'ionic-angular';
@@ -121,7 +121,8 @@ export class PedidosPage implements OnDestroy, OnInit {
     this.subscription.unsubscribe();
   }
 
-  public confirmarActualizacion() {
+  public confirmarActualizacion(fab: FabContainer) {
+    fab.close();
     let alert = this.alertCtrl.create({
       title: 'Confirmar',
       message: 'Está seguro que quiere realizar la operación?',
@@ -182,7 +183,11 @@ export class PedidosPage implements OnDestroy, OnInit {
   }
 
   //debe obtener el ultimo numero de pedido
-  public iniciarNuevoPedido() {
+  public iniciarNuevoPedido(fab?: FabContainer) {
+    if(fab) {
+      fab.close();
+    }
+
     this.BuscarPedido();
     //this.txtNumMovimiento = 12312; //TODO: obtener los valores
     this.txtFecha = new Date();
@@ -277,7 +282,8 @@ export class PedidosPage implements OnDestroy, OnInit {
     this.listadoInPedidos = [];
   }
 
-  public accionPorLlegar() {
+  public accionPorLlegar(fab: FabContainer) {
+    fab.close();
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Por Llegar',
       buttons: [
@@ -343,7 +349,8 @@ export class PedidosPage implements OnDestroy, OnInit {
     actionSheet.present();
   }
 
-  public accionProveedor() {
+  public accionProveedor(fab: FabContainer) {
+    fab.close();
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Proveedor',
       buttons: [
@@ -371,7 +378,8 @@ export class PedidosPage implements OnDestroy, OnInit {
     actionSheet.present();
   }
 
-  public accionPedidos() {
+  public accionPedidos(fab: FabContainer) {
+    fab.close();
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Pedidos',
       buttons: [
@@ -572,7 +580,10 @@ export class PedidosPage implements OnDestroy, OnInit {
       });
   }
 
-  public confirmarAccion() {
+  public confirmarAccion(fab?: FabContainer) {
+    if(fab) {
+      fab.close();
+    }
     let alert = this.alertCtrl.create({
       title: 'Confirmar',
       message: 'Está seguro que quiere realizar la operación?',

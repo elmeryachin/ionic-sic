@@ -25,7 +25,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Numero de Movimiento</ion-label>
-              <ion-input [(ngModel)]="txtNumMovimiento" type="number"></ion-input>
+              <ion-input autofocus [(ngModel)]="txtNumMovimiento" type="number"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label stacked>Fecha de Movimiento</ion-label>
@@ -65,7 +65,7 @@
             <ion-item>
               <ion-label stacked>Codigo Artículo</ion-label>
               <!--(change)="obtenerArticulo()"-->
-              <ion-input (click)="filtrarArticulo()" [(ngModel)]="txtCodArticulo" type="text"></ion-input>
+              <ion-input (click)="filtrarArticulo()" (keyup)="filtrarArticulo()" [(ngModel)]="txtCodArticulo" type="text"></ion-input>
 
             </ion-item>
           </ion-list>
@@ -171,20 +171,17 @@
     </ion-grid>
   </ion-list>
 
-  <ion-fab bottom right >
+  <ion-fab bottom right #fab>
     <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
     <ion-fab-list side="top">
-      <button ion-fab color="primary" (click)="accionPorLlegar()" ><ion-icon name="send"></ion-icon></button>
-      <!--<button ion-fab color="cafe-claro" (click)="accionArticulo()" ><ion-icon name="archive"></ion-icon></button>-->
-      <button ion-fab color="secondary" (click)="accionProveedor()" ><ion-icon name="body"></ion-icon></button>
-      <button ion-fab color="naranja" (click)="accionPedidos()" ><ion-icon name="cart"></ion-icon></button>
+      <button ion-fab color="primary" (click)="accionPorLlegar(fab)" ><ion-icon name="send"></ion-icon></button>
+      <button ion-fab color="secondary" (click)="accionProveedor(fab)" ><ion-icon name="body"></ion-icon></button>
+      <button ion-fab color="naranja" (click)="accionPedidos(fab)" ><ion-icon name="cart"></ion-icon></button>
     </ion-fab-list>
     <ion-fab-list side="left">
-      <button ion-fab color="primary" (click)="iniciarNuevoPedido()" ><ion-icon name="document"></ion-icon></button><!--Buscar-->
-      <button ion-fab color="cafe-claro" (click)="confirmarAccion()" ><img class="itm-img" src="assets/img/save.svg" /></button><!--Por Llegar este-->
-      <button ion-fab color="naranja" (click)="confirmarActualizacion()" ><ion-icon name="clipboard"></ion-icon></button>
-      <!--<button ion-fab color="secondary" ><ion-icon name="trash"></ion-icon></button><!--Nuevo Almacen-->
-      <!--<button ion-fab color="naranja" ><ion-icon name="print"></ion-icon></button><!--Llegadas-->
+      <button ion-fab color="primary" (click)="iniciarNuevoPedido(fab)" ><ion-icon name="document"></ion-icon></button><!--Buscar-->
+      <button ion-fab color="cafe-claro" (click)="confirmarAccion(fab)" ><img class="itm-img" src="assets/img/save.svg" /></button><!--Por Llegar este-->
+      <button ion-fab color="naranja" (click)="confirmarActualizacion(fab)" ><ion-icon name="clipboard"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
 </ion-content>

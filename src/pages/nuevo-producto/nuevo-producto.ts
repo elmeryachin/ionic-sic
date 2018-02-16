@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {
-  ActionSheetController, AlertController, IonicPage, LoadingController, NavController, NavParams,
+  ActionSheetController, AlertController, FabContainer, IonicPage, LoadingController, NavController, NavParams,
   ToastController
 } from 'ionic-angular';
 import {MdlArticulo} from "../model/mdl-articulo";
@@ -43,7 +43,7 @@ export class NuevoProductoPage implements OnInit {
   respuestaExistencias:ResponseExistences = new ResponseExistences(null,true,"");
     listaSucursales:Sucursales[];
   mdlSucursales:MdlSucursales[] = new Array();
-  url:string = 'https://app-pos.herokuapp.com'// 'http://localhost:8080';//'https://app-pos.herokuapp.com';
+  url:string = 'https://desa-pos.herokuapp.com'// 'http://localhost:8080';//'https://app-pos.herokuapp.com';
   codBarras:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
@@ -247,7 +247,8 @@ export class NuevoProductoPage implements OnInit {
       });
   }
 
-  public confirmarGuardado(){
+  public confirmarGuardado(fab: FabContainer){
+    fab.close();
     let confirm = this.alertCtrl.create({
       title: 'Alerta',
       message: 'Desea '+this.seActualiza?'actualizar':'guardar'+' el articulo?',
@@ -335,7 +336,8 @@ export class NuevoProductoPage implements OnInit {
         });
     }
   }
-  public confirmarEliminado(){
+  public confirmarEliminado(fab: FabContainer){
+    fab.close();
     let confirm = this.alertCtrl.create({
       title: 'Alerta',
       message: 'Desea eliminar el articulo?',
@@ -364,6 +366,7 @@ export class NuevoProductoPage implements OnInit {
     });
 
     loading.present();
+    console.log(this.seActualiza);
     if (this.seActualiza) {
       console.log(this.seActualiza)
       this.sicService.deleteArticulo(this.codigoArticulo).subscribe(
@@ -374,8 +377,11 @@ export class NuevoProductoPage implements OnInit {
           return data;
         }, error=>{
           loading.dismiss();
-          this.presentToast("Error al obtener los datos.");
+          this.presentToast("Error al eliminar los datos.");
       });
+    }else {
+      loading.dismiss();
+      this.presentToast("Error al eliminar los datos.");
     }
   }
   public limpiarDatos(){
@@ -435,7 +441,8 @@ export class NuevoProductoPage implements OnInit {
         this.presentToast("Error al obtener los datos.");
       });
   }
-  public reportesPedidos(){
+  public reportesPedidos(fab: FabContainer){
+    fab.close();
     this.mostrarExistencias = false;
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Reportes',
@@ -483,7 +490,8 @@ export class NuevoProductoPage implements OnInit {
   }
 
 
-  public filtrarArticulo(){
+  public filtrarArticulo(fab: FabContainer){
+    fab.close();
     let alert = this.alertCtrl.create();
     alert.setTitle("Buscar Articulo");
     alert.setMessage("Ingrese el codigo de articulo.");
