@@ -24,6 +24,7 @@ import {ModalLlegadasPage} from "../pages/modal-llegadas/modal-llegadas";
 import { DataShareProvider } from '../providers/data-share/data-share';
 import {Device} from "@ionic-native/device";
 import { TokenShareProvider } from '../providers/token-share/token-share';
+import {QRScanner} from "@ionic-native/qr-scanner";
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { TokenShareProvider } from '../providers/token-share/token-share';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     SicServiceProvider,
     DataShareProvider,
-    TokenShareProvider
+    TokenShareProvider,
+    QRScanner
   ]
 })
 export class AppModule {}

@@ -27,5 +27,10 @@ page-nuevo-producto {
       font-size: 1.2rem !important;//todo: tamanio de fuente
     }
   }
-
+  .transparentBody {
+    background: transparent !important;
+  }
+  ion-content {
+    background: transparent !important;
+  }
 }

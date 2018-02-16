@@ -40,7 +40,7 @@ export class ModalLlegadasPage implements OnDestroy {
   tipoPeticion :number;
   titulo: string;
   strDetallePedidos: string;
-  url:string = 'http://localhost:8080';//'https://app-pos.herokuapp.com';
+  url:string = 'https://app-pos.herokuapp.com'//'http://localhost:8080';//'https://app-pos.herokuapp.com';
   subscription: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,

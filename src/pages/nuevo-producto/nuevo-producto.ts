@@ -11,6 +11,7 @@ import {ResponseSucursales, Sucursales} from "../response/ResponseSucursales";
 import {MdlSucursales} from "../model/MdlSucursales";
 import {RequestPedidosLista} from "../request/RequestPedidosLista";
 import {ResponseListArticulotr} from "../response/response-list-articulotr";
+import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
 
 /**
  * Generated class for the NuevoProductoPage page.
@@ -42,11 +43,11 @@ export class NuevoProductoPage implements OnInit {
   respuestaExistencias:ResponseExistences = new ResponseExistences(null,true,"");
     listaSucursales:Sucursales[];
   mdlSucursales:MdlSucursales[] = new Array();
-  url:string = 'http://localhost:8080';//'https://app-pos.herokuapp.com';
+  url:string = 'https://app-pos.herokuapp.com'// 'http://localhost:8080';//'https://app-pos.herokuapp.com';
   codBarras:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
-              public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController) {
+              public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public qrScanner: QRScanner) {
   }
   @ViewChild('txtCodArticulo') myInput ;
   presentAlert(titulo:string, mensaje:string) {
@@ -65,7 +66,7 @@ export class NuevoProductoPage implements OnInit {
     });
 
     toast.onDidDismiss(() => {
-      console.log('Toas Dimissed');
+      console.log('Toast Dimissed');
     });
 
     toast.present();
@@ -109,6 +110,45 @@ export class NuevoProductoPage implements OnInit {
 
     this.precioCompra = (this.precioKilo * this.pesoStock) + (this.precioZonaLibre * 1) + (this.montoGasto*1);
   }
+  public escanearCodigo(){
+    // Optionally request the permission early
+    this.qrScanner.prepare()
+      .then((status: QRScannerStatus) => {
+        console.log("Antes de consultar: " +status.authorized);
+        if (status.authorized) {
+          // camera permission was granted
+          console.log("status OK")
+          console.log(status)
+          // start scanning
+          let scanSub = this.qrScanner.scan().subscribe((text) => {
+            console.log('Scanned something', text);
+
+            this.qrScanner.hide(); // hide camera preview
+            scanSub.unsubscribe(); // stop scanning
+
+          });
+
+          // show camera preview
+          this.qrScanner.show();
+
+          // wait for user to scan something, then the observable callback will be called
+
+        } else if (status.denied) {
+          console.log("Status dennied: " +status.denied);
+          // camera permission was permanently denied
+          // you must use QRScanner.openSettings() method to guide the user to the settings page
+          // then they can grant the permission from there
+        } else {
+          console.log("Status dennied2");
+          console.log(status);
+          // permission was denied, but not permanently. You can ask for permission again at a later time.
+        }
+      })
+      .catch((e: any) => console.log('Error is: ', e));
+  }
+  ionViewDidLeave() {
+    window.document.querySelector('ion-app').classList.remove('transparentBody')
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad NuevoProductoPage');
     setTimeout(() => {
@@ -123,11 +163,15 @@ export class NuevoProductoPage implements OnInit {
 
   }
   public onKey(event:any){
-    this.codigoArticulo = this.codigoArticulo.toUpperCase();
+    if(this.codigoArticulo) {
+      this.codigoArticulo = this.codigoArticulo.toUpperCase();
+    }
   }
 
   public buscaProducto() {
-    this.codigoArticulo = this.codigoArticulo.toUpperCase();
+    if(this.codigoArticulo) {
+      this.codigoArticulo = this.codigoArticulo.toUpperCase();
+    }
     this.mostrarExistencias = true;
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
@@ -203,6 +247,30 @@ export class NuevoProductoPage implements OnInit {
       });
   }
 
+  public confirmarGuardado(){
+    let confirm = this.alertCtrl.create({
+      title: 'Alerta',
+      message: 'Desea '+this.seActualiza?'actualizar':'guardar'+' el articulo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            console.log('Agree clicked');
+            this.guardarArticulo();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+
   public guardarArticulo() {
     this.mostrarExistencias = false;
     const loading = this.loadingCtrl.create({
@@ -267,7 +335,28 @@ export class NuevoProductoPage implements OnInit {
         });
     }
   }
-
+  public confirmarEliminado(){
+    let confirm = this.alertCtrl.create({
+      title: 'Alerta',
+      message: 'Desea eliminar el articulo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            console.log('Agree clicked');
+            this.eliminarArticulo();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
   public eliminarArticulo() {
     this.mostrarExistencias = false;
     const loading = this.loadingCtrl.create({
