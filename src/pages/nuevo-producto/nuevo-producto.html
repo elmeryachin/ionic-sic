@@ -22,8 +22,7 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Código Artículo</ion-label>
-            <ion-input autofocus #txtCodArticulo type="text" [(ngModel)]="codigoArticulo" placeholder="ej. asc0123"
-                       (change)="buscaProducto()" (keyup)="onKey($event)" ></ion-input>
+            <ion-input autofocus #txtCodArticulo type="text" [(ngModel)]="codigoArticulo" (ngModelChange)="codigoArticulo = $event.toLocaleUpperCase()" placeholder="ej. asc0123" (change)="buscaProducto()" ></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -103,20 +102,13 @@
         </ion-list>
       </ion-col>
     </ion-row>
-    <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 200px">
-    <ion-row *ngFor="let item of mdlSucursales" class="grillas">
-      <ion-col>
-        <ion-item class="grillas">
-          <ion-label stacked class="wrap"> {{item.nombreSucursal}}</ion-label>
-        </ion-item>
-      </ion-col>
-      <ion-col>
-        <ion-item class="grillas" class="wrap">
-          <ion-label stacked>{{item.cantidadArticulo}}</ion-label>
-        </ion-item>
-      </ion-col>
+    <ion-row>
+      <ion-row *ngFor="let item of mdlAmbiente" ><!-- loka tienes que corregir esto (tu eres el front end :D -->
+        <button ion-button color="style-sucursales-{{item.propio}}" style="width: 150px;">
+          <a class="button">{{item.nombreAmbiente}} - {{item.cantidad}}</a>
+        </button>
+      </ion-row>
     </ion-row>
-    </ion-scroll>
 
   </ion-grid>
   <ion-fab bottom right #fab>

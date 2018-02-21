@@ -8,7 +8,6 @@ import {ObjArticulo} from "../clases/obj-articulo";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {Ambientes, ResponseExistences} from "../response/response-existences";
 import {ResponseSucursales, Sucursales} from "../response/ResponseSucursales";
-import {MdlSucursales} from "../model/MdlSucursales";
 import {RequestPedidosLista} from "../request/RequestPedidosLista";
 import {ResponseListArticulotr} from "../response/response-list-articulotr";
 import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
@@ -41,9 +40,8 @@ export class NuevoProductoPage implements OnInit {
   mensaje;
   mostrarExistencias = false;
   respuestaExistencias:ResponseExistences = new ResponseExistences(null,true,"");
-    listaSucursales:Sucursales[];
-  mdlSucursales:MdlSucursales[] = new Array();
-  url:string = 'https://desa-pos.herokuapp.com'// 'http://localhost:8080';//'https://app-pos.herokuapp.com';
+  mdlAmbiente:Ambientes[] = new Array();
+  url:string = 'https://desa-pos.herokuapp.com'//'http://localhost:8080';
   codBarras:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
@@ -71,37 +69,12 @@ export class NuevoProductoPage implements OnInit {
 
     toast.present();
   }
-  private CargarSucrsales(){
 
-    const loading = this.loadingCtrl.create({
-      content: 'Obteniendo los datos'
-    });
-    loading.present();
-    var url = '/inventario/articulo/sucursales';
-    this.sicService.getGlobal<ResponseSucursales>(url).subscribe(data => {
-      loading.dismiss();
-      if (data != null) {
-        if(data.respuesta){
-          this.listaSucursales = data.list;
-          for(let i:number = 0; i < this.listaSucursales.length; i++){
-            this.mdlSucursales.push(new MdlSucursales(this.listaSucursales[i].codigo,this.listaSucursales[i].nombre,0));
-          }
-        }else{
-          this.presentToast("No se pudieron obtener los datos de sucursales.")
-        }
-      }
-    }, error=>
-    {
-      loading.dismiss();
-      this.presentToast("Error al obtener los datos");
-    });
-  }
   ngOnInit() {
     setTimeout(() => {
       this.myInput.setFocus();
     },150);
     this.seActualiza = false;
-    this.CargarSucrsales();
 
   }
   public calculaPrecioFinal() {
@@ -208,37 +181,22 @@ export class NuevoProductoPage implements OnInit {
 
           this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.codigoArticulo.toUpperCase()+"/existence").subscribe(
             data2 => {
-              console.log("*************")
-              console.log(data2);
-
+              console.log("execute : inventario/articulo/");
               this.respuestaExistencias = data2;
-              let ambientes:Ambientes[] = new Array();
-              ambientes = data2.list;
               console.log(this.respuestaExistencias.respuesta);
               if(this.respuestaExistencias.respuesta) {
-                console.log("ingresa por true");
-                for (let i = 0; i < ambientes.length; i++) {
-                  for (let j = 0; j < this.mdlSucursales.length; j++) {
-                    if (ambientes[i].codigoAmbiente == this.mdlSucursales[j].codigoSucursal) {
-                      this.mdlSucursales[j].cantidadArticulo = ambientes[i].cantidad;
-                    }
-                  }
-                }
+                this.mdlAmbiente = this.respuestaExistencias.list;
               }else{
                 console.log("ingresa por false");
-                for(let j=0; j< this.mdlSucursales.length;j++){
-                    this.mdlSucursales[j].cantidadArticulo = 0;
-                }
+                this.mdlAmbiente = new Array();
               }
             },error=>{
               loading.dismiss();
               this.presentToast("Error al obtener los datos.");
             });
         }else{
-          console.log("ingresa por false");
-          for(let j=0; j< this.mdlSucursales.length;j++){
-            this.mdlSucursales[j].cantidadArticulo = 0;
-          }
+          console.log("ingresa articulo nulo");
+          this.mdlAmbiente = new Array();
         }
       },
       error =>{
@@ -250,8 +208,8 @@ export class NuevoProductoPage implements OnInit {
   public confirmarGuardado(fab: FabContainer){
     fab.close();
     let confirm = this.alertCtrl.create({
-      title: 'Alerta',
-      message: 'Desea '+this.seActualiza?'actualizar':'guardar'+' el articulo?',
+      title: 'Alerta Nuevo/Actualizacion de Articulos',
+      message: 'Desea ' + (this.seActualiza?'actualizar':'guardar') + ' el articulo '+this.codigoArticulo+'?',
       buttons: [
         {
           text: 'Cancelar',
@@ -299,7 +257,7 @@ export class NuevoProductoPage implements OnInit {
         this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado))).subscribe(
         data => {
           loading.dismiss();
-          this.limpiarDatos();
+          //this.limpiarDatos();
           this.presentAlert('Información','Su producto fue registrado correctamente');
           return data;
         }, error =>{
@@ -319,7 +277,7 @@ export class NuevoProductoPage implements OnInit {
         this.mensaje, this.precioKilo, this.pesoStock, this.precioZonaLibre, this.porcentajeGastos,
         this.montoGasto, this.precioCompra, this.precioVenta, this.precioMercado))).subscribe(
         data => {
-          this.limpiarDatos();
+          //this.limpiarDatos();
           loading.dismiss();
           this.presentAlert('Información','Su producto fué actualizado correctamente');
           return data;
