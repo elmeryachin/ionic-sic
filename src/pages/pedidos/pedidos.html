@@ -33,7 +33,7 @@
             </ion-item>
             <ion-item>
               <ion-label stacked>Código Proveedor</ion-label>
-              <ion-input [(ngModel)]="txtCodProveedor" (change)="BuscarProveedor()" type="text"></ion-input>
+              <ion-input [(ngModel)]="txtCodProveedor" (change)="BuscarProveedor()" (ngModelChange)="txtCodProveedor = $event.toLocaleUpperCase()" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -65,7 +65,7 @@
             <ion-item>
               <ion-label stacked>Codigo Artículo</ion-label>
               <!--(change)="obtenerArticulo()"-->
-              <ion-input (click)="filtrarArticulo()" (keyup)="filtrarArticulo()" [(ngModel)]="txtCodArticulo" type="text"></ion-input>
+              <ion-input (click)="filtrarArticulo()" (keyup)="filtrarArticulo()" [(ngModel)]="txtCodArticulo" (ngModelChange)="txtCodArticulo = $event.toLocaleUpperCase()" type="text"></ion-input>
 
             </ion-item>
           </ion-list>
@@ -83,7 +83,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Precio Uni. Zona Lib.</ion-label>
-              <ion-input [(ngModel)]="txtPrecZonLib" type="number"></ion-input>
+              <ion-input [(ngModel)]="txtPrecZonLib" (keyup.enter)="addListaPedidos(cantidadCompra.value)" type="number"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
