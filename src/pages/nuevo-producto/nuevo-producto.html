@@ -102,7 +102,15 @@
         </ion-list>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row >
+      <ion-col  *ngFor="let item of mdlAmbiente">
+        <ion-list>
+          <ion-item style="width: 110px; !important">
+            <ion-label stacked>{{item.nombreAmbiente}}</ion-label>
+            <ion-input value="{{item.cantidad}}" disabled >{{item.cantidad}}</ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
       <ion-row *ngFor="let item of mdlAmbiente" ><!-- loka tienes que corregir esto (tu eres el front end :D -->
         <button ion-button color="style-sucursales-{{item.propio}}" style="width: 150px;">
           <a class="button">{{item.nombreAmbiente}} - {{item.cantidad}}</a>
