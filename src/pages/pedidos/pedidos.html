@@ -82,7 +82,7 @@
         <ion-col>
           <ion-list>
             <ion-item>
-              <ion-label stacked>Precio Uni. Zona Lib.</ion-label>
+              <ion-label stacked>Precio U.</ion-label>
               <ion-input [(ngModel)]="txtPrecZonLib" (keyup.enter)="addListaPedidos(cantidadCompra.value)" type="number"></ion-input>
             </ion-item>
           </ion-list>
@@ -156,14 +156,14 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label stacked>Cantidad Total</ion-label>
-            <ion-input [(ngModel)]="txtCantidadTotal" type="text" readonly value="123"></ion-input>
+            <ion-label >Cantidad Total:</ion-label>
+            <ion-label style="font-weight: bold">{{txtPrecioTotal==0?0.00:txtCantidadTotal}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label stacked>Precio Total</ion-label>
-            <ion-input [(ngModel)]="txtPrecioTotal" type="text" readonly value="123"></ion-input>
+            <ion-label >Precio Total:</ion-label>
+            <ion-label style="font-weight: bold">{{txtPrecioTotal==0?0.00:txtPrecioTotal}}</ion-label>
           </ion-item>
 
         </ion-col>
