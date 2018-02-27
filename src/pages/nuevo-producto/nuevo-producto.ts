@@ -41,7 +41,7 @@ export class NuevoProductoPage implements OnInit {
   mostrarExistencias = false;
   respuestaExistencias:ResponseExistences = new ResponseExistences(null,true,"");
   mdlAmbiente:Ambientes[] = new Array();
-  url:string = 'http://localhost:8080';
+  url:string = 'https://localhost:8080';
   codBarras:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,

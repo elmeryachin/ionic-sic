@@ -1,13 +1,14 @@
 page-pedidos {
   textarea{
-    height: 112px;
+    height: 94px;
     resize: none;
   }
-  .item-label-stacked .text-input-md, .item-label-floating .text-input-md{
+  .item-label-stacked .text-input-md, .item-label-floating .text-input-md .ion-datetime .datetime-placeholder {
     margin-left: 0;
     margin-top: 0px;
     margin-bottom: 0px;
   }
+
   .list-md {
     margin: 0px 0 0px;
   }
@@ -15,11 +16,16 @@ page-pedidos {
     margin: 5px 1px 5px 0;
   }
   .label-md[stacked] {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   .item-input .label-md, .item-select .label-md, .item-datetime .label-md {
     color: #3c3c3c;
   }
+
+  .datetime-md {
+    padding: 2px 0px 10px 0px;
+  }
+
   .grid.grilla-pedidos{
     .item-block{
       min-height: 2.3rem !important;
@@ -52,5 +58,16 @@ page-pedidos {
   }
   .icon-floppy-disk:before {
     content: "\e962";
+  }
+  .grid{
+    .item-block{
+      min-height: 2.3rem !important;
+    }
+    .item-md{
+      font-size: 1.2rem !important;//todo: tamanio de fuente
+    }
+  }
+  .col {
+    padding: 3px;
   }
 }
