@@ -6,7 +6,7 @@ import {
 import {ActionSheetController} from 'ionic-angular';
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {ResponseIniPedido} from "../response/response-ini-pedido";
-import {ResponseDatosProveedor} from "../response/response-datos-proveedor";
+import {ResponseDatosProveedor, ResponseListProveedor} from "../response/response-datos-proveedor";
 import {ResponseListaProveedor} from "../response/response-lista-proveedor";
 import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
 import {ResponseListArticulotr} from "../response/response-list-articulotr";
@@ -105,7 +105,7 @@ export class PedidosPage implements OnDestroy, OnInit {
       this.txtFechaConvert = this.jsonConvert.fechaMovimiento;
       this.txtNumMovimiento = this.jsonConvert.nroMovimiento;
       this.txtCodProveedor = this.jsonConvert.codigoProveedor.toUpperCase();
-      this.BuscarProveedor();
+      this.infoProveedor();
       this.txtDescripcion = this.jsonConvert.observacion;
       this.listadoInPedidos = [];
       for (let articulo of this.jsonConvert.lista) {
@@ -247,23 +247,62 @@ export class PedidosPage implements OnDestroy, OnInit {
     });
   }
 
-  public BuscarProveedor() {
-    const loading = this.loadingCtrl.create({
-      content: 'Obteniendo los datos'
-    });
-    loading.present();
-    var url = '/pedido/proveedor/quest/' + this.txtCodProveedor.toUpperCase();
-    this.sicService.getGlobal<ResponseDatosProveedor>(url).subscribe(data => {
-      loading.dismiss();
-      if (data != null) {
-        if (data.respuesta) {
-          this.txtCodProveedor = data.codigo.toUpperCase();
-          this.txtNomProveedor = data.nombre;
-        } else {
-          this.presentToast('No se pudo recuperar los datos solicitados.');
-        }
+  public infoProveedor(){
+    if(this.txtCodProveedor==null?false:this.txtCodProveedor == 'undefined'?false:(this.txtCodProveedor.valueOf().length > 0)) {
+      let len = this.txtCodProveedor.valueOf().split('%').length;
+      if(len == 1) {
+        let _url = '/pedido/proveedor/quest/' + this.txtCodProveedor.toUpperCase();
+        this.sicService.getGlobal<ResponseDatosProveedor>(_url).subscribe(data => {
+          if (data.respuesta) {
+            this.txtCodProveedor = data.codigo;
+            this.txtNomProveedor = data.nombre;
+          } else {
+            this.txtNomProveedor = null;
+          }
+        });
+      } else {
+        let _url = '/pedido/proveedor/list/';
+        let _in: RequestPedidosLista = new RequestPedidosLista("");
+        _in.patron = this.txtCodProveedor;
+        this.sicService.postGlobal<ResponseListProveedor>(_in, _url).subscribe(data => {
+
+          if (data.respuesta) {
+            let check: boolean = true;
+            let alert = this.alertCtrl.create();
+            alert.setTitle('Resultados');
+
+            for (let item of data.list) {
+              alert.addInput({
+                type: 'radio',
+                label: item.codigo + ' -- ' + item.nombre,
+                value: item.codigo + '+++' + item.nombre,
+                checked: check
+              });
+              check = false
+            }
+
+            alert.addButton('Cancelar');
+            alert.addButton({
+              text: 'Aceptar',
+              handler: (data: any) => {
+                if (data != undefined) {
+                  console.log('Datos Enviados:', data);
+                  let arrayRespuesta = data.split('+++')
+                  this.txtCodProveedor = arrayRespuesta[0];
+                  this.txtNomProveedor = arrayRespuesta[1];
+                }
+              }
+            });
+            alert.present();
+          } else {
+            console.log('Error al ejecutar ' + _url)
+          }
+        });
       }
-    });
+    } else {
+      this.txtCodProveedor = null;
+      this.txtNomProveedor = null;
+    }
   }
 
   private limpiarDatos() {
@@ -438,7 +477,7 @@ export class PedidosPage implements OnDestroy, OnInit {
           handler: (data: any) => {
             console.log('Datos Enviados:', data);
             this.txtCodProveedor = data.toUpperCase();
-            this.BuscarProveedor();
+            this.infoProveedor();
           }
         });
 
@@ -497,7 +536,7 @@ export class PedidosPage implements OnDestroy, OnInit {
           handler: (data: any) => {
             console.log('Datos Enviados:', data);
             this.txtCodProveedor = data.toUpperCase();
-            this.BuscarProveedor();
+            this.infoProveedor();
           }
         });
 

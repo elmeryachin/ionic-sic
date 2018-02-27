@@ -16,7 +16,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content style="background: none transparent;">
   <ion-list>
     <!--<ion-header>Datos de Pedido</ion-header>-->
     <ion-grid>
@@ -33,7 +33,9 @@
             </ion-item>
             <ion-item>
               <ion-label stacked>Código Proveedor</ion-label>
-              <ion-input [(ngModel)]="txtCodProveedor" (change)="BuscarProveedor()" (ngModelChange)="txtCodProveedor = $event.toLocaleUpperCase()" type="text"></ion-input>
+              <ion-input [(ngModel)]="txtCodProveedor"
+                         (keyup.enter)="infoProveedor($event)"
+                         (ngModelChange)="txtCodProveedor = $event.toLocaleUpperCase()" type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -41,7 +43,7 @@
           <ion-list>
             <ion-item >
               <ion-label stacked>Observación</ion-label>
-              <ion-textarea [(ngModel)]="txtDescripcion" (keyup.enter)="keytab($event)" ></ion-textarea>
+              <ion-textarea [(ngModel)]="txtDescripcion" (keyup.enter)="keytab()" ></ion-textarea>
             </ion-item>
 
           </ion-list>
