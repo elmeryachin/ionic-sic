@@ -1,5 +1,11 @@
+export class RequestProductoPatron{
+  constructor(public patron:string){
+
+  }
+}
 export class ResponseListArticulotr {
-  constructor(public lista: claseListaArticuloPr[],public list: claseListaArticuloPr[], public respuesta:boolean, public mensaje: string) {
+  constructor(public lista: claseListaArticuloPr[],public list: claseListaArticuloPr[],
+              public respuesta:boolean, public mensaje: string) {
   }
 }
 export class claseListaArticuloPr{
