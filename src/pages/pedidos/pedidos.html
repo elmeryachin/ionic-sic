@@ -25,7 +25,8 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Numero de Movimiento</ion-label>
-              <ion-input autofocus [(ngModel)]="txtNumMovimiento" type="number"></ion-input>
+              <ion-input [(ngModel)]="txtNumMovimiento"
+                         type="number" ></ion-input>
             </ion-item>
             <ion-item>
               <ion-label stacked>Fecha de Movimiento</ion-label>
@@ -34,7 +35,9 @@
             <ion-item>
               <ion-label stacked>Código Proveedor</ion-label>
               <ion-input [(ngModel)]="txtCodProveedor"
-                         (keyup.enter)="infoProveedor($event)"
+                         autofocus  tabindex="1"
+                         (keyup.enter)="infoProveedor()"
+                         [class.classIncorrecto]="classIncorrecto"
                          (ngModelChange)="txtCodProveedor = $event.toLocaleUpperCase()" type="text"></ion-input>
             </ion-item>
           </ion-list>
@@ -54,7 +57,9 @@
           <ion-list>
             <ion-item class="remarcados">
               <ion-label stacked>Nombre Proveedor</ion-label>
-              <ion-input disabled [(ngModel)]="txtNomProveedor" type="text" ></ion-input>
+              <ion-input disabled [(ngModel)]="txtNomProveedor"
+                         [class.classIncorrecto]="classIncorrecto"
+                         type="text" ></ion-input>
 
             </ion-item>
           </ion-list>
@@ -67,7 +72,11 @@
             <ion-item>
               <ion-label stacked>Codigo Artículo</ion-label>
               <!--(change)="obtenerArticulo()"-->
-              <ion-input (click)="filtrarArticulo()" (keyup)="filtrarArticulo()" [(ngModel)]="txtCodArticulo" (ngModelChange)="txtCodArticulo = $event.toLocaleUpperCase()" type="text"></ion-input>
+              <ion-input type="text" #idCodigoArticulo
+                         [(ngModel)]="txtCodArticulo"  tabindex="2"
+                         (keyup.enter)="infoProducto()"
+                         [class.classIncorrecto]="classIncorrectoPro"
+                         (ngModelChange)="txtCodArticulo = $event.toLocaleUpperCase()"></ion-input>
 
             </ion-item>
           </ion-list>
@@ -76,7 +85,9 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Cantidad - Compra</ion-label>
-              <ion-input #cantidadCompra (keyup.enter)="addListaPedidos(cantidadCompra.value)" [(ngModel)]="txtCantidadCompra" type="number"></ion-input>
+              <ion-input #cantidadCompra  tabindex="3"
+                         (keyup.enter)="addListaPedidos(cantidadCompra.value)"
+                         [(ngModel)]="txtCantidadCompra" type="number"></ion-input>
 
             </ion-item>
           </ion-list>
@@ -85,7 +96,9 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Precio U.</ion-label>
-              <ion-input [(ngModel)]="txtPrecZonLib" (keyup.enter)="addListaPedidos(cantidadCompra.value)" type="number"></ion-input>
+              <ion-input [(ngModel)]="txtPrecZonLib" tabindex="4"
+                         (keyup.enter)="addListaPedidos(cantidadCompra.value)"
+                         type="number"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -95,7 +108,10 @@
           <ion-list>
             <ion-item class="remarcados">
               <ion-label stacked>Nombre Artículo</ion-label>
-              <ion-input disabled [(ngModel)]="txtDescripcion2" type="text"></ion-input>
+              <ion-input disabled
+                         [(ngModel)]="txtDescripcion2"
+                         [class.classIncorrecto]="classIncorrectoPro"
+                         type="text"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>

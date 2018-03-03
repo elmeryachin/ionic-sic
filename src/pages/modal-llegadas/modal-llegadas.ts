@@ -40,7 +40,7 @@ export class ModalLlegadasPage implements OnDestroy {
   tipoPeticion :number;
   titulo: string;
   strDetallePedidos: string;
-  url:string = 'https://localhost:8080';
+  url:string = 'http://localhost:8080';
   subscription: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
