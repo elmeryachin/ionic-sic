@@ -35,6 +35,7 @@
             <ion-item>
               <ion-label stacked>Código Proveedor</ion-label>
               <ion-input [(ngModel)]="txtCodProveedor"
+                         #idTxtProveedor
                          autofocus  tabindex="1"
                          (keyup.enter)="infoProveedor()"
                          [class.classIncorrecto]="classIncorrecto"
