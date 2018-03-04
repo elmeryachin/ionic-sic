@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, OnChanges, DoCheck, SimpleChanges} from '@angular/core';
 import {
   AlertController, FabContainer, IonicPage, LoadingController, ModalController, NavController, NavParams,
   ToastController
@@ -32,7 +32,7 @@ import {RequestPedidosLista} from "../request/RequestPedidosLista";
   selector: 'page-pedidos',
   templateUrl: 'pedidos.html',
 })
-export class PedidosPage implements OnDestroy, OnInit {
+export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   txtNumMovimiento;
   txtFecha: any;
@@ -71,6 +71,7 @@ export class PedidosPage implements OnDestroy, OnInit {
 
   @ViewChild('idCodigoArticulo') idCodigoArticulo;
   @ViewChild('cantidadCompra') cantidadCompra;
+  @ViewChild('idTxtProveedor') idTxtProveedor;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController,
               public loadingCtrl: LoadingController, private sicService: SicServiceProvider, public toastCtrl: ToastController,
@@ -87,7 +88,7 @@ export class PedidosPage implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    console.log("obtiene String");
+    console.log("obtiene String ngOnInit");
 
   }
 
@@ -125,6 +126,7 @@ export class PedidosPage implements OnDestroy, OnInit {
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
     this.subscription.unsubscribe();
+    console.log('Se va a eliminar el componente ngOnDestroy');
   }
 
   public confirmarActualizacion(fab: FabContainer) {
@@ -305,6 +307,9 @@ export class PedidosPage implements OnDestroy, OnInit {
                     let arrayRespuesta = data.split('+++')
                     this.txtCodProveedor = arrayRespuesta[0];
                     this.txtNomProveedor = arrayRespuesta[1];
+                    setTimeout(() => {
+                      this.idTxtProveedor.setFocus();
+                    },150);
                   }
                 }
               });
@@ -377,7 +382,7 @@ export class PedidosPage implements OnDestroy, OnInit {
                 text: 'Cancelar',
                 handler: (data:any) => {
                   setTimeout(() => {
-                    this.idCodigoArticulo.setFocus();
+                    this.idTxtProveedor.setFocus();
                   },150);
                 }
               });
@@ -389,7 +394,7 @@ export class PedidosPage implements OnDestroy, OnInit {
                     this.txtCodArticulo = data;
                     this.infoProducto();
                     setTimeout(() => {
-                      this.cantidadCompra.setFocus();
+                      this.idCodigoArticulo.setFocus();
                     },150);
                   }
                 }
@@ -1095,5 +1100,33 @@ export class PedidosPage implements OnDestroy, OnInit {
   }
 
 
+  public ionViewWillEnter(){
+    console.log("antes de activar la nueva pagina")
+  }
+
+  public ionViewDidEnter(){
+    console.log("Sales y entras a otra pagina y es la nueva activa")
+  }
+
+  public ionViewWillLeave(){
+    console.log("Saliendo de una pagina ionViewWillLeave")
+  }
+
+  public ionViewDidLeave() {
+    console.log("Cuando ya saliste de la pagina ionViewDidLeave")
+  }
+
+  public ionViewWillUnload() {
+    console.log("cuando se destruye una pagina ionViewWillUnload")
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    console.log('metodod ngOnChanges')
+    console.log(changes);
+  }
+
+  ngDoCheck(){
+    console.log('Método DoCheck lanzado ngDoCheck');
+  }
 
 }
