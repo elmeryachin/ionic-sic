@@ -11,6 +11,8 @@ import {ResponseSucursales, Sucursales} from "../response/ResponseSucursales";
 import {RequestPedidosLista} from "../request/RequestPedidosLista";
 import {ResponseListArticulotr} from "../response/response-list-articulotr";
 import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
+import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
+import {RequestProductoPatron} from "../response/response-list-articulotr";
 
 /**
  * Generated class for the NuevoProductoPage page.
@@ -43,11 +45,13 @@ export class NuevoProductoPage implements OnInit {
   mdlAmbiente:Ambientes[] = new Array();
   url:string = 'http://localhost:8080';
   codBarras:string;
+  classIncorrectoPro: boolean = false;
+  @ViewChild('idCodigoArticulo') idCodigoArticulo;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public qrScanner: QRScanner) {
   }
-  @ViewChild('txtCodArticulo') myInput ;
+
   presentAlert(titulo:string, mensaje:string) {
     const alert = this.alertCtrl.create({
       title: titulo,
@@ -56,6 +60,7 @@ export class NuevoProductoPage implements OnInit {
     });
     alert.present();
   }
+
   presentToast(mensaje:string) {
     const toast = this.toastCtrl.create({
       message: mensaje,
@@ -72,17 +77,19 @@ export class NuevoProductoPage implements OnInit {
 
   ngOnInit() {
     setTimeout(() => {
-      this.myInput.setFocus();
+      this.idCodigoArticulo.setFocus();
     },150);
     this.seActualiza = false;
 
   }
+
   public calculaPrecioFinal() {
     this.mostrarExistencias = false;
     this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
 
     this.precioCompra = (this.precioKilo * this.pesoStock) + (this.precioZonaLibre * 1) + (this.montoGasto*1);
   }
+
   public escanearCodigo(){
     // Optionally request the permission early
     this.qrScanner.prepare()
@@ -119,40 +126,122 @@ export class NuevoProductoPage implements OnInit {
       })
       .catch((e: any) => console.log('Error is: ', e));
   }
+
   ionViewDidLeave() {
     window.document.querySelector('ion-app').classList.remove('transparentBody')
   }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad NuevoProductoPage');
     setTimeout(() => {
-      this.myInput.setFocus();
+      this.idCodigoArticulo.setFocus();
     },150);
   }
+
   ionViewLoaded() {
 
     setTimeout(() => {
-      this.myInput.setFocus();
+      this.idCodigoArticulo.setFocus();
     },150);
 
   }
+
   public onKey(event:any){
     if(this.codigoArticulo) {
       this.codigoArticulo = this.codigoArticulo.toUpperCase();
     }
   }
 
-  public buscaProducto() {
-    if(this.codigoArticulo) {
-      this.codigoArticulo = this.codigoArticulo.toUpperCase();
+  public infoProducto(){
+    this.limpiarDatos();
+    this.classIncorrectoPro = false;
+
+    if(this.codigoArticulo==null?false:this.codigoArticulo == 'undefined'?false:(this.codigoArticulo.valueOf().length > 0)) {
+      let len = this.codigoArticulo.valueOf().split('%').length;
+      console.log("len : " + len);
+      if(len == 1) {
+        let _url = '/pedido/articulo/quest/' + this.codigoArticulo;
+        this.sicService.getGlobal<ResponseGetArticuloPr>(_url).subscribe(data => {
+          console.log("data.respuesta : " + data.respuesta);
+          if (data.respuesta) {
+            this.buscaProducto();
+          } else {
+            this.descripcion = "NO EXISTE PRODUCTO CON EL PATRON INGRESADO";
+            this.classIncorrectoPro = true;
+          }
+        });
+      } else {
+        let _url = '/pedido/articulo/list/';
+        let _in: RequestProductoPatron = new RequestProductoPatron("");
+        _in.patron = this.codigoArticulo;
+        this.sicService.postGlobal<ResponseListArticulotr>(_in, _url).subscribe(data => {
+
+          if (data.respuesta) {
+
+            if (data.list.length == 0) {
+              this.descripcion = "NO EXISTE PRODUCTO(S) CON EL PATRON INGRESADO";
+              this.classIncorrectoPro = true;
+            } else {
+
+              let check: boolean = true;
+              let alert = this.alertCtrl.create();
+              alert.setTitle('Resultados');
+
+              for (let item of data.list) {
+                alert.addInput({
+                  type: 'radio',
+                  label: item.codigo + ' -- ' + item.nombre,
+                  value: item.codigo,
+                  checked: check
+                });
+                check = false
+              }
+
+              alert.addButton({
+                text: 'Cancelar',
+                handler: (data:any) => {
+                  setTimeout(() => {
+                    this.idCodigoArticulo.setFocus();
+                  },150);
+                }
+              });
+              alert.addButton({
+                text: 'Aceptar',
+                handler: (data: any) => {
+                  if (data != undefined) {
+                    console.log('Datos Enviados:', data);
+                    this.codigoArticulo = data;
+                    this.infoProducto();
+                    setTimeout(() => {
+                      this.idCodigoArticulo.setFocus();
+                    },150);
+                  }
+                }
+              });
+              alert.present();
+            }
+          } else {
+            console.log('Error al ejecutar ' + _url)
+          }
+        });
+        console.log('Finalizando.... ')
+      }
+    } else {
+      this.codigoArticulo = null;
+      this.descripcion = null;
+      //completar
     }
+  }
+
+  public buscaProducto() {
     this.mostrarExistencias = true;
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
     });
 
-    loading.present();
+    //loading.present();
     if(this.codigoArticulo.trim()== 0){
-      loading.dismiss();
+      //loading.dismiss();
       this.presentToast("El valor de articulo no es correcto");
       return;
     }
@@ -165,8 +254,6 @@ export class NuevoProductoPage implements OnInit {
 
         //this.respuestaArticulo = data;
         if (data.articulo != null) {
-          this.presentToast('Se ha encontrado una coincidencia');
-
           this.seActualiza = true;
           this.descripcion = data.articulo.nombre;
           this.precioKilo = data.articulo.precioKilo;
@@ -179,19 +266,16 @@ export class NuevoProductoPage implements OnInit {
           this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
           this.mensaje = data.articulo.descripcion;
 
-          this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.codigoArticulo.toUpperCase()+"/existence").subscribe(
+          this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.codigoArticulo+"/existence").subscribe(
             data2 => {
-              console.log("execute : inventario/articulo/");
               this.respuestaExistencias = data2;
               console.log(this.respuestaExistencias.respuesta);
               if(this.respuestaExistencias.respuesta) {
                 this.mdlAmbiente = this.respuestaExistencias.list;
               }else{
-                console.log("ingresa por false");
                 this.mdlAmbiente = new Array();
               }
             },error=>{
-              loading.dismiss();
               this.presentToast("Error al obtener los datos.");
             });
         }else{
@@ -228,7 +312,6 @@ export class NuevoProductoPage implements OnInit {
     });
     confirm.present();
   }
-
 
   public guardarArticulo() {
     this.mostrarExistencias = false;
@@ -294,6 +377,7 @@ export class NuevoProductoPage implements OnInit {
         });
     }
   }
+
   public confirmarEliminado(fab: FabContainer){
     fab.close();
     let confirm = this.alertCtrl.create({
@@ -317,6 +401,7 @@ export class NuevoProductoPage implements OnInit {
     });
     confirm.present();
   }
+
   public eliminarArticulo() {
     this.mostrarExistencias = false;
     const loading = this.loadingCtrl.create({
@@ -342,6 +427,7 @@ export class NuevoProductoPage implements OnInit {
       this.presentToast("Error al eliminar los datos.");
     }
   }
+
   public limpiarDatos(){
     this.mostrarExistencias = false;
     this.seActualiza = false;
@@ -355,7 +441,9 @@ export class NuevoProductoPage implements OnInit {
     this.precioVenta = 0;
     this.mensaje = '';
     this.montoGasto = 0;
+    this.mdlAmbiente = null;
   }
+
   public listarProductos(){
     this.mostrarExistencias = false;
     const loading = this.loadingCtrl.create({
@@ -399,6 +487,7 @@ export class NuevoProductoPage implements OnInit {
         this.presentToast("Error al obtener los datos.");
       });
   }
+
   public reportesPedidos(fab: FabContainer){
     fab.close();
     this.mostrarExistencias = false;
@@ -446,7 +535,6 @@ export class NuevoProductoPage implements OnInit {
 
     actionSheet.present();
   }
-
 
   public filtrarArticulo(fab: FabContainer){
     fab.close();

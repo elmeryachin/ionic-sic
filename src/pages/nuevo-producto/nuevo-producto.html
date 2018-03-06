@@ -22,7 +22,10 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Código Artículo</ion-label>
-            <ion-input autofocus #txtCodArticulo type="text" [(ngModel)]="codigoArticulo" (ngModelChange)="codigoArticulo = $event.toLocaleUpperCase()" placeholder="ej. asc0123" (change)="buscaProducto()" ></ion-input>
+            <ion-input autofocus #idCodigoArticulo type="text" [(ngModel)]="codigoArticulo"
+                       (ngModelChange)="codigoArticulo = $event.toLocaleUpperCase()"
+                       [class.classIncorrecto]="classIncorrectoPro"
+                       placeholder="ej. ASC0123" (keyup.enter)="infoProducto()" ></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -30,7 +33,8 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Codigo de Barras</ion-label>
-            <ion-input type="text" [(ngModel)]="codBarras" placeholder=""></ion-input>
+            <ion-input type="text" [(ngModel)]="codBarras"
+                       placeholder=""></ion-input>
             <button (click)="escanearCodigo()" ion-button item-end icon-only>
               <ion-icon name="camera"></ion-icon>
             </button>
@@ -43,7 +47,8 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Descripción</ion-label>
-            <ion-input type="text" [(ngModel)]="descripcion" type="text"></ion-input>
+            <ion-input type="text" [class.classIncorrecto]="classIncorrectoPro"
+                       [(ngModel)]="descripcion" type="text"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>

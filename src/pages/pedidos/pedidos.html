@@ -26,17 +26,18 @@
             <ion-item>
               <ion-label stacked>Numero de Movimiento</ion-label>
               <ion-input [(ngModel)]="txtNumMovimiento"
-                         type="number" ></ion-input>
+                         type="number"  tabindex="1"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label stacked>Fecha de Movimiento</ion-label>
-              <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="txtFechaConvert"></ion-datetime>
+              <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="txtFechaConvert"
+                            tabindex="3"></ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label stacked>Código Proveedor</ion-label>
               <ion-input [(ngModel)]="txtCodProveedor"
                          #idTxtProveedor
-                         autofocus  tabindex="1"
+                         autofocus  tabindex="5"
                          (keyup.enter)="infoProveedor()"
                          [class.classIncorrecto]="classIncorrecto"
                          (ngModelChange)="txtCodProveedor = $event.toLocaleUpperCase()" type="text"></ion-input>
@@ -47,7 +48,7 @@
           <ion-list>
             <ion-item >
               <ion-label stacked>Observación</ion-label>
-              <ion-textarea [(ngModel)]="txtDescripcion" (keyup.enter)="keytab()" ></ion-textarea>
+              <ion-textarea [(ngModel)]="txtDescripcion" (keyup.enter)="keytab()"  tabindex="4"></ion-textarea>
             </ion-item>
 
           </ion-list>
@@ -74,7 +75,7 @@
               <ion-label stacked>Codigo Artículo</ion-label>
               <!--(change)="obtenerArticulo()"-->
               <ion-input type="text" #idCodigoArticulo
-                         [(ngModel)]="txtCodArticulo"  tabindex="2"
+                         [(ngModel)]="txtCodArticulo"  tabindex="6"
                          (keyup.enter)="infoProducto()"
                          [class.classIncorrecto]="classIncorrectoPro"
                          (ngModelChange)="txtCodArticulo = $event.toLocaleUpperCase()"></ion-input>
@@ -86,7 +87,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Cantidad - Compra</ion-label>
-              <ion-input #cantidadCompra  tabindex="3"
+              <ion-input #cantidadCompra  tabindex="7"
                          (keyup.enter)="addListaPedidos(cantidadCompra.value)"
                          [(ngModel)]="txtCantidadCompra" type="number"></ion-input>
 
@@ -97,7 +98,7 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Precio U.</ion-label>
-              <ion-input [(ngModel)]="txtPrecZonLib" tabindex="4"
+              <ion-input [(ngModel)]="txtPrecZonLib" tabindex="8"
                          (keyup.enter)="addListaPedidos(cantidadCompra.value)"
                          type="number"></ion-input>
             </ion-item>
@@ -118,7 +119,21 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
+
+    <ion-row  [hidden]="!mostrarExistencias">
+      <ion-row *ngFor="let item of mdlAmbiente" >
+        <button class="btn-list" ion-button color="style-sucursales-{{item.propio}}">
+          <p *ngIf="item.propio==1; else a1">
+            {{item.nombreAmbiente}} - {{item.cantidad}}
+          </p>
+          <ng-template #a1>
+            <a *ngIf="item.propio==0" class="button">{{item.nombreAmbiente}} - {{item.cantidad}}</a>
+          </ng-template>
+        </button>
+      </ion-row>
+    </ion-row>
+
+    <ion-scroll [hidden]="mostrarExistencias" scrollX="true" scrollY="true" style="width: 100%; height: 150px">
       <ion-grid class="grilla-pedidos">
         <ion-row>
         <ion-col>
@@ -193,14 +208,15 @@
   <ion-fab bottom right #fab>
     <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
     <ion-fab-list side="top">
-      <button ion-fab color="primary" (click)="accionPorLlegar(fab)" ><ion-icon name="send"></ion-icon></button>
+      <button ion-fab color="primary" (click)="iniciarNuevoPedido(fab)" ><ion-icon name="document"></ion-icon></button>
+      <!-- button ion-fab color="primary" (click)="accionPorLlegar(fab)" ><ion-icon name="send"></ion-icon></button -->
       <button ion-fab color="secondary" (click)="accionProveedor(fab)" ><ion-icon name="body"></ion-icon></button>
       <button ion-fab color="naranja" (click)="accionPedidos(fab)" ><ion-icon name="cart"></ion-icon></button>
+
     </ion-fab-list>
     <ion-fab-list side="left">
-      <button ion-fab color="primary" (click)="iniciarNuevoPedido(fab)" ><ion-icon name="document"></ion-icon></button><!--Buscar-->
       <button ion-fab color="cafe-claro" (click)="confirmarAccion(fab)" ><img class="itm-img" src="assets/img/save.svg" /></button><!--Por Llegar este-->
-      <button ion-fab color="naranja" (click)="confirmarActualizacion(fab)" ><ion-icon name="clipboard"></ion-icon></button>
+      <!-- button ion-fab color="naranja" (click)="confirmarActualizacion(fab)" ><ion-icon name="clipboard"></ion-icon></button -->
     </ion-fab-list>
   </ion-fab>
 </ion-content>

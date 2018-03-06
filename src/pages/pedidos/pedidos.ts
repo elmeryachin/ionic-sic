@@ -19,6 +19,7 @@ import {GlobalResponse} from "../response/globalResponse";
 import {DataShareProvider} from "../../providers/data-share/data-share";
 import {Subscription} from "rxjs/Subscription";
 import {RequestPedidosLista} from "../request/RequestPedidosLista";
+import {Ambientes, ResponseExistences} from "../response/response-existences";
 
 /**
  * Generated class for the PedidosPage page.
@@ -49,7 +50,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   txtFechaConvert;
   listadoInPedidos: ArticuloPedido[];
   pedidosGuardados: RequestPedido;
-  idPedidoRecuperado: number;
+  idPedidoRecuperado: number = null;
   listaPedidos: ResponseListPedidos;
   listaArticulosPorPedido: ArticulosPedidosGet[];
   cantidadPedidos: number = 0;
@@ -68,7 +69,9 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   classIncorrecto: boolean = false;
   classIncorrectoPro: boolean = false;
-
+  mostrarExistencias: boolean = false;
+  respuestaExistencias:ResponseExistences = new ResponseExistences(null,true,"");
+  mdlAmbiente:Ambientes[] = new Array();
   @ViewChild('idCodigoArticulo') idCodigoArticulo;
   @ViewChild('cantidadCompra') cantidadCompra;
   @ViewChild('idTxtProveedor') idTxtProveedor;
@@ -129,67 +132,6 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     console.log('Se va a eliminar el componente ngOnDestroy');
   }
 
-  public confirmarActualizacion(fab: FabContainer) {
-    fab.close();
-    let alert = this.alertCtrl.create({
-      title: 'Confirmar',
-      message: 'Está seguro que quiere realizar la operación?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Aceptar',
-          handler: () => {
-            this.actualizarPedido();
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  public actualizarPedido() {
-    const loading = this.loadingCtrl.create({
-      content: 'Obteniendo los datos'
-    });
-    loading.present();
-    var id = '';
-    var url = '/pedido/update';
-    var pedido = new Pedido(this.idPedidoRecuperado, this.txtFechaConvert, this.txtNumMovimiento, this.txtCodProveedor, this.txtDescripcion, this.listadoInPedidos);
-    var requestPedido = new RequestPedido(pedido);
-    this.sicService.putGlobal<ResponseAddPedido>(requestPedido, url, id).subscribe(data => {
-      loading.dismiss();
-      let alert;
-      if (data.respuesta) {
-        alert = this.alertCtrl.create({
-          title: 'Pedidos',
-          subTitle: 'Se ha modificado el pedido correctamente',
-          buttons: [{
-            text: 'Aceptar',
-            handler: () => {
-              this.iniciarNuevoPedido();
-            }
-          }]
-        });
-        alert.present();
-      } else {
-        alert = this.alertCtrl.create({
-          title: 'Ups',
-          subTitle: data.mensaje,
-          buttons: ['Aceptar']
-        });
-        alert.present();
-        return;
-      }
-
-    });
-  }
-
   //debe obtener el ultimo numero de pedido
   public iniciarNuevoPedido(fab?: FabContainer) {
     if(fab) {
@@ -202,6 +144,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     if (!this.txtFechaConvert) {
       this.txtFechaConvert = new Date(this.txtFecha).toISOString();
     }
+    this.idPedidoRecuperado = null;
     this.txtDescripcion = '';
     this.txtCodProveedor = '';
     this.txtNomProveedor = '';
@@ -331,7 +274,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.txtDescripcion2 = null;
     this.txtCantidadCompra = null;
     this.txtPrecZonLib = null;
-
+    this.mostrarExistencias = false;
     if(this.txtCodArticulo==null?false:this.txtCodArticulo == 'undefined'?false:(this.txtCodArticulo.valueOf().length > 0)) {
       let len = this.txtCodArticulo.valueOf().split('%').length;
       console.log("len : " + len);
@@ -344,6 +287,21 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
             this.txtDescripcion2 = data.nombre;
             this.txtPrecZonLib = data.precio;
             this.txtCantidadCompra = 1;
+
+            this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.txtCodArticulo+"/existence").subscribe(
+              data2 => {
+                this.respuestaExistencias = data2;
+                console.log(this.respuestaExistencias.respuesta);
+                if(this.respuestaExistencias.respuesta) {
+                  this.mdlAmbiente = this.respuestaExistencias.list;
+                  this.mostrarExistencias = true;
+                }else{
+                  this.mdlAmbiente = new Array();
+                }
+              },error=>{
+                this.presentToast("Error al obtener los datos.");
+              });
+
           } else {
             this.txtDescripcion2 = "NO EXISTE PRODUCTO CON EL PATRON INGRESADO";
             this.classIncorrectoPro = true;
@@ -461,34 +419,6 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  public accionArticulo() {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'Artículo',
-      buttons: [
-        {
-          text: 'Localizar',
-          handler: () => {
-            console.log('Localizar Artículo');
-            this.listaArticulos();
-          }
-        }, /*
-        {
-          text: 'Estado General',
-          handler: () => {
-            console.log('Estado General');
-          }
-        }, */{
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancelado');
           }
         }
       ]
@@ -729,9 +659,10 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     if(fab) {
       fab.close();
     }
+
     let alert = this.alertCtrl.create({
-      title: 'Confirmar',
-      message: 'Está seguro que quiere realizar la operación?',
+        title: 'Alerta de Confirmacion Operacion',
+      message: 'Está seguro de ' +(this.idPedidoRecuperado==null?'guardar el nuevo ':'modificar el ')+ ' Pedido Nro.'+ this.txtNumMovimiento +' ? ',
       buttons: [
         {
           text: 'Cancelar',
@@ -743,12 +674,54 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
         {
           text: 'Aceptar',
           handler: () => {
-            this.crearPedido();
+            if(this.idPedidoRecuperado == null){
+              this.crearPedido();
+            }  else {
+              this.actualizarPedido();
+            }
+
           }
         }
       ]
     });
     alert.present();
+  }
+
+  public actualizarPedido() {
+    const loading = this.loadingCtrl.create({
+      content: 'Obteniendo los datos'
+    });
+    loading.present();
+    var id = '';
+    var url = '/pedido/update';
+    var pedido = new Pedido(this.idPedidoRecuperado, this.txtFechaConvert, this.txtNumMovimiento, this.txtCodProveedor, this.txtDescripcion, this.listadoInPedidos);
+    var requestPedido = new RequestPedido(pedido);
+    this.sicService.putGlobal<ResponseAddPedido>(requestPedido, url, id).subscribe(data => {
+      loading.dismiss();
+      let alert;
+      if (data.respuesta) {
+        alert = this.alertCtrl.create({
+          title: 'Pedidos',
+          subTitle: 'Se ha modificado el pedido correctamente',
+          buttons: [{
+            text: 'Aceptar',
+            handler: () => {
+              this.iniciarNuevoPedido();
+            }
+          }]
+        });
+        alert.present();
+      } else {
+        alert = this.alertCtrl.create({
+          title: 'Ups',
+          subTitle: data.mensaje,
+          buttons: ['Aceptar']
+        });
+        alert.present();
+        return;
+      }
+
+    });
   }
 
   public crearPedido() {
@@ -795,6 +768,8 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
           this.txtCantidadCompra = null;
           this.txtPrecZonLib = null;
           this.txtDescripcion2 = null;
+          this.txtCodArticulo = null;
+          this.mostrarExistencias = false;
         } else {
           let alert = this.alertCtrl.create({
             title: 'Existen datos duplicados',
