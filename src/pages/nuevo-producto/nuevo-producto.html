@@ -125,21 +125,20 @@
     <button ion-fab color="danger">
       <ion-icon name="more"></ion-icon>
     </button>
-    <ion-fab-list side="bottom">
-      <button ion-fab color="primary" (click)="confirmarGuardado(fab)"><img class="itm-img" src="assets/img/save.svg"/>
-      </button>
+    <ion-fab-list side="left">
       <button ion-fab color="secondary" (click)="confirmarEliminado(fab)">
         <ion-icon name="trash"></ion-icon>
-      </button>
-
-    </ion-fab-list>
-    <ion-fab-list side="left">
-      <button ion-fab color="naranja" (click)="filtrarArticulo(fab)">
-        <ion-icon name="list"></ion-icon>
       </button>
       <button ion-fab color="secondary" (click)="reportesPedidos(fab)">
         <ion-icon name="print"></ion-icon>
       </button>
+    </ion-fab-list>
+    <ion-fab-list side="bottom">
+      <button ion-fab color="primary" (click)="confirmarGuardado(fab)"><img class="itm-img" src="assets/img/save.svg"/>
+      </button>
+      <!-- button ion-fab color="naranja" (click)="filtrarArticulo(fab)">
+        <ion-icon name="list"></ion-icon>
+      </button-->
     </ion-fab-list>
   </ion-fab>
 

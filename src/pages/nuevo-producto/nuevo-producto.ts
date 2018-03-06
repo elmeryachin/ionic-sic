@@ -166,7 +166,7 @@ export class NuevoProductoPage implements OnInit {
           if (data.respuesta) {
             this.buscaProducto();
           } else {
-            this.descripcion = "NO EXISTE PRODUCTO CON EL PATRON INGRESADO";
+            this.descripcion = null;//"NO EXISTE PRODUCTO CON EL PATRON INGRESADO";
             this.classIncorrectoPro = true;
           }
         });
@@ -179,7 +179,7 @@ export class NuevoProductoPage implements OnInit {
           if (data.respuesta) {
 
             if (data.list.length == 0) {
-              this.descripcion = "NO EXISTE PRODUCTO(S) CON EL PATRON INGRESADO";
+              this.descripcion = null;//"NO EXISTE PRODUCTO(S) CON EL PATRON INGRESADO";
               this.classIncorrectoPro = true;
             } else {
 
@@ -342,6 +342,8 @@ export class NuevoProductoPage implements OnInit {
           loading.dismiss();
           //this.limpiarDatos();
           this.presentAlert('Información','Su producto fue registrado correctamente');
+          console.log('respuesta al guardar ADD ' + data);
+          this.classIncorrectoPro = false;
           return data;
         }, error =>{
           let alert;
