@@ -5,7 +5,7 @@ export class ResponseListPedidos{
 }
 export class DatosPedidos{
   constructor(public id:string, public fechaMovimiento:string, public nroMovimiento:number, public codigoProveedor:string,
-              public observacion:string, public lista:ArticulosPedidosGet[]){
+              public observacion:string, public seleccionado:string, public lista:ArticulosPedidosGet[]){
 
   }
 }

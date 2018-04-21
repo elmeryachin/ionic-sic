@@ -34,12 +34,16 @@ page-modal-llegadas {
     text-align: center !important;
   }
 
-    ion-row.seleccionado:hover {
+  ion-row.seleccionado:hover {
+    background: color($colors, cafe-suave);
+    ion-item {
       background: color($colors, cafe-suave);
-      ion-item {
-        background: color($colors, cafe-suave);
-      }
     }
+  }
+
+  .row_seleccionado {
+    color: #1569ff;
+  }
 
   .grid {
     padding: 0px;

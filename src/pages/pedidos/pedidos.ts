@@ -41,7 +41,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   txtDescripcion;
   txtCodArticulo;
   txtCantidadCompra: number = null;
-  txtPrecZonLib: number = 0;
+  txtPrecZonLib: number = null;
   txtNomProveedor;
   txtDescripcion2;
   txtCantidadTotal;
@@ -75,6 +75,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   @ViewChild('idCodigoArticulo') idCodigoArticulo;
   @ViewChild('cantidadCompra') cantidadCompra;
   @ViewChild('idTxtProveedor') idTxtProveedor;
+  @ViewChild('idTxtPrecZonLib') idTxtPrecZonLib;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController,
               public loadingCtrl: LoadingController, private sicService: SicServiceProvider, public toastCtrl: ToastController,
@@ -150,7 +151,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.txtNomProveedor = '';
     this.txtCodArticulo = '';
     this.txtCantidadCompra = null;
-    this.txtPrecZonLib = 0;
+    this.txtPrecZonLib = null;
     this.txtDescripcion2 = "";
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
@@ -209,6 +210,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
           if (data.respuesta) {
             this.txtCodProveedor = data.codigo;
             this.txtNomProveedor = data.nombre;
+            this.idCodigoArticulo.setFocus();
           } else {
             this.txtNomProveedor = "NO EXISTE PROVEEDOR CON EL PATRON INGRESADO";
             this.classIncorrecto = true;
@@ -287,6 +289,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
             this.txtDescripcion2 = data.nombre;
             this.txtPrecZonLib = data.precio;
             this.txtCantidadCompra = null;
+            this.cantidadCompra.setFocus();
 
             this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.txtCodArticulo+"/existence").subscribe(
               data2 => {
@@ -380,7 +383,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.txtNomProveedor = '';
     this.txtCodArticulo = '';
     this.txtCantidadCompra = null;
-    this.txtPrecZonLib = 0;
+    this.txtPrecZonLib = null;
     this.txtDescripcion2 = 0;
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
@@ -745,7 +748,16 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   }
 
+  public validaCantidadPermitida(cantidadCompra: number) {
+    this.idTxtPrecZonLib.setFocus();
+  }
+
   public addListaPedidos(cantidadCompra: number) {
+    if(this.txtCodArticulo==null?true:this.txtCodArticulo == 'undefined'?true:this.txtCodArticulo.valueOf().length <= 0) {
+      this.idCodigoArticulo.setFocus();
+      return;
+    }
+
     let _url = '/pedido/articulo/quest/' + this.txtCodArticulo;
     this.sicService.getGlobal<ResponseGetArticuloPr>(_url).subscribe(data => {
       if(data.respuesta) {

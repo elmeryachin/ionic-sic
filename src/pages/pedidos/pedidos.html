@@ -36,7 +36,7 @@
             <ion-item>
               <ion-label stacked>Código Proveedor</ion-label>
               <ion-input [(ngModel)]="txtCodProveedor"
-                         #idTxtProveedor
+                         #idTxtProveedor accesskey="p"
                          autofocus  tabindex="5"
                          (keyup.enter)="infoProveedor()"
                          [class.classIncorrecto]="classIncorrecto"
@@ -73,10 +73,9 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Codigo Artículo</ion-label>
-              <!--(change)="obtenerArticulo()"-->
               <ion-input type="text" #idCodigoArticulo
                          [(ngModel)]="txtCodArticulo"  tabindex="6"
-                         (keyup.enter)="infoProducto()"
+                         (keyup.enter)="infoProducto()"  accesskey="a"
                          [class.classIncorrecto]="classIncorrectoPro"
                          (ngModelChange)="txtCodArticulo = $event.toLocaleUpperCase()"></ion-input>
 
@@ -88,7 +87,7 @@
             <ion-item>
               <ion-label stacked>Cantidad - Compra</ion-label>
               <ion-input #cantidadCompra  tabindex="7"
-                         (keyup.enter)="addListaPedidos(cantidadCompra.value)"
+                         (keyup.enter)="validaCantidadPermitida(cantidadCompra.value)"
                          [(ngModel)]="txtCantidadCompra" type="number"></ion-input>
 
             </ion-item>
@@ -98,7 +97,8 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Precio U.</ion-label>
-              <ion-input [(ngModel)]="txtPrecZonLib" tabindex="8"
+              <ion-input #idTxtPrecZonLib tabindex="8"
+                         [(ngModel)]="txtPrecZonLib"
                          (keyup.enter)="addListaPedidos(cantidadCompra.value)"
                          type="number"></ion-input>
             </ion-item>
@@ -215,7 +215,7 @@
 
     </ion-fab-list>
     <ion-fab-list side="left">
-      <button accesskey="g" ion-fab color="cafe-claro" (click)="confirmarAccion(fab)" ><img class="itm-img" src="assets/img/save.svg" /></button><!--Por Llegar este-->
+      <button ion-fab color="cafe-claro"  accesskey="g" (click)="confirmarAccion(fab)" ><img class="itm-img" src="assets/img/save.svg" /></button><!--Por Llegar este-->
       <!-- button ion-fab color="naranja" (click)="confirmarActualizacion(fab)" ><ion-icon name="clipboard"></ion-icon></button -->
     </ion-fab-list>
   </ion-fab>

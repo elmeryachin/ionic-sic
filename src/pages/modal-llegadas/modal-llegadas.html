@@ -51,26 +51,24 @@
   <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
     <ion-grid  class="grilla-pedidos">
       <ion-row class="seleccionado grillas" *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista, item.id, item)" ngClass="background: color($colors, cafe-suave);">
-        <ion-col>
+        <ion-col (click)="onSeleccionado(item)">
           <ion-item class="grillas estilizado " (click)="filtrarPorCodigo(item.codigoProveedor)">
-            <ion-label stacked class="wrap">{{item.codigoProveedor}}</ion-label>
+            <ion-label stacked class="wrap label label-md {{item.seleccionado}}">{{item.codigoProveedor}}</ion-label>
           </ion-item>
         </ion-col>
-        <ion-col>
-          <ion-item class="grillas ">
-
-            <ion-label stacked class="wrap">{{item.fechaMovimiento}}</ion-label>
-          </ion-item>
-        </ion-col>
-        <ion-col>
+        <ion-col (click)="onSeleccionado(item)">
           <ion-item class="grillas">
-
-            <ion-label stacked class="wrap">{{item.nroMovimiento}}</ion-label>
+            <ion-label stacked class="wrap label label-md {{item.seleccionado}}">{{item.fechaMovimiento}}</ion-label>
           </ion-item>
         </ion-col>
-        <ion-col>
+        <ion-col (click)="onSeleccionado(item)">
+          <ion-item class="grillas">
+            <ion-label stacked class="wrap label label-md {{item.seleccionado}}">{{item.nroMovimiento}}</ion-label>
+          </ion-item>
+        </ion-col>
+        <ion-col (click)="onSeleccionado(item)">
           <ion-item class="grillas estilizado mostrarObservacion" (click)="filtrarPorObservacion(item.observacion)">
-            <ion-label stacked class="wrap">{{item.observacion}}
+            <ion-label stacked class="wrap label label-md {{item.seleccionado}}">{{item.observacion}}
             </ion-label>
           </ion-item>
         </ion-col>

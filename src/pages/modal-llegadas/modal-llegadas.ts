@@ -130,7 +130,7 @@ export class ModalLlegadasPage implements OnDestroy {
     alert.present();
   }
   public guardarPedido() {
-    this.sharedService.setData(new DatosPedidos("0","",0,"","",null));
+    this.sharedService.setData(new DatosPedidos("0","",0,"","","", null));
 
     if (this.idPedido === 0) {
       let mostrarAlert = this.alertCtrl.create({
@@ -497,12 +497,24 @@ export class ModalLlegadasPage implements OnDestroy {
       alert.present();
 
 
-    let listaPedidosLocal:DatosPedidos[];
+    /*let listaPedidosLocal:DatosPedidos[];
     listaPedidosLocal = this.listaPedidos.list.filter(item => item.observacion == datosPedido);
 
     this.listaPedidos.list = listaPedidosLocal;
     console.log(this.strDetallePedidos)
     this.limpiarPedidos();
-    this.detallePedidos();
+    this.detallePedidos();*/
+  }
+
+  public onSeleccionado(item) {
+    console.log('inrgesando ' + item)
+    for (let obj of this.listaPedidos.list) {
+      obj.seleccionado = '';
+      if(item.id == obj.id) {
+        obj.seleccionado = 'row_seleccionado';
+      }
+    }
+    console.log(item.id);
+    console.log(item.seleccionado);
   }
 }
