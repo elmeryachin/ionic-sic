@@ -16,17 +16,17 @@
 
       <ion-item color="cafe-claro">
         <ion-label floating color="light">Usuario</ion-label>
-        <ion-input color="light" [(ngModel)]="txtUsuario" autofocus type="text" required="true"></ion-input>
+        <ion-input color="light" [(ngModel)]="txtUsuario" accesskey="u" autofocus type="text" required="true"></ion-input>
       </ion-item>
 
       <ion-item color="cafe-claro">
         <ion-label floating color="light">Constraseña</ion-label>
-        <ion-input (keyup.enter)="iniciaSesion()" color="light" [(ngModel)]="txtPassword" type="password"></ion-input>
+        <ion-input (keyup.enter)="iniciaSesion()" color="light" accesskey="c" [(ngModel)]="txtPassword" type="password"></ion-input>
       </ion-item>
 
     </ion-list>
     <div style="text-align: right">
-      <button ion-button color="naranja-logo" (click)="iniciaSesion()">Iniciar Sessión</button>
+      <button ion-button color="naranja-logo" (click)="iniciaSesion()" accesskey="g">Iniciar Sessión</button>
     </div>
   </div>
 

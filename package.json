@@ -5,11 +5,17 @@
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
+    "dev": "nf start",
+    "start": "electron .",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "electron dist": "electron .",
+    "ebuild": "npm run build && node_modules/.bin/build",
+    "pack" : "build --dir",
+    "dist" : "build"
   },
   "dependencies": {
     "@angular/common": "4.4.3",
@@ -45,6 +51,9 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.0.0",
+    "electron": "^1.8.3",
+    "electron-builder": "^20.4.1",
+    "foreman": "^2.0.0",
     "typescript": "2.3.4"
   },
   "description": "An Ionic project",
@@ -61,5 +70,34 @@
       "cordova-plugin-qrscanner": {},
       "ionic-plugin-keyboard": {}
     }
+  },
+  "main": "electron/electron.js",
+  "config": {
+    "ionic_bundler": "webpack",
+    "ionic_webpack": "./config/webpack.config.js"
+  },
+  "build": {
+    "appId": "com.clync.sic",
+    "electronVersion": "1.7.5",
+    "asar": false,
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    
+    "files": [
+      "www/**/*",
+      "electron/*"
+    ]
   }
 }

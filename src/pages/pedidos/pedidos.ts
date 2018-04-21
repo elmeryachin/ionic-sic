@@ -758,11 +758,6 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
       return;
     }
 
-    if(this.txtCantidadCompra==null?true:this.txtCantidadCompra == 'undefined') {
-        this.cantidadCompra.setFocus();
-        return;
-    }
-
     let _url = '/pedido/articulo/quest/' + this.txtCodArticulo;
     this.sicService.getGlobal<ResponseGetArticuloPr>(_url).subscribe(data => {
       if(data.respuesta) {

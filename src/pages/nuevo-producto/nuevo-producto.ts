@@ -7,7 +7,6 @@ import {MdlArticulo} from "../model/mdl-articulo";
 import {ObjArticulo} from "../clases/obj-articulo";
 import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {Ambientes, ResponseExistences} from "../response/response-existences";
-import {ResponseSucursales, Sucursales} from "../response/ResponseSucursales";
 import {RequestPedidosLista} from "../request/RequestPedidosLista";
 import {ResponseListArticulotr} from "../response/response-list-articulotr";
 import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
@@ -82,12 +81,21 @@ export class NuevoProductoPage implements OnInit {
     this.seActualiza = false;
 
   }
+  public round(number, precision) {
+    var factor = Math.pow(10, precision);
+    var tempNumber = number * factor;
+    var roundedTempNumber = Math.round(tempNumber);
+    return roundedTempNumber / factor;
+  };
 
   public calculaPrecioFinal() {
     this.mostrarExistencias = false;
     this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
+    this.montoGasto = this.round(this.montoGasto,2);
+
 
     this.precioCompra = (this.precioKilo * this.pesoStock) + (this.precioZonaLibre * 1) + (this.montoGasto*1);
+    this.precioCompra = this.round(this.precioCompra,2)
   }
 
   public escanearCodigo(){
@@ -256,14 +264,15 @@ export class NuevoProductoPage implements OnInit {
         if (data.articulo != null) {
           this.seActualiza = true;
           this.descripcion = data.articulo.nombre;
-          this.precioKilo = data.articulo.precioKilo;
+          this.precioKilo = this.round(data.articulo.precioKilo,2);
           this.pesoStock = data.articulo.peso;
-          this.precioZonaLibre = data.articulo.precioZonaLibre;
-          this.porcentajeGastos = data.articulo.porcentajeGasto;
-          this.precioCompra = data.articulo.precioCompra;
-          this.precioMercado = data.articulo.precioMercado;
-          this.precioVenta = data.articulo.precioVenta;
+          this.precioZonaLibre = this.round(data.articulo.precioZonaLibre,2);
+          this.porcentajeGastos = this.round(data.articulo.porcentajeGasto,2);
+          this.precioCompra = this.round(data.articulo.precioCompra,2);
+          this.precioMercado = this.round(data.articulo.precioMercado,2);
+          this.precioVenta = this.round(data.articulo.precioVenta,2);
           this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
+          this.montoGasto = this.round(this.montoGasto,2);
           this.mensaje = data.articulo.descripcion;
 
           this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.codigoArticulo+"/existence").subscribe(
@@ -275,6 +284,7 @@ export class NuevoProductoPage implements OnInit {
               }else{
                 this.mdlAmbiente = new Array();
               }
+
             },error=>{
               this.presentToast("Error al obtener los datos.");
             });
