@@ -40,7 +40,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   txtCodProveedor;
   txtDescripcion;
   txtCodArticulo;
-  txtCantidadCompra: number = 0;
+  txtCantidadCompra: number = null;
   txtPrecZonLib: number = 0;
   txtNomProveedor;
   txtDescripcion2;
@@ -149,7 +149,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.txtCodProveedor = '';
     this.txtNomProveedor = '';
     this.txtCodArticulo = '';
-    this.txtCantidadCompra = 0;
+    this.txtCantidadCompra = null;
     this.txtPrecZonLib = 0;
     this.txtDescripcion2 = "";
     this.txtCantidadTotal = 0;
@@ -286,7 +286,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
             this.txtCodArticulo = data.codigo;
             this.txtDescripcion2 = data.nombre;
             this.txtPrecZonLib = data.precio;
-            this.txtCantidadCompra = 1;
+            this.txtCantidadCompra = null;
 
             this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.txtCodArticulo+"/existence").subscribe(
               data2 => {
@@ -379,7 +379,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.txtCodProveedor = '';
     this.txtNomProveedor = '';
     this.txtCodArticulo = '';
-    this.txtCantidadCompra = 0;
+    this.txtCantidadCompra = null;
     this.txtPrecZonLib = 0;
     this.txtDescripcion2 = 0;
     this.txtCantidadTotal = 0;
