@@ -16,3 +16,8 @@ export class ArticuloPedido{
     public observacion:string){
   }
 }
+export class ResponsePedido{
+  constructor(public id: number, public fechaMovimiento:string, public nroMovimiento:number, public codigoProveedor:string, public observacion:string, public lista:ArticuloPedido[]){
+
+  }
+}
