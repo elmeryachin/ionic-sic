@@ -29,14 +29,14 @@ export class NuevoProductoPage implements OnInit {
 
   codigoArticulo;
   descripcion;
-  precioKilo:number = 0;
-  pesoStock:number = 0;
-  precioZonaLibre:number = 0;
-  porcentajeGastos:number = 0;
-  montoGasto:number = 0;
-  precioCompra:number = 0;
-  precioMercado:number = 0;
-  precioVenta:number = 0;
+  precioKilo:number = null;
+  pesoStock:number = null;
+  precioZonaLibre:number = null;
+  porcentajeGastos:number = null;
+  montoGasto:number = null;
+  precioCompra:number = null;
+  precioMercado:number = null;
+  precioVenta:number = null;
   seActualiza: boolean;
   mensaje;
   mostrarExistencias = false;
@@ -44,8 +44,18 @@ export class NuevoProductoPage implements OnInit {
   mdlAmbiente:Ambientes[] = new Array();
   url:string = 'http://localhost:8080';
   codBarras:string;
-  classIncorrectoPro: boolean = false;
+  classNuevo: boolean = false;
   @ViewChild('idCodigoArticulo') idCodigoArticulo;
+  @ViewChild('idDescripcion') idDescripcion;
+  @ViewChild('idPrecioKilo') idPrecioKilo;
+  @ViewChild('idPesoStock') idPesoStock;
+  @ViewChild('idPrecioZonaLibre') idPrecioZonaLibre;
+  @ViewChild('idPorcentajeGastos') idPorcentajeGastos;
+  @ViewChild('idMontoGasto') idMontoGasto;
+  @ViewChild('idPrecioCompra') idPrecioCompra;
+  @ViewChild('idPrecioVenta') idPrecioVenta;
+  @ViewChild('idPrecioMercado') idPrecioMercado;
+  @ViewChild('idMensaje') idMensaje;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public qrScanner: QRScanner) {
@@ -162,20 +172,19 @@ export class NuevoProductoPage implements OnInit {
 
   public infoProducto(){
     this.limpiarDatos();
-    this.classIncorrectoPro = false;
+    this.classNuevo = false;
 
     if(this.codigoArticulo==null?false:this.codigoArticulo == 'undefined'?false:(this.codigoArticulo.valueOf().length > 0)) {
       let len = this.codigoArticulo.valueOf().split('%').length;
-      console.log("len : " + len);
       if(len == 1) {
         let _url = '/pedido/articulo/quest/' + this.codigoArticulo;
         this.sicService.getGlobal<ResponseGetArticuloPr>(_url).subscribe(data => {
-          console.log("data.respuesta : " + data.respuesta);
           if (data.respuesta) {
             this.buscaProducto();
           } else {
             this.descripcion = null;//"NO EXISTE PRODUCTO CON EL PATRON INGRESADO";
-            this.classIncorrectoPro = true;
+            this.classNuevo = true;
+            this.idDescripcion.setFocus();
           }
         });
       } else {
@@ -188,7 +197,7 @@ export class NuevoProductoPage implements OnInit {
 
             if (data.list.length == 0) {
               this.descripcion = null;//"NO EXISTE PRODUCTO(S) CON EL PATRON INGRESADO";
-              this.classIncorrectoPro = true;
+              this.classNuevo = true;
             } else {
 
               let check: boolean = true;
@@ -241,6 +250,46 @@ export class NuevoProductoPage implements OnInit {
     }
   }
 
+  public infoDescripcion(){
+    this.idPrecioKilo.setFocus();
+  }
+
+  public infoPrecioKilo() {
+    this.idPesoStock.setFocus();
+
+  }
+
+  public infoPesoStock() {
+    this.idPrecioZonaLibre.setFocus();
+  }
+
+  public inforPrecioZonaLibre() {
+    this.idPorcentajeGastos.setFocus();
+  }
+
+  public infoPorcentajeGastos() {
+    this.idPrecioVenta.setFocus();
+  }
+
+  /*public infoMontoGasto(){
+    this.idPrecioCompra.setFocus();
+  }
+
+  public infoPrecioCompra(){
+    this.idPrecioVenta.setFocus();
+  }*/
+
+  public infoPrecioVenta(){
+    this.idPrecioMercado.setFocus();
+  }
+
+  public infoPrecioMercado(){
+    this.idMensaje.setFocus();
+  }
+
+  public infoMensaje(){
+    this.confirmarGuardado(null);
+  }
   public buscaProducto() {
     this.mostrarExistencias = true;
     const loading = this.loadingCtrl.create({
@@ -265,7 +314,7 @@ export class NuevoProductoPage implements OnInit {
           this.seActualiza = true;
           this.descripcion = data.articulo.nombre;
           this.precioKilo = this.round(data.articulo.precioKilo,2);
-          this.pesoStock = data.articulo.peso;
+          this.pesoStock = this.round(data.articulo.peso,2);
           this.precioZonaLibre = this.round(data.articulo.precioZonaLibre,2);
           this.porcentajeGastos = this.round(data.articulo.porcentajeGasto,2);
           this.precioCompra = this.round(data.articulo.precioCompra,2);
@@ -274,7 +323,7 @@ export class NuevoProductoPage implements OnInit {
           this.montoGasto = (this.porcentajeGastos * this.precioZonaLibre) / 100;
           this.montoGasto = this.round(this.montoGasto,2);
           this.mensaje = data.articulo.descripcion;
-
+          this.idDescripcion.setFocus();
           this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.codigoArticulo+"/existence").subscribe(
             data2 => {
               this.respuestaExistencias = data2;
@@ -300,7 +349,8 @@ export class NuevoProductoPage implements OnInit {
   }
 
   public confirmarGuardado(fab: FabContainer){
-    fab.close();
+    if(fab!=null)
+      fab.close();
     let confirm = this.alertCtrl.create({
       title: 'Alerta Nuevo/Actualizacion de Articulos',
       message: 'Desea ' + (this.seActualiza?'actualizar':'guardar') + ' el articulo '+this.codigoArticulo+'?',
@@ -353,7 +403,9 @@ export class NuevoProductoPage implements OnInit {
           //this.limpiarDatos();
           this.presentAlert('Información','Su producto fue registrado correctamente');
           console.log('respuesta al guardar ADD ' + data);
-          this.classIncorrectoPro = false;
+          this.classNuevo = false;
+          this.buscaProducto();
+          this.mdlAmbiente = new Array();
           return data;
         }, error =>{
           let alert;
@@ -444,15 +496,15 @@ export class NuevoProductoPage implements OnInit {
     this.mostrarExistencias = false;
     this.seActualiza = false;
     this.descripcion = '';
-    this.precioKilo = 0;
-    this.pesoStock = 0;
-    this.precioZonaLibre = 0;
-    this.porcentajeGastos = 0;
-    this.precioCompra = 0;
-    this.precioMercado = 0;
-    this.precioVenta = 0;
+    this.precioKilo = null;
+    this.pesoStock = null;
+    this.precioZonaLibre = null;
+    this.porcentajeGastos = null;
+    this.precioCompra = null;
+    this.precioMercado = null;
+    this.precioVenta = null;
     this.mensaje = '';
-    this.montoGasto = 0;
+    this.montoGasto = null;
     this.mdlAmbiente = null;
   }
 

@@ -73,6 +73,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   respuestaExistencias:ResponseExistences = new ResponseExistences(null,true,"");
   mdlAmbiente:Ambientes[] = new Array();
   @ViewChild('idCodigoArticulo') idCodigoArticulo;
+  @ViewChild('itemCodArt') itemCodArt;
   @ViewChild('cantidadCompra') cantidadCompra;
   @ViewChild('idTxtProveedor') idTxtProveedor;
   @ViewChild('idTxtPrecZonLib') idTxtPrecZonLib;
@@ -356,6 +357,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                     this.infoProducto();
                     setTimeout(() => {
                       this.idCodigoArticulo.setFocus();
+                      this.idCodigoArticulo.className = ' input-has-focus item-input-has-focus';
                     },150);
                   }
                 }
@@ -366,12 +368,15 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
             console.log('Error al ejecutar ' + _url)
           }
         });
-        console.log('Finalizando.... ')
+        console.log('Finalizando.... ');
       }
     } else {
       this.txtCodArticulo = null;
       this.txtDescripcion2 = null;
     }
+    this.idCodigoArticulo.setFocus();
+    this.idCodigoArticulo.className = ' input-has-focus item-input-has-focus';
+
   }
 
   private limpiarDatos() {
@@ -749,12 +754,18 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   }
 
   public validaCantidadPermitida(cantidadCompra: number) {
-    this.idTxtPrecZonLib.setFocus();
+    if(cantidadCompra > 0 )
+      this.idTxtPrecZonLib.setFocus();
   }
 
   public addListaPedidos(cantidadCompra: number) {
     if(this.txtCodArticulo==null?true:this.txtCodArticulo == 'undefined'?true:this.txtCodArticulo.valueOf().length <= 0) {
       this.idCodigoArticulo.setFocus();
+      return;
+    }
+
+    if(cantidadCompra <= 0 ) {
+      this.cantidadCompra.setFocus();
       return;
     }
 
