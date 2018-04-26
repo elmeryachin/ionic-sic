@@ -10,7 +10,7 @@ import {ResponseDatosProveedor, ResponseListProveedor} from "../response/respons
 import {ResponseListaProveedor} from "../response/response-lista-proveedor";
 import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
 import {ResponseListArticulotr, RequestProductoPatron} from "../response/response-list-articulotr";
-import {ArticuloPedido, Pedido, RequestPedido} from "../request/request-pedido";
+import {ArticuloPedido, Pedido, RequestPedido, ResponsePedido} from "../request/request-pedido";
 import {ResponseAddPedido} from "../response/response-add-pedido";
 import {ModalLlegadasPage} from "../modal-llegadas/modal-llegadas";
 import {ArticulosPedidosGet, DatosPedidos, ResponseListPedidos} from "../response/response-list-pedidos";
@@ -50,6 +50,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   txtFechaConvert;
   listadoInPedidos: ArticuloPedido[];
   pedidosGuardados: RequestPedido;
+  pedidoInsertado: ResponsePedido;
   idPedidoRecuperado: number = null;
   listaPedidos: ResponseListPedidos;
   listaArticulosPorPedido: ArticulosPedidosGet[];
@@ -714,7 +715,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
           buttons: [{
             text: 'Aceptar',
             handler: () => {
-              this.iniciarNuevoPedido();
+              //this.iniciarNuevoPedido();
             }
           }]
         });
@@ -742,8 +743,14 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     var requestPedido = new RequestPedido(pedido);
     this.sicService.postGlobal<ResponseAddPedido>(requestPedido, urlListaProveedor).subscribe(data => {
       loading.dismiss();
-      this.iniciarNuevoPedido();
-      this.pedidosGuardados = data.pedidoObjeto;
+      //this.iniciarNuevoPedido();
+      //this.pedidosGuardados = data.pedidoObjeto;
+      this.pedidoInsertado = data.pedidoObjeto;
+      console.log(data.pedidoObjeto);
+      console.log("*************************")
+      console.log(this.pedidoInsertado)
+      this.idPedidoRecuperado = this.pedidoInsertado.id;
+      this.listadoInPedidos = this.pedidoInsertado.lista;
       if (data.respuesta) {
         this.presentToast('Se guardo el pedido correctamente.');
       } else {
@@ -1124,7 +1131,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   }
 
   ngDoCheck(){
-    console.log('Método DoCheck lanzado ngDoCheck');
+    //console.log('Método DoCheck lanzado ngDoCheck');
   }
 
 }
