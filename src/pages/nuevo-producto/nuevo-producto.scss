@@ -40,9 +40,13 @@ page-nuevo-producto {
     font-size: 1.2rem;
   }
 
-  .classIncorrecto {
-    color: red;
+  .classNuevo {
+    color: darkgreen;
     font-weight: bold;
   }
 
+  .classNoEdit {
+    color: #555555;
+    font-weight: bold;
+  }
 }

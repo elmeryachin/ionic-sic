@@ -24,7 +24,7 @@
             <ion-label stacked>Código Artículo</ion-label>
             <ion-input autofocus #idCodigoArticulo type="text" [(ngModel)]="codigoArticulo"
                        (ngModelChange)="codigoArticulo = $event.toLocaleUpperCase()"
-                       [class.classIncorrecto]="classIncorrectoPro"
+                       [class.classNuevo]="classNuevo"
                        placeholder="ej. ASC0123" (keyup.enter)="infoProducto()" ></ion-input>
           </ion-item>
         </ion-list>
@@ -34,6 +34,7 @@
           <ion-item>
             <ion-label stacked>Codigo de Barras</ion-label>
             <ion-input type="text" [(ngModel)]="codBarras"
+                       [class.classNuevo]="classNuevo"
                        placeholder=""></ion-input>
             <button (click)="escanearCodigo()" ion-button item-end icon-only>
               <ion-icon name="camera"></ion-icon>
@@ -47,8 +48,8 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Descripción</ion-label>
-            <ion-input type="text" [class.classIncorrecto]="classIncorrectoPro"
-                       [(ngModel)]="descripcion" type="text"></ion-input>
+            <ion-input #idDescripcion type="text" [class.classNuevo]="classNuevo"
+                       [(ngModel)]="descripcion" type="text" (keyup.enter)="infoDescripcion()"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -58,20 +59,27 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Precio por Kilo</ion-label>
-            <ion-input [(ngModel)]="precioKilo" (change)="calculaPrecioFinal()" type="number"></ion-input>
+            <ion-input #idPrecioKilo [(ngModel)]="precioKilo" (change)="calculaPrecioFinal()"
+                       [class.classNuevo]="classNuevo"
+                       (keyup.enter)="infoPrecioKilo()" type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Peso Stock</ion-label>
-            <ion-input [(ngModel)]="pesoStock" (change)="calculaPrecioFinal()" type="number"></ion-input>
+            <ion-input #idPesoStock [(ngModel)]="pesoStock" (change)="calculaPrecioFinal()"
+                       [class.classNuevo]="classNuevo"
+                       (keyup.enter)="infoPesoStock()" type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>P. Zona Franca</ion-label>
-            <ion-input type="number" (change)="calculaPrecioFinal()" [(ngModel)]="precioZonaLibre"></ion-input>
+            <ion-input #idPrecioZonaLibre [(ngModel)]="precioZonaLibre" (change)="calculaPrecioFinal()"
+                       [class.classNuevo]="classNuevo"
+                       (keyup.enter)="inforPrecioZonaLibre()" type="number" ></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>% Gastos %</ion-label>
-            <ion-input type="number" (change)="calculaPrecioFinal()" step="any"
-                       [(ngModel)]="porcentajeGastos"></ion-input>
+            <ion-input #idPorcentajeGastos [(ngModel)]="porcentajeGastos" (change)="calculaPrecioFinal()" step="any"
+                       [class.classNuevo]="classNuevo"
+                       (keyup.enter)="infoPorcentajeGastos()" type="number" ></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -79,20 +87,27 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Gastos</ion-label>
-            <ion-input type="number" (change)="calculaPrecioFinal()" step="any" disabled
-                       [(ngModel)]="montoGasto"></ion-input>
+            <ion-input #idMontoGasto [(ngModel)]="montoGasto" (change)="calculaPrecioFinal()" step="any" disabled
+                       [class.classNoEdit]="classNuevo"
+                       type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Precio Compra</ion-label>
-            <ion-input [(ngModel)]="precioCompra" (change)="calculaPrecioFinal()" type="number" readonly></ion-input>
+            <ion-input #idPrecioCompra [(ngModel)]="precioCompra" (change)="calculaPrecioFinal()" disabled
+                       [class.classNoEdit]="classNuevo"
+                       type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Precio Venta</ion-label>
-            <ion-input type="number" [(ngModel)]="precioVenta " step="any" (change)="calculaPrecioFinal()"></ion-input>
+            <ion-input #idPrecioVenta [(ngModel)]="precioVenta " step="any" (change)="calculaPrecioFinal()"
+                       [class.classNuevo]="classNuevo"
+                       (keyup.enter)="infoPrecioVenta()" type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Precio Mercado</ion-label>
-            <ion-input type="number" [(ngModel)]="precioMercado" step="any" (change)="calculaPrecioFinal()"></ion-input>
+            <ion-input #idPrecioMercado [(ngModel)]="precioMercado" step="any" (change)="calculaPrecioFinal()"
+                       [class.classNuevo]="classNuevo"
+                       (keyup.enter)="infoPrecioMercado()" type="number"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -102,12 +117,14 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Mensaje</ion-label>
-            <ion-input type="text" [(ngModel)]="mensaje" type="text"></ion-input>
+            <ion-input #idMensaje type="text" [(ngModel)]="mensaje"
+                       [class.classNuevo]="classNuevo"
+                       (keyup.enter)="infoMensaje()" type="text"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
-    <ion-row >
+    <ion-row>
       <ion-row *ngFor="let item of mdlAmbiente" >
         <button class="btn-list" ion-button color="style-sucursales-{{item.propio}}">
           <p *ngIf="item.propio==1; else a1">
