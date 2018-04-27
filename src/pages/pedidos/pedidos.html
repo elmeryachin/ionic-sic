@@ -101,7 +101,10 @@
               <ion-input #idTxtPrecZonLib tabindex="8"
                          [(ngModel)]="txtPrecZonLib"
                          (keyup.enter)="addListaPedidos(cantidadCompra.value)"
-                         type="number"></ion-input>
+                         type="number"
+                         (ngModelChange)="cambiarDatos()"
+
+              ></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -181,7 +184,7 @@
           </ion-col>
           <ion-col (click)="eliminarArticuloPedido(item)">
             <ion-item class="grillas" class="wrap">
-              <ion-label stacked>{{item.cantidad * item.precio}} <ion-icon name="trash"></ion-icon></ion-label>
+              <ion-label stacked>{{(item.cantidad * item.precio).toFixed(2)}} <ion-icon name="trash"></ion-icon></ion-label>
             </ion-item>
           </ion-col>
         </ion-row>

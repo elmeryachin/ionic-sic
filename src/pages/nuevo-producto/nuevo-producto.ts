@@ -96,7 +96,7 @@ export class NuevoProductoPage implements OnInit {
     var tempNumber = number * factor;
     var roundedTempNumber = Math.round(tempNumber);
     return roundedTempNumber / factor;
-  };
+  }
 
   public calculaPrecioFinal() {
     this.mostrarExistencias = false;
