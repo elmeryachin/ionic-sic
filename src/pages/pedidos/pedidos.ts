@@ -695,7 +695,15 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     });
     alert.present();
   }
-
+  public cambiarDatos(){
+    this.txtPrecZonLib = this.round(this.txtPrecZonLib,2);
+  }
+  public round(number, precision) {
+    var factor = Math.pow(10, precision);
+    var tempNumber = number * factor;
+    var roundedTempNumber = Math.round(tempNumber);
+    return roundedTempNumber / factor;
+  }
   public actualizarPedido() {
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
