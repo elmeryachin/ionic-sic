@@ -86,7 +86,8 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Cantidad - Compra</ion-label>
-              <ion-input #cantidadCompra  tabindex="7"
+              <ion-input #cantidadCompra  tabindex="7" minlength="0" maxlength="10"
+                         (keypress)="formatInt($event)"
                          (keyup.enter)="validaCantidadPermitida(cantidadCompra.value)"
                          [(ngModel)]="txtCantidadCompra" type="number"></ion-input>
 

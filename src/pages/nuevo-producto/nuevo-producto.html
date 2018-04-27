@@ -60,25 +60,25 @@
           <ion-item>
             <ion-label stacked>Precio por Kilo</ion-label>
             <ion-input #idPrecioKilo [(ngModel)]="precioKilo" (change)="calculaPrecioFinal()"
-                       [class.classNuevo]="classNuevo"
+                       [class.classNuevo]="classNuevo" (keypress)="utilFormatNumber(idPrecioKilo,2 )"
                        (keyup.enter)="infoPrecioKilo()" type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Peso Stock</ion-label>
             <ion-input #idPesoStock [(ngModel)]="pesoStock" (change)="calculaPrecioFinal()"
-                       [class.classNuevo]="classNuevo"
+                       [class.classNuevo]="classNuevo" (keypress)="utilFormatNumber(idPesoStock,2)"
                        (keyup.enter)="infoPesoStock()" type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>P. Zona Franca</ion-label>
             <ion-input #idPrecioZonaLibre [(ngModel)]="precioZonaLibre" (change)="calculaPrecioFinal()"
-                       [class.classNuevo]="classNuevo"
+                       [class.classNuevo]="classNuevo" (keypress)="utilFormatNumber(idPrecioZonaLibre, 2)"
                        (keyup.enter)="inforPrecioZonaLibre()" type="number" ></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>% Gastos %</ion-label>
             <ion-input #idPorcentajeGastos [(ngModel)]="porcentajeGastos" (change)="calculaPrecioFinal()" step="any"
-                       [class.classNuevo]="classNuevo"
+                       [class.classNuevo]="classNuevo" (keypress)="utilFormatNumber(idPorcentajeGastos, 3)"
                        (keyup.enter)="infoPorcentajeGastos()" type="number" ></ion-input>
           </ion-item>
         </ion-list>
@@ -100,13 +100,13 @@
           <ion-item>
             <ion-label stacked>Precio Venta</ion-label>
             <ion-input #idPrecioVenta [(ngModel)]="precioVenta " step="any" (change)="calculaPrecioFinal()"
-                       [class.classNuevo]="classNuevo"
+                       [class.classNuevo]="classNuevo" (keypress)="utilFormatNumber(idPrecioVenta, 2)"
                        (keyup.enter)="infoPrecioVenta()" type="number"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label stacked>Precio Mercado</ion-label>
             <ion-input #idPrecioMercado [(ngModel)]="precioMercado" step="any" (change)="calculaPrecioFinal()"
-                       [class.classNuevo]="classNuevo"
+                       [class.classNuevo]="classNuevo" (keypress)="utilFormatNumber(idPrecioMercado, 2)"
                        (keyup.enter)="infoPrecioMercado()" type="number"></ion-input>
           </ion-item>
         </ion-list>

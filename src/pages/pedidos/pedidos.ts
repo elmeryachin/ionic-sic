@@ -345,8 +345,8 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                 text: 'Cancelar',
                 handler: (data:any) => {
                   setTimeout(() => {
-                    this.idTxtProveedor.setFocus();
-                  },150);
+                    this.idCodigoArticulo.setFocus();
+                  },400);
                 }
               });
               alert.addButton({
@@ -357,9 +357,8 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                     this.txtCodArticulo = data;
                     this.infoProducto();
                     setTimeout(() => {
-                      this.idCodigoArticulo.setFocus();
-                      this.idCodigoArticulo.className = ' input-has-focus item-input-has-focus';
-                    },150);
+                      this.cantidadCompra.setFocus();
+                    },400);
                   }
                 }
               });
@@ -375,9 +374,6 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
       this.txtCodArticulo = null;
       this.txtDescripcion2 = null;
     }
-    this.idCodigoArticulo.setFocus();
-    this.idCodigoArticulo.className = ' input-has-focus item-input-has-focus';
-
   }
 
   private limpiarDatos() {
@@ -763,6 +759,13 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   public validaCantidadPermitida(cantidadCompra: number) {
     if(cantidadCompra > 0 )
       this.idTxtPrecZonLib.setFocus();
+  }
+
+  public formatInt(event: any) {
+    if(event.charCode >= 48 && event.charCode <= 57) {
+      return true
+    }
+    return false;
   }
 
   public addListaPedidos(cantidadCompra: number) {
