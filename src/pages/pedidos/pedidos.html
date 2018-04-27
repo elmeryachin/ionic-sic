@@ -86,7 +86,8 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Cantidad - Compra</ion-label>
-              <ion-input #cantidadCompra  tabindex="7"
+              <ion-input #cantidadCompra  tabindex="7" minlength="0" maxlength="10"
+                         (keypress)="formatInt($event)"
                          (keyup.enter)="validaCantidadPermitida(cantidadCompra.value)"
                          [(ngModel)]="txtCantidadCompra" type="number"></ion-input>
 
@@ -98,12 +99,9 @@
             <ion-item>
               <ion-label stacked>Precio U.</ion-label>
               <ion-input #idTxtPrecZonLib tabindex="8"
-                         [(ngModel)]="txtPrecZonLib"
+                         [(ngModel)]="txtPrecZonLib" (keypress)="utilFormatNumber(idTxtPrecZonLib, 2)"
                          (keyup.enter)="addListaPedidos(cantidadCompra.value)"
-                         type="number"
-                         (ngModelChange)="cambiarDatos()"
-
-              ></ion-input>
+                         type="number"></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -194,7 +192,7 @@
         <ion-col>
           <ion-item>
             <ion-label >Cantidad Total:</ion-label>
-            <ion-label style="font-weight: bold">{{txtPrecioTotal==0?0.00:txtCantidadTotal}}</ion-label>
+            <ion-label style="font-weight: bold">{{txtCantidadTotal==0?0:txtCantidadTotal}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col>

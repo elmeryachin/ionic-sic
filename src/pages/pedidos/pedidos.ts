@@ -345,8 +345,8 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                 text: 'Cancelar',
                 handler: (data:any) => {
                   setTimeout(() => {
-                    this.idTxtProveedor.setFocus();
-                  },150);
+                    this.idCodigoArticulo.setFocus();
+                  },400);
                 }
               });
               alert.addButton({
@@ -357,9 +357,8 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                     this.txtCodArticulo = data;
                     this.infoProducto();
                     setTimeout(() => {
-                      this.idCodigoArticulo.setFocus();
-                      this.idCodigoArticulo.className = ' input-has-focus item-input-has-focus';
-                    },150);
+                      this.cantidadCompra.setFocus();
+                    },400);
                   }
                 }
               });
@@ -375,9 +374,6 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
       this.txtCodArticulo = null;
       this.txtDescripcion2 = null;
     }
-    this.idCodigoArticulo.setFocus();
-    this.idCodigoArticulo.className = ' input-has-focus item-input-has-focus';
-
   }
 
   private limpiarDatos() {
@@ -695,6 +691,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     });
     alert.present();
   }
+
   public cambiarDatos(){
     this.txtPrecZonLib = this.round(this.txtPrecZonLib,2);
   }
@@ -704,6 +701,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     var roundedTempNumber = Math.round(tempNumber);
     return roundedTempNumber / factor;
   }
+
   public actualizarPedido() {
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
@@ -771,6 +769,26 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   public validaCantidadPermitida(cantidadCompra: number) {
     if(cantidadCompra > 0 )
       this.idTxtPrecZonLib.setFocus();
+  }
+
+  public formatInt(event: any) {
+    if(event.charCode >= 48 && event.charCode <= 57) {
+      return true
+    }
+    return false;
+  }
+
+  public utilFormatNumber(event: any, len:number) {
+    var value = event.value + '';
+    console.log(value);
+    var array = value.split('.');
+    if( array.length == 2 ) {
+      var decimal = array[1];
+      if( decimal.length >= len ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   public addListaPedidos(cantidadCompra: number) {

@@ -88,8 +88,16 @@ export class ModalLlegadasPage implements OnDestroy {
       for (let lisArt of lista.lista) {
         this.cantidadPedidos = (lisArt.cantidad * 1) + this.cantidadPedidos;
         this.precioPedidos = (lisArt.precio * 1) + this.precioPedidos;
+        this.precioPedidos = this.round(this.precioPedidos,2);
       }
     }
+  }
+
+  public round(number, precision) {
+    var factor = Math.pow(10, precision);
+    var tempNumber = number * factor;
+    var roundedTempNumber = Math.round(tempNumber);
+    return roundedTempNumber / factor;
   }
 
   public listarArticulos(item: ArticulosPedidosGet[], id: number, articuloSolicitado: DatosPedidos) {

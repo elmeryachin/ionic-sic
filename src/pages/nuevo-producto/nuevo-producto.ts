@@ -168,6 +168,35 @@ export class NuevoProductoPage implements OnInit {
     if(this.codigoArticulo) {
       this.codigoArticulo = this.codigoArticulo.toUpperCase();
     }
+    console.log('test onkey');
+  }
+
+
+  public utilFormatNumber(event: any, len:number) {
+    var value = event.value + '';
+    console.log(value);
+    var array = value.split('.');
+    if( array.length == 2 ) {
+      var decimal = array[1];
+      if( decimal.length >= len ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public utilFormatNumber2(event: any, len:number) {
+    var value = event.value + '';
+    console.log(value);
+    var array = value.split('.');
+    if( array.length == 2 ) {
+      var decimal = array[1];
+      if( decimal.length > len ) {
+        decimal = decimal.substr(0, 2);
+      }
+      value = array[0] + '.' + decimal;
+    }
+    event.value = value;
   }
 
   public infoProducto(){
