@@ -85,9 +85,9 @@ export class NuevoProductoPage implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.idCodigoArticulo.setFocus();
-    },150);
+    },150);*/
     this.seActualiza = false;
 
   }
@@ -149,7 +149,7 @@ export class NuevoProductoPage implements OnInit {
     window.document.querySelector('ion-app').classList.remove('transparentBody')
   }
 
-  ionViewDidLoad() {
+  /*ionViewDidLoad() {
     console.log('ionViewDidLoad NuevoProductoPage');
     setTimeout(() => {
       this.idCodigoArticulo.setFocus();
@@ -162,7 +162,7 @@ export class NuevoProductoPage implements OnInit {
       this.idCodigoArticulo.setFocus();
     },150);
 
-  }
+  }*/
 
   public onKey(event:any){
     if(this.codigoArticulo) {
@@ -248,7 +248,7 @@ export class NuevoProductoPage implements OnInit {
                 handler: (data:any) => {
                   setTimeout(() => {
                     this.idCodigoArticulo.setFocus();
-                  },150);
+                  },400);
                 }
               });
               alert.addButton({
@@ -259,8 +259,8 @@ export class NuevoProductoPage implements OnInit {
                     this.codigoArticulo = data;
                     this.infoProducto();
                     setTimeout(() => {
-                      this.idCodigoArticulo.setFocus();
-                    },150);
+                      this.idDescripcion.setFocus();
+                    },400);
                   }
                 }
               });

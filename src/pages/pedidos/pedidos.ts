@@ -245,7 +245,14 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                 check = false
               }
 
-              alert.addButton('Cancelar');
+              alert.addButton({
+                text:'Cancelar',
+                handler: (data: any) => {
+                  setTimeout(() => {
+                    this.idTxtProveedor.setFocus();
+                  },400);
+                }
+              });
               alert.addButton({
                 text: 'Aceptar',
                 handler: (data: any) => {
@@ -255,8 +262,8 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                     this.txtCodProveedor = arrayRespuesta[0];
                     this.txtNomProveedor = arrayRespuesta[1];
                     setTimeout(() => {
-                      this.idTxtProveedor.setFocus();
-                    },150);
+                      this.idCodigoArticulo.setFocus();
+                    },400);
                   }
                 }
               });
@@ -495,11 +502,11 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
-    loading.present();
+    //loading.present();
     var urlListaProveedor = '/pedido/proveedor/list';
     this.sicService.getGlobal<ResponseListaProveedor>(urlListaProveedor).subscribe(
       data => {
-        loading.dismiss();
+        //loading.dismiss();
         let alert = this.alertCtrl.create();
         alert.setTitle('Seleccione un Item');
 
@@ -513,13 +520,23 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
           });
         }
 
-        alert.addButton('Cancelar');
+        alert.addButton({
+          text:'Cancelar',
+          handler: (data: any) => {
+            setTimeout(() => {
+              this.idTxtProveedor.setFocus();
+            },400);
+          }
+        });
         alert.addButton({
           text: 'Aceptar',
           handler: (data: any) => {
             console.log('Datos Enviados:', data);
             this.txtCodProveedor = data;
             this.infoProveedor();
+            setTimeout(() => {
+              this.idCodigoArticulo.setFocus();
+            },400);
           }
         });
 
@@ -837,7 +854,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
 
         setTimeout(() => {
           this.idCodigoArticulo.setFocus();
-        },150);
+        },400);
       } else {
         console.log("Error en el codigo del producto");
         this.txtDescripcion2 = "NO EXISTE PRODUCTO CON EL PATRON INGRESADO";
@@ -1059,28 +1076,35 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   public filtrarProveedor(){
     let alert = this.alertCtrl.create();
-    alert.setTitle("Buscar Proveedor");
+    alert.setTitle("Buscar Proveedor 123445");
     alert.addInput({
       type: 'text',
       placeholder:"Buscar",
       name:"txtBuscarProveedor"
 
     });
-    alert.addButton('Cancel');
+    alert.addButton({
+      text:'Cancelar',
+      handler: (data: any) => {
+        setTimeout(() => {
+          this.idTxtProveedor.setFocus();
+        },400);
+      }
+    });
     alert.addButton({
       text: 'OK',
       handler: data => {
         console.log(data.toString());
-        const loading = this.loadingCtrl.create({
+        /*const loading = this.loadingCtrl.create({
           content: 'Listando Productos'
-        });
-        loading.present();
+        });*/
+        //loading.present();
 
         var urlListaProveedor = '/pedido/proveedor/list';
         let requestArticulo:RequestPedidosLista = new RequestPedidosLista("");
         requestArticulo.patron = data.txtBuscaArticulo.trim();
         this.sicService.postGlobal<ResponseListArticulotr>(requestArticulo, urlListaProveedor).subscribe(data2 => {
-          loading.dismiss();
+          //loading.dismiss();
 
           console.log(data2);
           let alertInterno = this.alertCtrl.create();
@@ -1111,7 +1135,14 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
               disabled : true
             });
           }
-          alertInterno.addButton('Cancelar');
+          alertInterno.addButton({
+            text:'Cancelar',
+            handler: (data: any) => {
+              setTimeout(() => {
+                this.idTxtProveedor.setFocus();
+              },400);
+            }
+          });
           alertInterno.addButton({
             text: 'Aceptar',
             handler: (data: any) => {
@@ -1119,15 +1150,18 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                 console.log('Datos Enviados:', data);
                 this.txtCodArticulo = data;
                 this.obtenerArticulo();
+                setTimeout(() => {
+                  this.idCodigoArticulo.setFocus();
+                },400);
               }
             }
           });
-          alertInterno.present();
+          //alertInterno.present();
         });
       }
     });
 
-    alert.present();
+    //alert.present();
   }
 
 
