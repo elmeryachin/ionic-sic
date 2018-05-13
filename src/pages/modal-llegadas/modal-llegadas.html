@@ -70,8 +70,13 @@
           <ion-item class="grillas estilizado mostrarObservacion" (click)="filtrarPorObservacion(item.observacion)">
             <ion-label stacked class="wrap label label-md {{item.seleccionado}}">{{item.observacion}}
             </ion-label>
+
           </ion-item>
         </ion-col>
+
+          <a (click)="imprimirReporte(item.id)"><ion-icon name="print"></ion-icon>
+          </a>
+
       </ion-row>
     </ion-grid>
   </ion-scroll>
