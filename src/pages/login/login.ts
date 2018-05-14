@@ -6,7 +6,8 @@ import {Device} from '@ionic-native/device';
 import {RequestLogin} from "../request/request-login";
 import {ResponseLogin} from "../response/response-login";
 import {TokenShareProvider} from "../../providers/token-share/token-share";
-
+var Mousetrap = require('mousetrap');
+var Mousetrap_global = require('mousetrap-global-bind');
 /**
  * Generated class for the LoginPage page.
  *
@@ -29,6 +30,12 @@ export class LoginPage {
               public alertCtrl: AlertController, private device: Device,public tokenShare: TokenShareProvider) {
     menu.enable(false);
 
+  }
+
+  ionViewDidEnter(){
+    Mousetrap.bindGlobal(['command+g', 'ctrl+g'], () => {
+      this.iniciaSesion();
+    })
   }
 
   ionViewDidLoad() {

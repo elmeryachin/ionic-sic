@@ -20,7 +20,8 @@ import {DataShareProvider} from "../../providers/data-share/data-share";
 import {Subscription} from "rxjs/Subscription";
 import {RequestPedidosLista} from "../request/RequestPedidosLista";
 import {Ambientes, ResponseExistences} from "../response/response-existences";
-
+var Mousetrap = require('mousetrap');
+var Mousetrap_global = require('mousetrap-global-bind');
 /**
  * Generated class for the PedidosPage page.
  *
@@ -93,6 +94,38 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     });
   }
 
+  ionViewDidEnter(){
+    Mousetrap.bindGlobal(['command+g', 'ctrl+g'], () => {
+        this.confirmarAccion(null)
+    })
+    Mousetrap.bindGlobal(['command+n', 'ctrl+n'], () => {
+      this.nuevoPedido()
+    })
+    Mousetrap.bindGlobal(['command+i', 'ctrl+i'], () => {
+      console.log('Imprimiendo reporte...')
+    })
+  }
+
+
+  public nuevoPedido() {
+    let confirm = this.alertCtrl.create({
+      title: 'Alerta',
+      message: 'Se limpiara los campos, desea salir sin guardar?',
+      buttons: [
+        {
+          text: 'Cancelar'
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.iniciarNuevoPedido(null)
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   ngOnInit() {
     console.log("obtiene String ngOnInit");
 
@@ -137,7 +170,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   //debe obtener el ultimo numero de pedido
   public iniciarNuevoPedido(fab?: FabContainer) {
-    if(fab) {
+    if(fab!=null) {
       fab.close();
     }
 
@@ -158,6 +191,9 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
     this.listadoInPedidos = [];
+    setTimeout(() => {
+      this.idTxtProveedor.setFocus();
+    },400);
   }
 
   ionViewDidLoad() {
@@ -184,11 +220,11 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     const loading = this.loadingCtrl.create({
       content: 'Obteniendo los datos'
     });
-    loading.present();
+    //loading.present();
     this.limpiarDatos();
     var url = '/pedido/init';
     this.sicService.getGlobal<ResponseIniPedido>(url).subscribe(data => {
-      loading.dismiss();
+      //loading.dismiss();
       if (data != null) {
         if (data.respuesta) {
           this.txtNumMovimiento = data.nroMovimiento;
@@ -298,7 +334,10 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
             this.txtDescripcion2 = data.nombre;
             this.txtPrecZonLib = data.precio;
             this.txtCantidadCompra = null;
-            this.cantidadCompra.setFocus();
+            //this.cantidadCompra.setFocus();
+            setTimeout(() => {
+              this.cantidadCompra.setFocus();
+            },400);
 
             this.sicService.getGlobal<ResponseExistences>("/inventario/articulo/"+this.txtCodArticulo+"/existence").subscribe(
               data2 => {
@@ -363,9 +402,9 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                     console.log('Datos Enviados:', data);
                     this.txtCodArticulo = data;
                     this.infoProducto();
-                    setTimeout(() => {
+                    /*setTimeout(() => {
                       this.cantidadCompra.setFocus();
-                    },400);
+                    },400);*/
                   }
                 }
               });
@@ -738,7 +777,9 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
           buttons: [{
             text: 'Aceptar',
             handler: () => {
-              //this.iniciarNuevoPedido();
+              setTimeout(() => {
+                this.idTxtProveedor.setFocus();
+              },400);
             }
           }]
         });
@@ -760,12 +801,12 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     const loading = this.loadingCtrl.create({
       content: 'Listando Productos'
     });
-    loading.present();
+    //loading.present();
     var urlListaProveedor = '/pedido/add';
     var pedido = new Pedido(null, this.txtFechaConvert, this.txtNumMovimiento, this.txtCodProveedor, this.txtDescripcion, this.listadoInPedidos);
     var requestPedido = new RequestPedido(pedido);
     this.sicService.postGlobal<ResponseAddPedido>(requestPedido, urlListaProveedor).subscribe(data => {
-      loading.dismiss();
+      //loading.dismiss();
       //this.iniciarNuevoPedido();
       //this.pedidosGuardados = data.pedidoObjeto;
       this.pedidoInsertado = data.pedidoObjeto;
@@ -775,7 +816,20 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
       this.idPedidoRecuperado = this.pedidoInsertado.id;
       this.listadoInPedidos = this.pedidoInsertado.lista;
       if (data.respuesta) {
-        this.presentToast('Se guardo el pedido correctamente.');
+        // this.presentToast('Se guardo el pedido correctamente.');
+        let alert = this.alertCtrl.create({
+          title: 'Pedidos',
+          subTitle: 'El pedido fue guardado correctamente.',
+          buttons: [{
+            text: 'Aceptar',
+            handler: () => {
+              setTimeout(() => {
+                this.idTxtProveedor.setFocus();
+              },400);
+            }
+          }]
+        });
+        alert.present();
       } else {
         this.presentToast(data.mensaje);
       }
@@ -1167,10 +1221,6 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
 
   public ionViewWillEnter(){
     console.log("antes de activar la nueva pagina")
-  }
-
-  public ionViewDidEnter(){
-    console.log("Sales y entras a otra pagina y es la nueva activa")
   }
 
   public ionViewWillLeave(){

@@ -12,7 +12,8 @@ import {ResponseListArticulotr} from "../response/response-list-articulotr";
 import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
 import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
 import {RequestProductoPatron} from "../response/response-list-articulotr";
-
+var Mousetrap = require('mousetrap');
+var Mousetrap_global = require('mousetrap-global-bind');
 /**
  * Generated class for the NuevoProductoPage page.
  *
@@ -61,11 +62,30 @@ export class NuevoProductoPage implements OnInit {
               public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public qrScanner: QRScanner) {
   }
 
+  ionViewDidEnter(){
+    Mousetrap.bindGlobal(['command+g', 'ctrl+g'], () => {
+      this.confirmarGuardado(null)
+    })
+    Mousetrap.bindGlobal(['command+n', 'ctrl+n'], () => {
+      this.nuevoProducto()
+    })
+    Mousetrap.bindGlobal(['command+i', 'ctrl+i'], () => {
+      console.log('Imprimiendo reporte...')
+    })
+  }
+
   presentAlert(titulo:string, mensaje:string) {
     const alert = this.alertCtrl.create({
       title: titulo,
       subTitle: mensaje,
-      buttons: ['Aceptar']
+    });
+    alert.addButton({
+      text: 'Aceptar',
+      handler: () => {
+        setTimeout(() => {
+          this.idCodigoArticulo.setFocus();
+        },400);
+      }
     });
     alert.present();
   }
@@ -96,6 +116,29 @@ export class NuevoProductoPage implements OnInit {
     var tempNumber = number * factor;
     var roundedTempNumber = Math.round(tempNumber);
     return roundedTempNumber / factor;
+  }
+
+  public nuevoProducto() {
+    let confirm = this.alertCtrl.create({
+      title: 'Alerta',
+      message: 'Se limpiara los campos, desea salir sin guardar?',
+      buttons: [
+        {
+          text: 'Cancelar'
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.codigoArticulo = null;
+            this.limpiarDatos()
+            setTimeout(() => {
+              this.idCodigoArticulo.setFocus();
+            },400);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   public calculaPrecioFinal() {
@@ -413,14 +456,14 @@ export class NuevoProductoPage implements OnInit {
       this.codigoArticulo.toUpperCase()
     }else{
       loading.dismiss();
-    let alert;
-        alert = this.alertCtrl.create({
-          title: 'Error',
-          subTitle: 'Debe ingresar los datos solicitados.',
-          buttons: ['Aceptar']
-        });
-        alert.present();
-        return;
+      let alert;
+      alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: 'Debe ingresar los datos solicitados.',
+        buttons: ['Aceptar']
+      });
+      alert.present();
+      return;
 
     }
     if (!this.seActualiza) {
@@ -514,7 +557,7 @@ export class NuevoProductoPage implements OnInit {
         }, error=>{
           loading.dismiss();
           this.presentToast("Error al eliminar los datos.");
-      });
+        });
     }else {
       loading.dismiss();
       this.presentToast("Error al eliminar los datos.");
@@ -605,7 +648,7 @@ export class NuevoProductoPage implements OnInit {
           text: 'Existencias PDF',
           handler: () => {
             console.log('Archive clicked');
-           // /reporte/existencia/{formato}/download
+            // /reporte/existencia/{formato}/download
             window.open(this.url + "/reporte/existencia/pdf/download", "_blank");
           }
         },

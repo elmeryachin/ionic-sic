@@ -74,7 +74,11 @@ export class ModalLlegadasPage implements OnDestroy {
 
   public imprimirReporte(id:number){
     console.log("este es el ID: " + id);
-    window.open(this.url + "/reporte/porllegar/pdf/view", "_blank")//TODO: aca solo hay que concaternar el ID como tenga que llamarse en el servicio
+    if(this.tipoPeticion == 0){
+      window.open(this.url + "/reporte/porllegar_mov/pdf/view/"+id, "_blank")//TODO: aca solo hay que concaternar el ID como tenga que llamarse en el servicio
+    } else {
+      window.open(this.url + "/reporte/llegada_mov/pdf/view/"+id, "_blank")//TODO: aca solo hay que concaternar el ID como tenga que llamarse en el servicio
+    }
   }
 
   public limpiarPedidos(){
