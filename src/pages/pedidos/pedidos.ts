@@ -22,6 +22,7 @@ import {RequestPedidosLista} from "../request/RequestPedidosLista";
 import {Ambientes, ResponseExistences} from "../response/response-existences";
 var Mousetrap = require('mousetrap');
 var Mousetrap_global = require('mousetrap-global-bind');
+var PHE = require("print-html-element");
 /**
  * Generated class for the PedidosPage page.
  *
@@ -63,7 +64,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
   precioTotalCompra: number = 0;
 
   pedidoBack: DatosPedidos;
-
+  url:string = 'http://localhost:8080';
 
   message: any;
   subscription: Subscription;
@@ -103,14 +104,42 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     })
     Mousetrap.bindGlobal(['command+i', 'ctrl+i'], () => {
       console.log('Imprimiendo reporte...')
+      this.generarReporte()
     })
   }
 
+  generarReporte(){
+    //console.log('idPedidoRecuperado::: ' + this.idPedidoRecuperado)
+    if(this.idPedidoRecuperado==null) {
+      let confirm = this.alertCtrl.create({
+        title: 'Validacion',
+        message: 'No se encontre registro para imprimir',
+        buttons: [
+          {
+            text: 'Aceptar',
+            handler: () => {
+              setTimeout(() => {
+                this.idTxtProveedor.setFocus()
+              },400)
+            }
+          }
+        ]
+      });
+      confirm.present();
+      return true;
+    }
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", this.url + "/reporte/porllegar_mov/html/view/"+this.idPedidoRecuperado, false);
+    xhttp.setRequestHeader("Content-type", "text/plain");
+    xhttp.send();
+    PHE.printHtml(xhttp.responseText);
+
+  }
 
   public nuevoPedido() {
     let confirm = this.alertCtrl.create({
       title: 'Alerta',
-      message: 'Se limpiara los campos, desea salir sin guardar?',
+      message: 'Desea limpiar los campos para crear un nuevo pedido?',
       buttons: [
         {
           text: 'Cancelar'
