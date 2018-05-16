@@ -37,12 +37,38 @@
   border-bottom: 0px solid #dedede !important;
   padding: 2px;
 }
-page-modal-llegadas .label-md[stacked]{
+.label-md[stacked]{
   font-size: 1.1rem !important;//todo: tamanio de fuente
 }
 .item-md{
-  font-size: 1.2rem !important;//todo: tamanio de fuente
+  font-size: 1.1rem !important;//todo: tamanio de fuente
 }
+.grid .item-md{
+  font-size: 1.1rem !important;//todo: tamanio de fuente
+}
+@media (min-width: 550px) {
+  .label-md[stacked]{
+    font-size: 1.6rem !important;//todo: tamanio de fuente
+  }
+  .item-md{
+    font-size: 1.6rem !important;//todo: tamanio de fuente
+  }
+  .grid .item-md{
+    font-size: 1.6rem !important;//todo: tamanio de fuente
+  }
+}
+@media (min-width: 1000px) {
+  .label-md[stacked]{
+    font-size: 1.8rem !important;//todo: tamanio de fuente
+  }
+  .item-md{
+    font-size: 1.8rem !important;//todo: tamanio de fuente
+  }
+  .grid .item-md{
+    font-size: 1.8rem !important;//todo: tamanio de fuente
+  }
+}
+
 .icon-floppy-disk:before {
   content: "\e962";
 }
