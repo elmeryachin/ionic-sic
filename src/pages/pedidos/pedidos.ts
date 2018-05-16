@@ -929,8 +929,34 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
         } else {
           let alert = this.alertCtrl.create({
             title: 'Existen datos duplicados',
-            subTitle: 'El codigo ' + this.txtCodArticulo + " se encuentra duplicado, debe eliminar el articulo para registrar uno nuevo.",
-            buttons: ['Aceptar']
+            subTitle: 'El codigo ' + this.txtCodArticulo + " se encuentra duplicado, desea reemplazar el articulo?.",
+            buttons: [
+              {
+                text:'Cancelar',
+
+              },{
+                text: 'Aceptar',
+                handler: data=>{
+                  console.log(articuloPedido)
+                  console.log(this.listadoInPedidos)
+                  this.eliminarArticuloPedido(articuloPedido);
+                  console.log(this.listadoInPedidos)
+                  this.listadoInPedidos.push(articuloPedido);
+                  this.txtCantidadTotal = 0;
+                  this.txtPrecioTotal = 0;
+                  for (let articulo of this.listadoInPedidos) {
+                    this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
+                    this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
+                  }
+                  this.txtCantidadCompra = null;
+                  this.txtPrecZonLib = null;
+                  this.txtDescripcion2 = null;
+                  this.txtCodArticulo = null;
+                  this.mostrarExistencias = false;
+
+                }
+              }
+            ]
           });
           alert.present();
         }
@@ -953,7 +979,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     this.txtCantidadTotal = 0;
     this.txtPrecioTotal = 0;
     for (let articulo of listaAuxiliar) {
-      if (articulo != item) {
+      if (articulo.codigoArticulo != item.codigoArticulo) {
         this.listadoInPedidos.push(articulo);
         this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
         this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);

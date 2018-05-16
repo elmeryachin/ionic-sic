@@ -29,6 +29,8 @@ export class ModalLlegadasPage implements OnDestroy {
   listaPedidos: ResponseListPedidos;
   listaPedidosGuardado: ResponseListPedidos;
   listaArticulosPorPedido: ArticulosPedidosGet[];
+  listaArticulosPorPedido2: ArticulosPedidosGet[];
+
   cantidadPedidos: number = 0;
   precioPedidos: number = 0;
 
@@ -42,6 +44,8 @@ export class ModalLlegadasPage implements OnDestroy {
   strDetallePedidos: string;
   url:string = 'http://localhost:8080';
   subscription: Subscription;
+  txtBuscaArticulo:string;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public loadingCtrl: LoadingController, public alertCtrl: AlertController, public toastCtrl: ToastController,
@@ -80,6 +84,29 @@ export class ModalLlegadasPage implements OnDestroy {
       window.open(this.url + "/reporte/llegada_mov/pdf/view/"+id, "_blank")//TODO: aca solo hay que concaternar el ID como tenga que llamarse en el servicio
     }
   }
+  public imprimirExcel(id:number){
+    if(this.tipoPeticion == 0){
+      window.open(this.url + "/reporte/porllegar_mov/xls/view/"+id, "_blank")//TODO: aca solo hay que concaternar el ID como tenga que llamarse en el servicio
+    } else {
+      window.open(this.url + "/reporte/llegada_mov/xls/view/"+id, "_blank")//TODO: aca solo hay que concaternar el ID como tenga que llamarse en el servicio
+    }
+  }
+  public filtrarArticulo(){
+
+    let listaArticulos:ArticulosPedidosGet[] = this.listaArticulosPorPedido;
+    this.listaArticulosPorPedido =[];
+    if(listaArticulos.length>0){
+      for(let articulo of listaArticulos){
+        if(this.txtBuscaArticulo === articulo.codigoArticulo){
+          this.listaArticulosPorPedido.push(articulo);
+        }
+      }
+    }
+  }
+  public refrescar(){
+    this.listaArticulosPorPedido = []
+    this.listaArticulosPorPedido = this.listaArticulosPorPedido2;
+  }
 
   public limpiarPedidos(){
     this.listaArticulosPorPedido = null;
@@ -116,6 +143,7 @@ export class ModalLlegadasPage implements OnDestroy {
     this.cantidadTotalPedido = 0;
     this.idPedido = id;
     this.listaArticulosPorPedido = item;
+    this.listaArticulosPorPedido2 = item;
     for (let lista of this.listaArticulosPorPedido) {
       this.precioTotalPedido = (lista.precio * 1) + this.precioTotalPedido;
       this.cantidadTotalPedido = (lista.cantidad * 1) + this.cantidadTotalPedido;

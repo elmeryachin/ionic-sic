@@ -46,6 +46,9 @@
 .grid .item-md{
   font-size: 1.1rem !important;//todo: tamanio de fuente
 }
+.md{
+  font-size: 1.1rem !important;
+}
 @media (min-width: 550px) {
   .label-md[stacked]{
     font-size: 1.6rem !important;//todo: tamanio de fuente
@@ -55,6 +58,9 @@
   }
   .grid .item-md{
     font-size: 1.6rem !important;//todo: tamanio de fuente
+  }
+  .md{
+    font-size: 1.6rem !important;
   }
 }
 @media (min-width: 1000px) {
@@ -67,6 +73,9 @@
   .grid .item-md{
     font-size: 1.8rem !important;//todo: tamanio de fuente
   }
+  .md{
+    font-size: 1.8rem !important;
+  }
 }
 
 .icon-floppy-disk:before {
@@ -75,3 +84,4 @@
 .itm-img{
   padding: 3px 3px 3px 3px;
 }
+

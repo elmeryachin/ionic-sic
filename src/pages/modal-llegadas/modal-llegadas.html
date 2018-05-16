@@ -49,8 +49,9 @@
     </ion-row>
   </ion-grid>
   <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 150px">
-    <ion-grid  class="grilla-pedidos">
-      <ion-row class="seleccionado grillas" *ngFor="let item of listaPedidos.list" (click)="listarArticulos(item.lista, item.id, item)" ngClass="background: color($colors, cafe-suave);">
+    <ion-grid class="grilla-pedidos">
+      <ion-row class="seleccionado grillas" *ngFor="let item of listaPedidos.list"
+               (click)="listarArticulos(item.lista, item.id, item)" ngClass="background: color($colors, cafe-suave);">
         <ion-col (click)="onSeleccionado(item)">
           <ion-item class="grillas estilizado " (click)="filtrarPorCodigo(item.codigoProveedor)">
             <ion-label stacked class="wrap label label-md {{item.seleccionado}}">{{item.codigoProveedor}}</ion-label>
@@ -74,21 +75,40 @@
           </ion-item>
         </ion-col>
 
-          <a (click)="imprimirReporte(item.id)"><ion-icon name="print"></ion-icon>
-          </a>
+        <a (click)="imprimirReporte(item.id)">
+          <ion-icon name="print"></ion-icon>
+        </a>||
+        <a (click)="imprimirExcel(item.id)">
+          <ion-icon name="document"></ion-icon>
+        </a>
 
       </ion-row>
     </ion-grid>
   </ion-scroll>
+  <ion-list inset>
+    <ion-item>
+      <ion-label stacked>Buscar Articulo</ion-label>
+      <ion-input type="text"
+                 [(ngModel)]="txtBuscaArticulo"
+                 (keyup.enter)="filtrarArticulo()"
+                 (ngModelChange)="txtBuscaArticulo = $event.toLocaleUpperCase()"></ion-input>
+      <button clear item-right (click)="filtrarArticulo()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+      <button clear item-right (click)="refrescar()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-list>
 
   <ion-grid>
     <ion-row>
       <ion-col>
         <ion-list>
-        <ion-item class="remarcados">
-          <ion-label stacked>Cantidad</ion-label>
-          <ion-input type="number" readonly="true" value="{{cantidadPedidos}}"></ion-input>
-        </ion-item>
+          <ion-item class="remarcados">
+            <ion-label stacked>Cantidad</ion-label>
+            <ion-input type="number" readonly="true" value="{{cantidadPedidos}}"></ion-input>
+          </ion-item>
         </ion-list>
       </ion-col>
       <ion-col>
@@ -102,8 +122,9 @@
     </ion-row>
   </ion-grid>
 
+
   <ion-grid class="grilla-pedidos">
-    <ion-row >
+    <ion-row>
       <ion-col>
         <ion-item>
           <ion-label class="titulos" stacked>Codigo</ion-label>
@@ -128,9 +149,11 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+
   <ion-scroll scrollX="true" scrollY="true" style="width: 100%; height: 120px">
     <ion-grid class="grilla-pedidos">
-      <ion-row  *ngFor="let art of listaArticulosPorPedido" class="grillas">
+      <ion-row *ngFor="let art of listaArticulosPorPedido" class="grillas">
         <ion-col>
           <ion-item class="grillas">
             <ion-label stacked class="wrap">{{art.codigoArticulo}}</ion-label>
@@ -183,19 +206,36 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-fab bottom right *ngIf="tipoPeticion == 0" >
-    <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
+
+
+  <ion-fab bottom right *ngIf="tipoPeticion == 0">
+    <button ion-fab color="danger">
+      <ion-icon name="more"></ion-icon>
+    </button>
     <ion-fab-list side="left">
-      <button ion-fab color="primary" (click)="confirmarAccion()" ><ion-icon name="cloud-download"></ion-icon></button><!--Por Llegar-->
-      <button ion-fab color="secondary" (click)="confirmarEliminar()" ><ion-icon name="trash"></ion-icon></button><!--Por Llegar-->
-      <button ion-fab color="naranja" (click)="reportePorLlegar()" ><ion-icon name="print"></ion-icon></button><!--Por Llegar-->
+      <button ion-fab color="primary" (click)="confirmarAccion()">
+        <ion-icon name="cloud-download"></ion-icon>
+      </button><!--Por Llegar-->
+      <button ion-fab color="secondary" (click)="confirmarEliminar()">
+        <ion-icon name="trash"></ion-icon>
+      </button><!--Por Llegar-->
+      <button ion-fab color="naranja" (click)="reportePorLlegar()">
+        <ion-icon name="print"></ion-icon>
+      </button><!--Por Llegar-->
     </ion-fab-list>
   </ion-fab>
-  <ion-fab bottom right *ngIf="tipoPeticion != 0" >
-    <button ion-fab color="danger"><ion-icon name="more"></ion-icon></button>
+  <ion-fab bottom right *ngIf="tipoPeticion != 0">
+    <button ion-fab color="danger">
+      <ion-icon name="more"></ion-icon>
+    </button>
     <ion-fab-list side="left">
-      <button ion-fab color="cafe-claro" (click)="eliminarPedidoLlegado()" ><ion-icon name="trash"></ion-icon></button><!--Por Llegar-->
-      <button ion-fab color="naranja" (click)="reporteLlegadas()" ><ion-icon name="print"></ion-icon></button><!--Por Llegar-->
+      <button ion-fab color="cafe-claro" (click)="eliminarPedidoLlegado()">
+        <ion-icon name="trash"></ion-icon>
+      </button><!--Por Llegar-->
+      <button ion-fab color="naranja" (click)="reporteLlegadas()">
+        <ion-icon name="print"></ion-icon>
+      </button><!--Por Llegar-->
     </ion-fab-list>
   </ion-fab>
+
 </ion-content>

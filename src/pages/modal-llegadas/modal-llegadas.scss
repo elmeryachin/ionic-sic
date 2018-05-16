@@ -14,9 +14,9 @@ page-modal-llegadas {
   .label-md {
     margin: 5px 1px 5px 0;
   }
-  .label-md[stacked] {
+  /*.label-md[stacked] {
     font-size: 1.4rem;
-  }
+  }*/
   .item-input .label-md, .item-select .label-md, .item-datetime .label-md {
     color: #3c3c3c;
   }
@@ -53,6 +53,7 @@ page-modal-llegadas {
   }
   .grillas{//amarillo-grid
     background: color($colors, amarillo-grid);
+    width: 100% !important;
   }
   .remarcados{
     background: color($colors, amarrillo-claro);
@@ -81,8 +82,19 @@ page-modal-llegadas {
     text-overflow: ellipsis;
   }
   .col{
-    width: 30% !important;
+    width: 20% !important;
     padding:3px;
+  }
+  .text-input-md{
+    margin: 0px 8px !important;
+  }
+
+  .md [padding] {
+    padding: 1px !important;
+  }
+  .list-md[inset] {
+    margin: 1px !important;
+    border-radius: 2px;
   }
 
 }
