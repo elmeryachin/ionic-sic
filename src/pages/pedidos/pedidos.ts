@@ -926,14 +926,14 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
           this.txtDescripcion2 = null;
           this.txtCodArticulo = null;
           this.mostrarExistencias = false;
+          this.idCodigoArticulo.setFocus()
         } else {
           let alert = this.alertCtrl.create({
             title: 'Existen datos duplicados',
             subTitle: 'El codigo ' + this.txtCodArticulo + " se encuentra duplicado, desea reemplazar el articulo?.",
             buttons: [
               {
-                text:'Cancelar',
-
+                text:'Cancelar'
               },{
                 text: 'Aceptar',
                 handler: data=>{
@@ -953,7 +953,9 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                   this.txtDescripcion2 = null;
                   this.txtCodArticulo = null;
                   this.mostrarExistencias = false;
-
+                  setTimeout(() => {
+                    this.idCodigoArticulo.setFocus();
+                  },400);
                 }
               }
             ]
@@ -961,9 +963,9 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
           alert.present();
         }
 
-        setTimeout(() => {
+        /*setTimeout(() => {
           this.idCodigoArticulo.setFocus();
-        },400);
+        },400);*/
       } else {
         console.log("Error en el codigo del producto");
         this.txtDescripcion2 = "NO EXISTE PRODUCTO CON EL PATRON INGRESADO";
