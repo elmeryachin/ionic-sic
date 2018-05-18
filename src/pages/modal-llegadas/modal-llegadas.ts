@@ -92,13 +92,14 @@ export class ModalLlegadasPage implements OnDestroy {
     }
   }
   public filtrarArticulo(){
-
-    let listaArticulos:ArticulosPedidosGet[] = this.listaArticulosPorPedido;
-    this.listaArticulosPorPedido =[];
-    if(listaArticulos.length>0){
-      for(let articulo of listaArticulos){
-        if(this.txtBuscaArticulo === articulo.codigoArticulo){
-          this.listaArticulosPorPedido.push(articulo);
+    if(this.listaArticulosPorPedido != null) {
+      let listaArticulos:ArticulosPedidosGet[] = this.listaArticulosPorPedido;
+      this.listaArticulosPorPedido =[];
+      if(listaArticulos.length>0){
+        for(let articulo of listaArticulos){
+          if(this.txtBuscaArticulo === articulo.codigoArticulo){
+            this.listaArticulosPorPedido.push(articulo);
+          }
         }
       }
     }
@@ -110,6 +111,8 @@ export class ModalLlegadasPage implements OnDestroy {
 
   public limpiarPedidos(){
     this.listaArticulosPorPedido = null;
+    this.listaArticulosPorPedido2 = null;
+    this.txtBuscaArticulo = null;
     this.cantidadPedidos= 0;
     this.precioPedidos= 0;
     this.cantidadTotalPedido= 0;
