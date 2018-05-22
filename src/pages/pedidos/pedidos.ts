@@ -185,9 +185,11 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
       this.listadoInPedidos = [];
       for (let articulo of this.jsonConvert.lista) {
         this.listadoInPedidos.push(new ArticuloPedido(articulo.id, articulo.codigoArticulo, articulo.cantidad, articulo.precio, articulo.observacion));
+
         this.txtCantidadTotal = (this.txtCantidadTotal * 1) + (articulo.cantidad * 1);
         this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
       }
+      this.listadoInPedidos = this.listadoInPedidos.reverse();
     }
   }
 
@@ -844,6 +846,8 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
       console.log(this.pedidoInsertado)
       this.idPedidoRecuperado = this.pedidoInsertado.id;
       this.listadoInPedidos = this.pedidoInsertado.lista;
+      this.listadoInPedidos = this.listadoInPedidos.reverse();
+
       if (data.respuesta) {
         // this.presentToast('Se guardo el pedido correctamente.');
         let alert = this.alertCtrl.create({
@@ -915,6 +919,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
         }
         if (modificar) {
           this.listadoInPedidos.push(articuloPedido);
+          this.listadoInPedidos = this.listadoInPedidos.reverse();
           this.txtCantidadTotal = 0;
           this.txtPrecioTotal = 0;
           for (let articulo of this.listadoInPedidos) {
@@ -942,6 +947,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
                   this.eliminarArticuloPedido(articuloPedido);
                   console.log(this.listadoInPedidos)
                   this.listadoInPedidos.push(articuloPedido);
+                  this.listadoInPedidos = this.listadoInPedidos.reverse();
                   this.txtCantidadTotal = 0;
                   this.txtPrecioTotal = 0;
                   for (let articulo of this.listadoInPedidos) {
@@ -987,6 +993,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
         this.txtPrecioTotal = (articulo.cantidad * articulo.precio) + (this.txtPrecioTotal * 1);
       }
     }
+    this.listadoInPedidos = this.listadoInPedidos.reverse();
   }
 
   public openBasicModal() {
