@@ -18,7 +18,7 @@ export class SicServiceProvider {
   valor: string;
   jsonNew: string;
   constructor(private http: HttpClient) {
-    this.url = 'http://localhost:8080';
+    this.url = 'http://192.168.43.119:8080';
   }
   getGlobal<Object>(url:string){
     return this.http.get<Object>(this.url + url);

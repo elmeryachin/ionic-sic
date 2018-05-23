@@ -36,7 +36,7 @@
             <ion-input type="text" [(ngModel)]="codBarras"
                        [class.classNuevo]="classNuevo"
                        placeholder=""></ion-input>
-            <button (click)="escanearCodigo()" ion-button item-end icon-only>
+            <button (click)="escanearCodigo()" color="naranja" ion-button outline item-end icon-only>
               <ion-icon name="camera"></ion-icon>
             </button>
           </ion-item>
@@ -138,7 +138,7 @@
     </ion-row>
 
   </ion-grid>
-  <ion-fab top right #fab>
+  <ion-fab bottom right #fab>
     <button ion-fab color="danger">
       <ion-icon name="more"></ion-icon>
     </button>

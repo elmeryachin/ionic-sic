@@ -9,9 +9,9 @@ import {SicServiceProvider} from "../../providers/sic-service/sic-service";
 import {Ambientes, ResponseExistences} from "../response/response-existences";
 import {RequestPedidosLista} from "../request/RequestPedidosLista";
 import {ResponseListArticulotr} from "../response/response-list-articulotr";
-import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
 import {ResponseGetArticuloPr} from "../response/response-get-articulo-pr";
 import {RequestProductoPatron} from "../response/response-list-articulotr";
+import {BarcodeScanner} from "@ionic-native/barcode-scanner";
 var Mousetrap = require('mousetrap');
 var Mousetrap_global = require('mousetrap-global-bind');
 /**
@@ -59,7 +59,9 @@ export class NuevoProductoPage implements OnInit {
   @ViewChild('idMensaje') idMensaje;
   constructor(public navCtrl: NavController, public navParams: NavParams, private sicService: SicServiceProvider,
               public alertCtrl: AlertController, public toastCtrl: ToastController,
-              public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public qrScanner: QRScanner) {
+              public loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController,
+              private barcodeScanner: BarcodeScanner
+  ) {
   }
 
   ionViewDidEnter(){
@@ -153,39 +155,13 @@ export class NuevoProductoPage implements OnInit {
 
   public escanearCodigo(){
     // Optionally request the permission early
-    this.qrScanner.prepare()
-      .then((status: QRScannerStatus) => {
-        console.log("Antes de consultar: " +status.authorized);
-        if (status.authorized) {
-          // camera permission was granted
-          console.log("status OK")
-          console.log(status)
-          // start scanning
-          let scanSub = this.qrScanner.scan().subscribe((text) => {
-            console.log('Scanned something', text);
+    this.barcodeScanner.scan().then(barcodeData => {
+      console.log('Barcode data', barcodeData);
+      this.codBarras = barcodeData.text;
+    }).catch(err => {
+      console.log('Error', err);
+    });
 
-            this.qrScanner.hide(); // hide camera preview
-            scanSub.unsubscribe(); // stop scanning
-
-          });
-
-          // show camera preview
-          this.qrScanner.show();
-
-          // wait for user to scan something, then the observable callback will be called
-
-        } else if (status.denied) {
-          console.log("Status dennied: " +status.denied);
-          // camera permission was permanently denied
-          // you must use QRScanner.openSettings() method to guide the user to the settings page
-          // then they can grant the permission from there
-        } else {
-          console.log("Status dennied2");
-          console.log(status);
-          // permission was denied, but not permanently. You can ask for permission again at a later time.
-        }
-      })
-      .catch((e: any) => console.log('Error is: ', e));
   }
 
   ionViewDidLeave() {
