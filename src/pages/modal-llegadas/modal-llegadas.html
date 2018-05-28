@@ -53,8 +53,8 @@
       <ion-row class="seleccionado grillas" *ngFor="let item of listaPedidos.list"
                (click)="listarArticulos(item.lista, item.id, item)" ngClass="background: color($colors, cafe-suave);">
         <ion-col (click)="onSeleccionado(item)">
-          <ion-item class="grillas estilizado " (click)="filtrarPorCodigo(item.codigoProveedor)">
-            <ion-label stacked class="wrap label label-md {{item.seleccionado}}">{{item.codigoProveedor}}</ion-label>
+          <ion-item class="grillas estilizado " (click)="filtrarPorCodigo(item.codigo)">
+            <ion-label stacked class="wrap label label-md {{item.seleccionado}}">{{item.codigo}}</ion-label>
           </ion-item>
         </ion-col>
         <ion-col (click)="onSeleccionado(item)">

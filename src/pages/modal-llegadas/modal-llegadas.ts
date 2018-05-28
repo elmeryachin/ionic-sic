@@ -525,7 +525,7 @@ export class ModalLlegadasPage implements OnDestroy {
   public filtrarPorCodigo(datosPedido:string){
 
     let listaPedidosLocal:DatosPedidos[];
-    listaPedidosLocal = this.listaPedidos.list.filter(item => item.codigoProveedor == datosPedido);
+    listaPedidosLocal = this.listaPedidos.list.filter(item => item.codigo == datosPedido);
 
     this.listaPedidos.list = listaPedidosLocal;
     console.log(this.strDetallePedidos)

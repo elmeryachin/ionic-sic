@@ -179,7 +179,7 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
       this.idPedidoRecuperado = this.jsonConvert.id;
       this.txtFechaConvert = this.jsonConvert.fechaMovimiento;
       this.txtNumMovimiento = this.jsonConvert.nroMovimiento;
-      this.txtCodProveedor = this.jsonConvert.codigoProveedor;
+      this.txtCodProveedor = this.jsonConvert.codigo;
       this.infoProveedor();
       this.txtDescripcion = this.jsonConvert.observacion;
       this.listadoInPedidos = [];
@@ -837,11 +837,8 @@ export class PedidosPage implements OnDestroy, OnInit, OnChanges, DoCheck {
     var pedido = new Pedido(null, this.txtFechaConvert, this.txtNumMovimiento, this.txtCodProveedor, this.txtDescripcion, this.listadoInPedidos);
     var requestPedido = new RequestPedido(pedido);
     this.sicService.postGlobal<ResponseAddPedido>(requestPedido, urlListaProveedor).subscribe(data => {
-      //loading.dismiss();
-      //this.iniciarNuevoPedido();
-      //this.pedidosGuardados = data.pedidoObjeto;
-      this.pedidoInsertado = data.pedidoObjeto;
-      console.log(data.pedidoObjeto);
+      this.pedidoInsertado = data.transaccionObjeto;
+      console.log(data.transaccionObjeto);
       console.log("*************************")
       console.log(this.pedidoInsertado)
       this.idPedidoRecuperado = this.pedidoInsertado.id;
