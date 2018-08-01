@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nf start",
+    "web": "ionic-app-scripts serve",
     "start": "ionic-app-scripts serve",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
